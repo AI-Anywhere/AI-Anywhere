@@ -27,6 +27,32 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.19',
+    date: '2026-09-01',
+    changes: {
+      en: [
+        'Cursor Agent joins the supported CLIs, with lifecycle hooks reporting busy and waiting state',
+        'The share option in the tab menu now stays visible when the server has sharing off, and shows the command to enable it instead of disappearing',
+        'Folder and machine counts hide while expanded, since the rows underneath already show what is inside',
+      ],
+      ja: [
+        'Cursor Agent が対応 CLI に加わりました。ライフサイクルフックで実行中と入力待ちの状態を報告します',
+        'タブメニューの共有項目は、サーバー側で共有が無効でも消えなくなり、代わりに有効化コマンドを案内します',
+        'フォルダーやマシンを展開している間は件数を非表示に。下に並ぶ行が中身をそのまま示しているためです',
+      ],
+      ko: [
+        'Cursor Agent가 지원 CLI에 추가되었습니다. 라이프사이클 훅으로 실행 중과 입력 대기 상태를 보고합니다',
+        '탭 메뉴의 공유 항목이 서버에서 공유가 꺼져 있어도 사라지지 않고, 대신 활성화 명령을 안내합니다',
+        '폴더와 컴퓨터를 펼친 동안에는 개수를 숨깁니다. 아래 행들이 이미 내용을 보여주기 때문입니다',
+      ],
+      'zh-Hant': [
+        'Cursor Agent 加入支援的 CLI，透過生命週期鉤子回報忙碌與等待輸入狀態',
+        '分頁選單的分享選項在伺服器未開啟分享時不再消失，改為顯示啟用分享的指令',
+        '展開文件夾或機器時隱藏總數，下方列出的內容已經一目了然',
+      ],
+    },
+  },
+  {
     version: '0.0.18',
     date: '2026-08-21',
     changes: {
