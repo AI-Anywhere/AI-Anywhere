@@ -27,6 +27,24 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.20',
+    date: '2026-09-01',
+    changes: {
+      en: [
+        'Smooth scrolling in Claude Code panes again: Claude Code 2.1 turned on mouse tracking, so every wheel tick and pointer move cost a round trip and a full repaint. The terminal now keeps the mouse local and batches wheel input, as it already does for OpenCode, and dragging to select text works again',
+      ],
+      ja: [
+        'Claude Code ペインのスクロールが再びスムーズに。Claude Code 2.1 がマウストラッキングを有効にしたため、ホイールやポインター移動のたびに往復と全画面再描画が発生していました。OpenCode と同様にマウスをローカルに保ち、ホイール入力をまとめて送信します。ドラッグでのテキスト選択も復活',
+      ],
+      ko: [
+        'Claude Code 창의 스크롤이 다시 부드러워졌습니다. Claude Code 2.1이 마우스 트래킹을 켜면서 휠과 포인터 이동마다 왕복과 전체 화면 다시 그리기가 발생했습니다. 이제 OpenCode처럼 마우스를 로컬로 유지하고 휠 입력을 묶어 보냅니다. 드래그로 텍스트 선택도 다시 가능합니다',
+      ],
+      'zh-Hant': [
+        'Claude Code 分頁的捲動恢復流暢：Claude Code 2.1 開啟了滑鼠追蹤，導致每格滾輪與每次滑鼠移動都要一次往返與整屏重繪。現在比照 OpenCode 把滑鼠留在本地並批次送出滾輪輸入，拖曳選取文字也恢復可用',
+      ],
+    },
+  },
+  {
     version: '0.0.19',
     date: '2026-09-01',
     changes: {
