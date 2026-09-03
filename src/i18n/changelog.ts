@@ -27,6 +27,32 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.21',
+    date: '2026-09-03',
+    changes: {
+      en: [
+        'The dashboard now shows agent session history, read straight from the session stores the CLIs keep on disk (claude, codex, pi) - including sessions from before this app existed',
+        'History clusters flat, by CLI, or by folder like All tasks; entries render one line each with the first prompt as the title, folded at twelve with a show-all that reaches the last 500',
+        'Density pass on the dashboard: one-line stat tiles and tighter rows and empty states, so a screenful actually holds the day',
+      ],
+      ja: [
+        'ダッシュボードにエージェントのセッション履歴を表示。CLI がディスクに保存しているセッションストア（claude、codex、pi）を直接読むため、このアプリ導入前のセッションも含まれます',
+        '履歴は「すべてのタスク」と同じくフラット・CLI 別・フォルダー別に分類可能。各エントリーは最初のプロンプトをタイトルに 1 行表示、12 件で折りたたみ、すべて表示で直近 500 件まで',
+        'ダッシュボードの密度改善: 統計タイルを 1 行に、行と空状態の余白を詰めて、1 画面にその日の作業が収まるように',
+      ],
+      ko: [
+        '대시보드에 에이전트 세션 기록을 표시합니다. CLI가 디스크에 보관하는 세션 저장소(claude, codex, pi)를 직접 읽으므로 이 앱을 쓰기 전의 세션도 포함됩니다',
+        '기록은 모든 작업과 같이 플랫, CLI별, 폴더별로 묶을 수 있습니다. 각 항목은 첫 프롬프트를 제목으로 한 줄씩 표시되며, 12개에서 접히고 모두 보기로 최근 500개까지 펼쳐집니다',
+        '대시보드 밀도 개선: 한 줄 통계 타일과 더 좁아진 행과 빈 상태로, 한 화면에 하루가 담깁니다',
+      ],
+      'zh-Hant': [
+        '儀表板現在會顯示 agent 會話歷史，直接讀取各 CLI 存在磁碟上的會話存檔（claude、codex、pi），連安裝本應用之前的會話也涵蓋在內',
+        '歷史可像「所有任務」一樣以平鋪、CLI 或資料夾分組；每筆以第一句提示詞為標題單行顯示，預設收合為十二筆，展開可達最近 500 筆',
+        '儀表板密度優化：統計磚收成單行、列與空狀態的留白減半，一屏就能裝下一天的工作',
+      ],
+    },
+  },
+  {
     version: '0.0.20',
     date: '2026-09-01',
     changes: {
