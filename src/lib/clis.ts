@@ -43,6 +43,8 @@ export const CLI_MARKS: CliMark[] = [
   { id: 'gemini', name: 'Gemini CLI', x: 39.5, y: 45, r: 6, s: 22, from: 1020, off: true },
   { id: 'opencode', name: 'OpenCode', x: 5, y: 79, r: 11, s: 25 },
   { id: 'copilot', name: 'GitHub Copilot', x: 21, y: 87, r: -8, s: 28, off: true },
+  // top-right gutter, above the demo mock — the same margin openclaw/grok were tuned for
+  { id: 'cursor', name: 'Cursor Agent', x: 71, y: 14, r: -9, s: 24, from: 1020 },
   { id: 'openclaw', name: 'OpenClaw', x: 63, y: 8, r: -9, s: 26, from: 1020, off: true },
   { id: 'pi', name: 'Pi', x: 47, y: 84, r: 12, s: 22, from: 1020 },
   // vendor CLIs — same scatter, same rule: a mark only goes here if the vendor ships a
