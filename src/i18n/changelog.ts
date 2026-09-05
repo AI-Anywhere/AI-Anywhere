@@ -30,10 +30,31 @@ export const releases: Release[] = [
     version: '0.0.22',
     date: '2026-09-05',
     changes: {
-      en: ['Fixed: after deleting one history session, deleting any other no longer needs a page reload'],
-      ja: ['修正: 履歴セッションを 1 件削除したあと、別のセッションを削除するのにページ再読み込みが不要になりました'],
-      ko: ['수정: 기록 세션을 하나 삭제한 뒤 다른 세션을 삭제할 때 페이지 새로고침이 필요 없어졌습니다'],
-      'zh-Hant': ['修正：刪除一筆歷史會話後，再刪除其他會話不再需要重新整理頁面'],
+      en: [
+        'The web dashboard is now available in Portuguese - the browser language is picked up automatically, or choose it in Settings',
+        'tmux.online itself now speaks Portuguese too, at tmux.online/pt',
+        'Fixed: after deleting one history session, deleting any other no longer needs a page reload',
+      ],
+      ja: [
+        'Web ダッシュボードがポルトガル語に対応 - ブラウザの言語を自動で検出するほか、設定からも選択できます',
+        'tmux.online 本体もポルトガル語に対応しました（tmux.online/pt）',
+        '修正: 履歴セッションを 1 件削除したあと、別のセッションを削除するのにページ再読み込みが不要になりました',
+      ],
+      ko: [
+        '웹 대시보드가 포르투갈어를 지원합니다 - 브라우저 언어를 자동으로 감지하며, 설정에서 직접 선택할 수도 있습니다',
+        'tmux.online도 포르투갈어를 지원합니다 (tmux.online/pt)',
+        '수정: 기록 세션을 하나 삭제한 뒤 다른 세션을 삭제할 때 페이지 새로고침이 필요 없어졌습니다',
+      ],
+      pt: [
+        'O painel web agora está disponível em português - o idioma do navegador é detectado automaticamente, ou escolha nas Configurações',
+        'O próprio tmux.online também fala português agora, em tmux.online/pt',
+        'Corrigido: depois de excluir uma sessão do histórico, excluir qualquer outra não exige mais recarregar a página',
+      ],
+      'zh-Hant': [
+        'Web 儀表板新增葡萄牙語支援 - 自動偵測瀏覽器語言，也可在設定中手動選擇',
+        'tmux.online 官網同步支援葡萄牙語（tmux.online/pt）',
+        '修正：刪除一筆歷史會話後，再刪除其他會話不再需要重新整理頁面',
+      ],
     },
   },
   {

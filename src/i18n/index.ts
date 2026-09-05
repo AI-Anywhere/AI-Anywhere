@@ -1,6 +1,7 @@
 import { en } from './en'
 import { ja } from './ja'
 import { ko } from './ko'
+import { pt } from './pt'
 import { zhHant } from './zh-Hant'
 
 /**
@@ -17,6 +18,7 @@ export const languages = {
   en: 'English',
   ja: '日本語',
   ko: '한국어',
+  pt: 'Português',
   'zh-Hant': '繁體中文',
 } as const
 
@@ -28,6 +30,7 @@ export const languageMenu: ReadonlyArray<{ lang: Lang; label: string }> = [
   { lang: 'en', label: languages.en },
   { lang: 'ja', label: languages.ja },
   { lang: 'ko', label: languages.ko },
+  { lang: 'pt', label: languages.pt },
   { lang: 'zh-Hant', label: languages['zh-Hant'] },
 ]
 
@@ -39,10 +42,11 @@ export const ogLocales: Record<Lang, string> = {
   'zh-Hant': 'zh_TW',
   ja: 'ja_JP',
   ko: 'ko_KR',
+  pt: 'pt_BR',
 }
 
 // Only locales present here are actually shipped; the rest are declared intent.
-export const copy: Partial<Record<Lang, Copy>> = { en, ja, ko, 'zh-Hant': zhHant }
+export const copy: Partial<Record<Lang, Copy>> = { en, ja, ko, pt, 'zh-Hant': zhHant }
 
 export const shippedLangs = Object.keys(copy) as Lang[]
 

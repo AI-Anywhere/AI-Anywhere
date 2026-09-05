@@ -786,7 +786,216 @@ const zhHant: GuideCollection = {
   },
 }
 
-const collections: Record<Lang, GuideCollection> = { en, ja, ko, 'zh-Hant': zhHant }
+const pt: GuideCollection = {
+  navTitle: 'Guias',
+  home: 'Início',
+  pages: {
+    tmuxWebUi: {
+      eyebrow: 'Interface web para tmux',
+      title: 'Uma interface de navegador para as sessões tmux que já estão rodando',
+      description:
+        'Abra sessões tmux existentes em um navegador, mova-se entre panes e gerencie hosts locais ou SSH sem realocar os dados do terminal',
+      summary:
+        'O AI Anywhere adiciona uma interface de navegador ao tmux sem substituí-lo. Seus shells e agentes continuam rodando no tmux na máquina onde você os iniciou',
+      sections: [
+        {
+          title: 'O tmux continua no comando',
+          body: [
+            'O servidor local lê as sessões, janelas e panes que o tmux já possui. Abrir a interface web não reinicia, copia nem migra uma sessão',
+            'Feche o navegador ou perca a conexão de rede e o processo continua rodando no tmux. Reabra a página para voltar ao mesmo pane',
+          ],
+        },
+        {
+          title: 'Uma visão para máquinas e tarefas',
+          body: ['Sessões locais e hosts acessados pela sua configuração SSH ficam agrupados em uma única barra lateral'],
+          bullets: [
+            'Mova-se entre janelas e panes do tmux a partir do navegador',
+            'Veja qual tarefa de codificação de IA está trabalhando ou esperando entrada',
+            'Abra o mesmo espaço de trabalho de um celular quando a máquina estiver acessível',
+          ],
+        },
+        {
+          title: 'O que permanece local',
+          body: [
+            'O aplicativo web é servido pelo processo local do AI Anywhere em 127.0.0.1. Saída do terminal, teclas digitadas, arquivos e credenciais não passam pelo tmux.online',
+          ],
+        },
+      ],
+    },
+    claudeCodeBrowser: {
+      eyebrow: 'Claude Code',
+      title: 'Use o Claude Code de um navegador sem mover o terminal',
+      description:
+        'Mantenha o Claude Code rodando dentro do tmux, acompanhe seu status em um navegador e responda a prompts de um desktop ou celular',
+      summary:
+        'Inicie o Claude Code no tmux como de costume. O AI Anywhere torna esse mesmo terminal disponível no navegador e destaca os momentos em que o Claude precisa de uma resposta',
+      sections: [
+        {
+          title: 'Mantenha a sessão rodando',
+          body: [
+            'O Claude Code continua dentro do tmux quando o navegador fecha ou uma conexão SSH cai. O navegador é outra visão da sessão, não um segundo processo do Claude',
+          ],
+        },
+        {
+          title: 'Volte quando for necessário',
+          body: [
+            'As tarefas são agrupadas por máquina e mostram quando estão trabalhando ou esperando. Abra a tarefa em espera, revise o contexto do terminal e responda no mesmo pane',
+          ],
+          bullets: [
+            'Acompanhe subagentes separados como tarefas individuais',
+            'Alterne entre repositórios sem vigiar cada terminal',
+            'Responda de um celular quando estiver longe da mesa',
+          ],
+        },
+        {
+          title: 'As credenciais do Claude ficam onde estão',
+          body: [
+            'O AI Anywhere não pede nem envia suas credenciais da Anthropic. O Claude Code permanece instalado e autenticado na sua própria máquina',
+          ],
+        },
+      ],
+    },
+    codexBrowser: {
+      eyebrow: 'Codex CLI',
+      title: 'Controle tarefas do Codex CLI de qualquer navegador',
+      description:
+        'Rode o Codex CLI no tmux, monitore tarefas de codificação paralelas e intervenha de um navegador apenas quando uma tarefa precisar de entrada',
+      summary:
+        'Use o Codex CLI no fluxo de terminal que você já tem. O AI Anywhere expõe a sessão tmux localmente, então tarefas longas permanecem disponíveis entre abas, dispositivos e quedas de conexão',
+      sections: [
+        {
+          title: 'Mantenha cada tarefa visível',
+          body: [
+            'Uma tarefa do Codex corresponde à janela tmux onde ela roda. Agentes paralelos e worktrees podem ficar separados enquanto seus estados atuais permanecem visíveis em uma única barra lateral',
+          ],
+        },
+        {
+          title: 'Intervenha de outra tela',
+          body: [
+            'Quando o Codex pausa para uma decisão, abra essa tarefa de um navegador desktop ou celular e continue no terminal original',
+          ],
+          bullets: [
+            'Nenhum segundo shell para sincronizar',
+            'Nenhuma transcrição do terminal enviada ao serviço de contas',
+            'Nenhuma necessidade de deixar a tela do notebook aberta',
+          ],
+        },
+        {
+          title: 'Sua configuração do Codex não muda',
+          body: [
+            'O Codex CLI, sua configuração e suas credenciais ficam na máquina. O AI Anywhere fornece a interface de navegador e a visão de tarefas em torno da sessão tmux existente',
+          ],
+        },
+      ],
+    },
+    security: {
+      eyebrow: 'Segurança',
+      title: 'O terminal fica na sua máquina',
+      description:
+        'Entenda o servidor local, o token de conexão, as verificações de Origin, o caminho SSH e o limite do serviço de contas usados pelo AI Anywhere',
+      summary:
+        'O AI Anywhere é uma ponte local, não um terminal hospedado. O navegador conversa com o processo que roda ao lado do tmux, enquanto o tmux.online cuida do site público e da autorização de contas',
+      sections: [
+        {
+          title: 'Local por padrão',
+          body: [
+            'O servidor escuta em 127.0.0.1 por padrão. Um processo vinculado a esse endereço é acessível da mesma máquina, não diretamente da internet pública',
+          ],
+        },
+        {
+          title: 'As conexões são verificadas',
+          body: [
+            'A URL local contém um token de conexão, e o servidor valida a Origin da requisição. Uma página web qualquer não pode se conectar silenciosamente a um terminal local aberto',
+          ],
+          bullets: [
+            'Saída do terminal e teclas digitadas não são enviadas ao serviço de contas',
+            'Arquivos e credenciais de CLI permanecem na máquina',
+            'Conexões remotas usam sua própria configuração SSH sem relay de terminal',
+          ],
+        },
+        {
+          title: 'O que o serviço de contas faz',
+          body: [
+            'O serviço de contas autoriza dispositivos e gerencia assinatura e chaves de API. Ele não transporta fluxos de terminal. Revogar um dispositivo remove sua autorização de conta sem parar as tarefas tmux que já rodam naquela máquina',
+          ],
+        },
+      ],
+    },
+    remoteHosts: {
+      eyebrow: 'Hosts remotos',
+      title: 'Use seus hosts SSH existentes no mesmo espaço de trabalho',
+      description:
+        'Veja tarefas tmux em servidores remotos pela sua configuração SSH existente, sem relay hospedado nem uma segunda conta de terminal',
+      summary:
+        'Instale o tmux no servidor remoto. O AI Anywhere usa sua configuração SSH existente e agrupa esse host ao lado da máquina local',
+      sections: [
+        {
+          title: 'O que o servidor remoto precisa',
+          body: [
+            'Apenas o tmux é necessário no host remoto. Continue usando as chaves SSH, aliases, jump hosts e verificação de hosts já configurados na sua máquina',
+          ],
+          command: 'tmux new -s main',
+        },
+        {
+          title: 'As sessões permanecem remotas',
+          body: [
+            'Comandos e processos de agentes rodam no servidor remoto dentro do tmux. O AI Anywhere não copia a sessão para o tmux.online nem roteia o terminal por um relay externo',
+          ],
+        },
+        {
+          title: 'Reconecte sem perder trabalho',
+          body: [
+            'Uma queda do navegador ou da conexão SSH não para o tmux. Quando o host estiver acessível de novo, abra a mesma tarefa e continue de onde parou',
+          ],
+        },
+      ],
+    },
+    install: {
+      eyebrow: 'Instalação',
+      title: 'Instale o AI Anywhere no macOS ou Linux',
+      description: 'Instale o CLI do AI Anywhere, inicie sua interface web local para tmux e autorize a máquina pelo navegador',
+      summary:
+        'O instalador verifica o tmux e o Node.js, instala o @ai-anywhere/cli do npm e configura o serviço local para voltar após um reboot',
+      sections: [
+        {
+          title: 'Execute o instalador',
+          body: [
+            'Use curl, ou inspecione o script em tmux.online/install.sh antes de executá-lo. Node.js 22.5 ou mais recente e tmux são necessários',
+          ],
+          command: 'curl -fsSL https://tmux.online/install.sh | sh',
+        },
+        {
+          title: 'Autorize esta máquina',
+          body: [
+            'O instalador inicia o AI Anywhere e abre ou imprime uma URL local. Se a máquina não estiver autorizada, entre e complete o fluxo de dispositivo',
+          ],
+          command: 'ai-anywhere login',
+        },
+        {
+          title: 'Inicie de novo mais tarde',
+          body: [
+            'O serviço é configurado para o launchd no macOS ou uma unidade de usuário do systemd no Linux. Você também pode iniciá-lo diretamente; a interface web local usa 127.0.0.1:51984 por padrão',
+          ],
+          command: 'ai-anywhere up',
+        },
+        {
+          title: 'Atualize para a versão mais recente',
+          body: [
+            'Quando uma versão mais nova é publicada, o ai-anywhere up oferece instalá-la - no máximo uma vez por dia. Aceite e ele atualiza no lugar, depois pede para você iniciá-lo de novo',
+            'Para atualizar manualmente a qualquer momento, execute o instalador de novo. Ele substitui o CLI e mantém seus dados, as sessões tmux em execução e a autorização do dispositivo',
+          ],
+          bullets: [
+            'O tmux mantém suas sessões durante a atualização; o serviço as encontra de novo na próxima inicialização',
+            'O que mudou em cada versão está em tmux.online/changelog',
+          ],
+          command: 'curl -fsSL https://tmux.online/install.sh | sh',
+        },
+      ],
+    },
+  },
+}
+
+const collections: Record<Lang, GuideCollection> = { en, ja, ko, pt, 'zh-Hant': zhHant }
 
 export function useGuides(lang: Lang): GuideCollection {
   return collections[lang] ?? en
