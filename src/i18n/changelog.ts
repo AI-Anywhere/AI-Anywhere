@@ -27,6 +27,16 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.22',
+    date: '2026-09-05',
+    changes: {
+      en: ['Fixed: after deleting one history session, deleting any other no longer needs a page reload'],
+      ja: ['修正: 履歴セッションを 1 件削除したあと、別のセッションを削除するのにページ再読み込みが不要になりました'],
+      ko: ['수정: 기록 세션을 하나 삭제한 뒤 다른 세션을 삭제할 때 페이지 새로고침이 필요 없어졌습니다'],
+      'zh-Hant': ['修正：刪除一筆歷史會話後，再刪除其他會話不再需要重新整理頁面'],
+    },
+  },
+  {
     version: '0.0.21',
     date: '2026-09-04',
     changes: {
