@@ -19,7 +19,7 @@ export default defineConfig({
   trailingSlash: 'never',
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'zh-Hant', 'ja', 'ko'],
+    locales: ['en', 'zh-Hans', 'zh-Hant', 'ja', 'ko'],
     routing: { prefixDefaultLocale: false, redirectToDefaultLocale: false },
   },
   integrations: [
@@ -28,7 +28,7 @@ export default defineConfig({
     // ship no framework at all.
     react(),
     sitemap({
-      i18n: { defaultLocale: 'en', locales: { en: 'en', 'zh-Hant': 'zh-Hant', ja: 'ja', ko: 'ko' } },
+      i18n: { defaultLocale: 'en', locales: { en: 'en', 'zh-Hans': 'zh-Hans', 'zh-Hant': 'zh-Hant', ja: 'ja', ko: 'ko' } },
       // The .txt endpoints are for crawlers to fetch, not for search engines to list.
       // Dashboard and compatibility routes are per-user utilities rather than content. They carry
       // `noindex` in their <head> and in public/_headers, this just keeps them out of the

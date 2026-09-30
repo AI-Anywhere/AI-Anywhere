@@ -251,11 +251,17 @@ svg {
  * widened to compensate. Scoped by :lang so an English string inside a Chinese page (the
  * hero slogan carries lang="en") keeps its own settings.
  */
+:lang(zh-Hans),
 :lang(zh-Hant) {
   --font-sans:
     system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang TC', 'Hiragino Sans CNS', 'Noto Sans TC', 'Microsoft JhengHei',
     'Heiti TC', sans-serif;
   --measure-scale: 1.3;
+}
+
+:lang(zh-Hans) {
+  --font-sans:
+    system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', 'Heiti SC', sans-serif;
 }
 
 :lang(ja) {
@@ -273,9 +279,13 @@ svg {
   overflow-wrap: break-word;
 }
 
+:lang(zh-Hans) h1,
 :lang(zh-Hant) h1,
+:lang(zh-Hans) h2,
 :lang(zh-Hant) h2,
+:lang(zh-Hans) h3,
 :lang(zh-Hant) h3,
+:lang(zh-Hans) h4,
 :lang(zh-Hant) h4,
 :lang(ja) h1,
 :lang(ja) h2,
@@ -289,8 +299,11 @@ svg {
   line-height: 1.28;
 }
 
+:lang(zh-Hans) p,
 :lang(zh-Hant) p,
+:lang(zh-Hans) li,
 :lang(zh-Hant) li,
+:lang(zh-Hans) summary,
 :lang(zh-Hant) summary,
 :lang(ja) p,
 :lang(ja) li,
@@ -303,6 +316,7 @@ svg {
 
 /* Hanzi has no ascender/descender rhythm to separate a run of Latin, so give embedded
    identifiers (`tmux`, `send-keys`, `127.0.0.1`) a hair of room. */
+:lang(zh-Hans),
 :lang(zh-Hant) {
   text-spacing-trim: space-all;
 }
@@ -312,6 +326,7 @@ svg {
  * there are no CJK glyphs in the mono stack (so it silently falls back to a different face),
  * uppercase is a no-op, and 0.16em between square glyphs reads as a gap, not as emphasis.
  */
+:lang(zh-Hans) .eyebrow,
 :lang(zh-Hant) .eyebrow,
 :lang(ja) .eyebrow,
 :lang(ko) .eyebrow {

@@ -2,6 +2,7 @@ import { en } from './en'
 import { ja } from './ja'
 import { ko } from './ko'
 import { pt } from './pt'
+import { zhHans } from './zh-Hans'
 import { zhHant } from './zh-Hant'
 
 /**
@@ -19,6 +20,7 @@ export const languages = {
   ja: '日本語',
   ko: '한국어',
   pt: 'Português',
+  'zh-Hans': '简体中文',
   'zh-Hant': '繁體中文',
 } as const
 
@@ -31,6 +33,7 @@ export const languageMenu: ReadonlyArray<{ lang: Lang; label: string }> = [
   { lang: 'ja', label: languages.ja },
   { lang: 'ko', label: languages.ko },
   { lang: 'pt', label: languages.pt },
+  { lang: 'zh-Hans', label: languages['zh-Hans'] },
   { lang: 'zh-Hant', label: languages['zh-Hant'] },
 ]
 
@@ -39,6 +42,7 @@ export const defaultLang: Lang = 'en'
 /** Open Graph wants a territory, which BCP 47 script subtags do not carry. */
 export const ogLocales: Record<Lang, string> = {
   en: 'en_US',
+  'zh-Hans': 'zh_CN',
   'zh-Hant': 'zh_TW',
   ja: 'ja_JP',
   ko: 'ko_KR',
@@ -46,7 +50,7 @@ export const ogLocales: Record<Lang, string> = {
 }
 
 // Only locales present here are actually shipped; the rest are declared intent.
-export const copy: Partial<Record<Lang, Copy>> = { en, ja, ko, pt, 'zh-Hant': zhHant }
+export const copy: Partial<Record<Lang, Copy>> = { en, ja, ko, pt, 'zh-Hans': zhHans, 'zh-Hant': zhHant }
 
 export const shippedLangs = Object.keys(copy) as Lang[]
 

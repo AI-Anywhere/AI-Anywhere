@@ -786,6 +786,159 @@ const zhHant: GuideCollection = {
   },
 }
 
+const zhHans: GuideCollection = {
+  navTitle: '使用指南',
+  home: '首页',
+  pages: {
+    tmuxWebUi: {
+      eyebrow: 'tmux 网页界面',
+      title: '直接在浏览器操作正在运行的 tmux 会话',
+      description: '在浏览器打开现有的 tmux 会话，不必迁移终端数据，就能切换 pane 并管理本地与 SSH 主机',
+      summary: 'AI Anywhere 不会取代 tmux，而是在它之上加上浏览器界面。Shell 与 Agents 仍在原本启动它们的机器上，由 tmux 持续运行',
+      sections: [
+        {
+          title: '会话仍由 tmux 管理',
+          body: [
+            '本地服务器会读取 tmux 现有的会话、window 与 pane。打开网页界面不会重新启动、复制或迁移任何会话',
+            '关闭浏览器或网络断线后，进程仍会在 tmux 中运行。重新打开页面，就能回到同一个 pane',
+          ],
+        },
+        {
+          title: '在同一个画面查看机器与任务',
+          body: ['本地会话与通过既有 SSH 设置连接的主机，都会整理在同一个侧边栏'],
+          bullets: [
+            '从浏览器切换 tmux window 与 pane',
+            '查看 AI 编程任务正在运行或等待输入',
+            '只要能连到那台机器，就能用手机打开同一个工作区',
+          ],
+        },
+        {
+          title: '数据留在本地',
+          body: ['网页应用程序由 127.0.0.1 上的 AI Anywhere 本地进程提供。终端输出、按键输入、文件与凭证都不会经过 tmux.online'],
+        },
+      ],
+    },
+    claudeCodeBrowser: {
+      eyebrow: 'Claude Code',
+      title: '不迁移终端，也能从浏览器操作 Claude Code',
+      description: '让 Claude Code 继续在 tmux 中运行，通过浏览器查看状态，并从电脑或手机回复提示',
+      summary: '照平常的方式在 tmux 中启动 Claude Code。AI Anywhere 会在浏览器显示同一个终端，并标记 Claude 正在等待你回应的时刻',
+      sections: [
+        {
+          title: '会话持续运行',
+          body: [
+            '关闭浏览器或 SSH 连接中断后，Claude Code 仍会在 tmux 中运行。浏览器只是同一个会话的另一个画面，不会启动第二个 Claude 进程',
+          ],
+        },
+        {
+          title: '需要输入时再回来',
+          body: ['任务依机器分组，并显示正在运行或等待输入。打开等待中的任务，确认终端上下文后，直接在同一个 pane 回复'],
+          bullets: ['将每个子代理分开追踪', '在多个代码库之间切换，不必一直盯着终端', '离开座位时也能用手机回应'],
+        },
+        {
+          title: 'Claude 凭证保持原样',
+          body: ['AI Anywhere 不会要求或上传 Anthropic 凭证。Claude Code 仍安装在你的机器上，也只在那里完成验证'],
+        },
+      ],
+    },
+    codexBrowser: {
+      eyebrow: 'Codex CLI',
+      title: '从任何浏览器操作 Codex CLI 任务',
+      description: '在 tmux 中运行 Codex CLI，集中查看并行的编程任务，只有任务需要输入时才从浏览器介入',
+      summary: '继续使用你熟悉的终端流程运行 Codex CLI。AI Anywhere 在本地显示 tmux 会话，让长时间任务不受标签页、设备或断线影响',
+      sections: [
+        {
+          title: '每项任务的状态一目了然',
+          body: ['Codex 任务会对应到运行它的 tmux window。并行 Agents 与 worktrees 可以彼此分开，同时在同一个侧边栏查看各自的状态'],
+        },
+        {
+          title: '从另一个画面介入',
+          body: ['Codex 停下来等待决定时，可以用电脑浏览器或手机打开该任务，并在原本的终端继续处理'],
+          bullets: ['不用同步第二个 Shell', '不会把终端记录上传至账号服务', '不用让笔记本电脑屏幕一直开着'],
+        },
+        {
+          title: 'Codex 设置不必改动',
+          body: ['Codex CLI、设置与凭证都留在原本的机器上。AI Anywhere 只替现有 tmux 会话加上浏览器界面与任务列表'],
+        },
+      ],
+    },
+    security: {
+      eyebrow: '安全性',
+      title: '终端数据只留在你的机器上',
+      description: '了解 AI Anywhere 的本地服务器、连接 token、Origin 检查、SSH 路径，以及账号服务的权限边界',
+      summary: 'AI Anywhere 是本地桥接程序，不是托管终端。浏览器会连到与 tmux 位于同一台机器的进程，tmux.online 则负责公开网站与账号授权',
+      sections: [
+        {
+          title: '默认只限本地',
+          body: ['服务器默认只监听 127.0.0.1。绑定这个地址的进程只能从同一台机器连接，无法直接从公网访问'],
+        },
+        {
+          title: '每次连接都会查验',
+          body: ['本地网址包含连接 token，服务器也会检查请求的 Origin。任意网页无法在后台偷偷连上已打开的本地终端'],
+          bullets: ['终端输出与按键输入不会送到账号服务', '文件与 CLI 凭证留在机器上', '远程连接使用你自己的 SSH 设置，不经过外部终端中继'],
+        },
+        {
+          title: '账号服务负责什么',
+          body: ['账号服务负责授权设备、管理会员资格与 API 密钥，不会发送终端数据流。移除设备授权也不会停止该机器上正在运行的 tmux 任务'],
+        },
+      ],
+    },
+    remoteHosts: {
+      eyebrow: '远程主机',
+      title: '在同一个工作区使用既有的 SSH 主机',
+      description: '沿用既有 SSH 设置查看远程服务器上的 tmux 任务，不需要托管中继，也不用创建另一组终端账号',
+      summary: '在远程服务器安装 tmux 即可。AI Anywhere 会沿用你的 SSH 设置，并把该主机与本地并列显示',
+      sections: [
+        {
+          title: '远程服务器需要什么',
+          body: ['远程主机只需要安装 tmux。SSH 密钥、别名、跳板主机与主机验证，都沿用你机器上原有的设置'],
+          command: 'tmux new -s main',
+        },
+        {
+          title: '会话留在远程',
+          body: ['命令与 Agent 进程都在远程服务器的 tmux 中运行。AI Anywhere 不会将会话复制到 tmux.online，也不会经过外部终端中继'],
+        },
+        {
+          title: '断线不会中断工作',
+          body: ['浏览器或 SSH 连接中断后，tmux 仍会继续运行。主机重新连得上时，打开同一项任务便能接着处理'],
+        },
+      ],
+    },
+    install: {
+      eyebrow: '安装',
+      title: '在 macOS 或 Linux 安装 AI Anywhere',
+      description: '安装 AI Anywhere CLI、启动本地 tmux 网页界面，并从浏览器完成设备授权',
+      summary: '安装程序会检查 tmux 与 Node.js、从 npm 安装 @ai-anywhere/cli，并设置本地服务在重新开机后自动恢复',
+      sections: [
+        {
+          title: '运行安装程序',
+          body: ['使用 curl，或先打开 tmux.online/install.sh 检查脚本内容。需要 tmux 与 Node.js 22.5 以上版本'],
+          command: 'curl -fsSL https://tmux.online/install.sh | sh',
+        },
+        {
+          title: '授权这台设备',
+          body: ['安装程序会启动 AI Anywhere，并打开或输出本地网址。若设备尚未授权，请登录并完成设备授权流程'],
+          command: 'ai-anywhere login',
+        },
+        {
+          title: '之后再次启动',
+          body: ['macOS 会使用 launchd，Linux 则使用 systemd 用户单元。你也可以直接启动；网页界面默认位于 127.0.0.1:51984'],
+          command: 'ai-anywhere up',
+        },
+        {
+          title: '升级到最新版本',
+          body: [
+            '新版本发布后，ai-anywhere up 会主动提议安装（一天最多询问一次）。同意后就地升级，再依提示重新启动即可',
+            '想随时手动升级，重跑一次安装脚本即可。只会替换 CLI，你的数据、运行中的 tmux 会话与设备授权都会保留',
+          ],
+          bullets: ['会话由 tmux 持有，升级过程不受影响，服务下次启动时会重新接上', '每个版本的变更请见 tmux.online/changelog'],
+          command: 'curl -fsSL https://tmux.online/install.sh | sh',
+        },
+      ],
+    },
+  },
+}
+
 const pt: GuideCollection = {
   navTitle: 'Guias',
   home: 'Início',
@@ -995,7 +1148,7 @@ const pt: GuideCollection = {
   },
 }
 
-const collections: Record<Lang, GuideCollection> = { en, ja, ko, pt, 'zh-Hant': zhHant }
+const collections: Record<Lang, GuideCollection> = { en, ja, ko, pt, 'zh-Hans': zhHans, 'zh-Hant': zhHant }
 
 export function useGuides(lang: Lang): GuideCollection {
   return collections[lang] ?? en
