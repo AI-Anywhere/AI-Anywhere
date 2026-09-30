@@ -27,6 +27,40 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.25',
+    date: '2026-10-01',
+    changes: {
+      en: [
+        'Choose a local or network IP when starting the CLI and open the printed connection link; forwarded public URLs are also supported',
+        'Local access at 127.0.0.1 stays available when the CLI listens on a selected network interface',
+        'Multiple bridge servers can mirror the same tmux pane without interrupting each other',
+        'Dragging adjacent tabs and reordering tasks that share a working directory now preserves the intended order',
+        'Host sections can be collapsed, with their state remembered across web clients',
+      ],
+      ja: [
+        'CLI 起動時にローカルまたはネットワーク IP を選び、表示された接続リンクを開けます。転送済みの公開 URL にも対応',
+        'CLI が指定したネットワークインターフェースで待ち受ける場合も、127.0.0.1 からアクセスできます',
+        '複数のブリッジサーバーが同じ tmux ペインを互いに中断することなく表示できます',
+        '隣接タブのドラッグや、同じ作業ディレクトリを使うタスクの並べ替えで、意図した順序が保たれます',
+        'ホストセクションを折りたたみ、その状態を Web クライアント間で共有できます',
+      ],
+      ko: [
+        'CLI를 시작할 때 로컬 또는 네트워크 IP를 선택하고 표시된 연결 링크를 열 수 있으며, 전달 설정된 공개 URL도 지원합니다',
+        'CLI가 선택한 네트워크 인터페이스에서 수신하더라도 127.0.0.1을 통한 로컬 접근이 유지됩니다',
+        '여러 브리지 서버가 서로 방해하지 않고 같은 tmux 창을 미러링할 수 있습니다',
+        '인접 탭을 드래그하거나 같은 작업 디렉터리를 사용하는 작업을 재정렬할 때 의도한 순서가 유지됩니다',
+        '호스트 섹션을 접을 수 있으며 접힘 상태가 웹 클라이언트 간에 공유됩니다',
+      ],
+      'zh-Hant': [
+        'CLI 啟動時可選擇本機或網路 IP，開啟顯示的連線網址即可使用，也支援已設定轉發的公開網址',
+        'CLI 監聽指定網卡時，仍可透過 127.0.0.1 在本機存取',
+        '多個橋接服務可同時鏡像同一個 tmux pane，不再互相中斷輸出',
+        '修正相鄰分頁拖曳與相同工作目錄任務的排序，保留預期的排列順序',
+        '主機區段可折疊，並在不同網頁客戶端之間同步記住折疊狀態',
+      ],
+    },
+  },
+  {
     version: '0.0.22',
     date: '2026-09-05',
     changes: {
