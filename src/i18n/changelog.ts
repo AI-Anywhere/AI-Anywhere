@@ -27,6 +27,44 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.26',
+    date: '2026-10-01',
+    changes: {
+      en: [
+        'The web dashboard now supports Vietnamese and Dutch, with automatic browser language detection or manual selection in Settings',
+        'tmux.online adds Simplified Chinese, Vietnamese and Dutch at /zh-Hans, /vi and /nl',
+      ],
+      ja: [
+        'Web ダッシュボードがベトナム語とオランダ語に対応しました。ブラウザの言語を自動検出するほか、設定からも選択できます',
+        'tmux.online に簡体字中国語、ベトナム語、オランダ語のページを追加しました（/zh-Hans、/vi、/nl）',
+      ],
+      ko: [
+        '웹 대시보드가 베트남어와 네덜란드어를 지원합니다. 브라우저 언어를 자동으로 감지하거나 설정에서 직접 선택할 수 있습니다',
+        'tmux.online에 중국어 간체, 베트남어, 네덜란드어 페이지가 추가되었습니다 (/zh-Hans, /vi, /nl)',
+      ],
+      pt: [
+        'O painel web agora oferece vietnamita e neerlandês, com detecção automática do idioma do navegador ou seleção manual nas Configurações',
+        'O tmux.online adiciona chinês simplificado, vietnamita e neerlandês em /zh-Hans, /vi e /nl',
+      ],
+      'zh-Hant': [
+        'Web 儀表板新增越南語與荷蘭語，可自動偵測瀏覽器語言，也可在設定中手動切換',
+        'tmux.online 新增簡體中文、越南語與荷蘭語頁面，網址分別為 /zh-Hans、/vi 與 /nl',
+      ],
+      'zh-Hans': [
+        'Web 仪表盘新增越南语与荷兰语，可自动识别浏览器语言，也可在设置中手动切换',
+        'tmux.online 新增简体中文、越南语与荷兰语页面，地址分别为 /zh-Hans、/vi 和 /nl',
+      ],
+      vi: [
+        'Bảng điều khiển web hỗ trợ tiếng Việt và tiếng Hà Lan, tự nhận ngôn ngữ trình duyệt hoặc chọn thủ công trong Cài đặt',
+        'tmux.online bổ sung tiếng Trung giản thể, tiếng Việt và tiếng Hà Lan tại /zh-Hans, /vi và /nl',
+      ],
+      nl: [
+        'Het webdashboard ondersteunt nu Vietnamees en Nederlands, met automatische herkenning van de browsertaal of handmatige selectie in Instellingen',
+        'tmux.online voegt Vereenvoudigd Chinees, Vietnamees en Nederlands toe op /zh-Hans, /vi en /nl',
+      ],
+    },
+  },
+  {
     version: '0.0.25',
     date: '2026-10-01',
     changes: {
