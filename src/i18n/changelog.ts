@@ -30,6 +30,21 @@ export const releases: Release[] = [
     version: '0.0.25',
     date: '2026-10-01',
     changes: {
+      vi: [
+        'Khi khởi động CLI, chọn IP cục bộ hoặc mạng rồi mở liên kết kết nối được hiển thị; cũng hỗ trợ URL công khai đã cấu hình chuyển tiếp',
+        'Vẫn truy cập được qua 127.0.0.1 khi CLI lắng nghe trên giao diện mạng đã chọn',
+        'Nhiều máy chủ cầu nối có thể đồng thời phản chiếu cùng ô tmux mà không làm gián đoạn lẫn nhau',
+        'Kéo các tab liền kề và sắp xếp tác vụ cùng thư mục làm việc giờ giữ đúng thứ tự mong muốn',
+        'Có thể thu gọn nhóm máy chủ và ghi nhớ trạng thái giữa các trình duyệt',
+      ],
+      nl: [
+        "Kies bij het starten van de CLI een lokaal of netwerk-IP en open de getoonde verbindingslink; doorgestuurde openbare URL's worden ook ondersteund",
+        'Lokale toegang via 127.0.0.1 blijft beschikbaar wanneer de CLI op een gekozen netwerkinterface luistert',
+        'Meerdere brugservers kunnen hetzelfde tmux-paneel weergeven zonder elkaar te onderbreken',
+        'Het slepen van aangrenzende tabbladen en herschikken van taken met dezelfde werkmap behoudt nu de gewenste volgorde',
+        'Hostgroepen kunnen worden ingeklapt en hun status wordt tussen webclients onthouden',
+      ],
+
       en: [
         'Choose a local or network IP when starting the CLI and open the printed connection link; forwarded public URLs are also supported',
         'Local access at 127.0.0.1 stays available when the CLI listens on a selected network interface',
@@ -71,6 +86,17 @@ export const releases: Release[] = [
     version: '0.0.22',
     date: '2026-09-05',
     changes: {
+      vi: [
+        'Bảng điều khiển web hỗ trợ tiếng Bồ Đào Nha, tự nhận ngôn ngữ trình duyệt hoặc chọn trong Cài đặt',
+        'Website tmux.online cũng hỗ trợ tiếng Bồ Đào Nha tại tmux.online/pt',
+        'Đã sửa: sau khi xóa một phiên lịch sử, có thể xóa phiên khác mà không tải lại trang',
+      ],
+      nl: [
+        'Het webdashboard is nu beschikbaar in het Portugees; de browsertaal wordt automatisch herkend of kies de taal in Instellingen',
+        'Ook tmux.online is nu beschikbaar in het Portugees op tmux.online/pt',
+        'Opgelost: na het verwijderen van een historische sessie kun je een andere verwijderen zonder de pagina te herladen',
+      ],
+
       en: [
         'The web dashboard is now available in Portuguese - the browser language is picked up automatically, or choose it in Settings',
         'tmux.online itself now speaks Portuguese too, at tmux.online/pt',
@@ -107,6 +133,19 @@ export const releases: Release[] = [
     version: '0.0.21',
     date: '2026-09-04',
     changes: {
+      vi: [
+        'Bảng điều khiển hiển thị lịch sử phiên tác tử từ sáu CLI: claude, codex, pi, opencode, cursor và copilot, kể cả phiên trước khi ứng dụng này được cài',
+        'Lịch sử có thể không phân nhóm, nhóm theo CLI hoặc thư mục; mỗi phiên hiển thị lượng token và có thể sắp xếp theo thời gian hoặc token',
+        'Nhấp vào dòng lịch sử để xem chi tiết, sao chép lệnh tiếp tục hoặc xóa phiên khỏi kho lưu trữ của CLI',
+        'Bảng điều khiển hai cột trên màn hình rộng: tác vụ đang chạy bên trái, lịch sử bên phải',
+      ],
+      nl: [
+        "Het dashboard toont sessiegeschiedenis uit zes CLI's: claude, codex, pi, opencode, cursor en copilot, ook van vóór de installatie van deze app",
+        'Geschiedenis kan ongegroepeerd, per CLI of per map worden getoond; elke sessie toont tokengebruik en kan op tijd of tokens worden gesorteerd',
+        'Klik op een sessie voor details, om de hervatopdracht te kopiëren of om de sessie uit de eigen opslag van de CLI te verwijderen',
+        'Dashboard met twee kolommen op brede schermen: actieve taken links, geschiedenis rechts',
+      ],
+
       en: [
         'The dashboard now shows agent session history from six CLI stores: claude, codex, pi, opencode, cursor, and copilot - including sessions from before this app existed',
         'History clusters flat, by CLI, or by folder; entries show token weight per session with a time/tokens sort toggle',
@@ -143,6 +182,13 @@ export const releases: Release[] = [
     version: '0.0.20',
     date: '2026-09-01',
     changes: {
+      vi: [
+        'Cuộn trong Claude Code mượt trở lại: Claude Code 2.1 bật theo dõi chuột khiến mỗi lần cuộn hay di chuyển chuột phải trao đổi với máy chủ và vẽ lại toàn màn hình. Terminal giờ xử lý chuột cục bộ và gộp sự kiện cuộn như với OpenCode; kéo để chọn văn bản cũng hoạt động trở lại',
+      ],
+      nl: [
+        'Soepel scrollen in Claude Code hersteld: muistracking in Claude Code 2.1 veroorzaakte bij elke scrollstap en muisbeweging een retourverzoek en volledige hertekening. De terminal verwerkt de muis nu lokaal en bundelt scrollinvoer, zoals bij OpenCode; slepen om tekst te selecteren werkt weer',
+      ],
+
       en: [
         'Smooth scrolling in Claude Code panes again: Claude Code 2.1 turned on mouse tracking, so every wheel tick and pointer move cost a round trip and a full repaint. The terminal now keeps the mouse local and batches wheel input, as it already does for OpenCode, and dragging to select text works again',
       ],
@@ -164,6 +210,17 @@ export const releases: Release[] = [
     version: '0.0.19',
     date: '2026-09-01',
     changes: {
+      vi: [
+        'Bổ sung hỗ trợ Cursor Agent, với hook vòng đời báo trạng thái đang chạy và đang chờ',
+        'Tùy chọn chia sẻ trong menu tab vẫn hiển thị khi máy chủ tắt chia sẻ, kèm lệnh để bật thay vì biến mất',
+        'Ẩn số lượng thư mục và máy khi mở rộng vì các dòng bên dưới đã thể hiện nội dung',
+      ],
+      nl: [
+        'Cursor Agent wordt ondersteund, met lifecycle-hooks voor de status bezig of wachtend',
+        'De deeloptie blijft zichtbaar in het tabbladmenu wanneer delen op de server uitstaat en toont de opdracht om het in te schakelen',
+        'Aantallen bij mappen en machines worden verborgen wanneer ze zijn uitgeklapt, omdat de onderliggende rijen de inhoud al tonen',
+      ],
+
       en: [
         'Cursor Agent joins the supported CLIs, with lifecycle hooks reporting busy and waiting state',
         'The share option in the tab menu now stays visible when the server has sharing off, and shows the command to enable it instead of disappearing',
@@ -195,6 +252,15 @@ export const releases: Release[] = [
     version: '0.0.18',
     date: '2026-08-21',
     changes: {
+      vi: [
+        'Thư mục tác vụ có phân cấp rõ hơn với biểu tượng thư mục và máy, các mục con thụt vào và khu vực chưa phân nhóm riêng',
+        'Tổng số trong thư mục và máy giờ đếm tab, gồm cả tab được gộp đang chạy, thay vì chỉ đếm dòng tác vụ',
+      ],
+      nl: [
+        'Taakmappen hebben een duidelijkere hiërarchie met map- en machinepictogrammen, ingesprongen onderdelen en een aparte sectie voor ongegroepeerde taken',
+        'Totalen van mappen en machines tellen nu tabbladen, inclusief actieve samengevoegde tabbladen, in plaats van alleen taakrijen',
+      ],
+
       en: [
         'Task folders now have a clearer hierarchy with folder and machine icons, indented children, and a separate ungrouped section',
         'Folder and machine totals now count tabs, including live merged tabs, instead of counting only task rows',
@@ -221,6 +287,9 @@ export const releases: Release[] = [
     version: '0.0.17',
     date: '2026-08-20',
     changes: {
+      vi: ['Máy chủ không truy cập được giờ hiển thị trạng thái đang thử lại và có nút thử ngay, không cần chờ lần kiểm tra tiếp theo'],
+      nl: ['Een onbereikbare host toont nu dat opnieuw verbinden wordt geprobeerd, met een knop om direct opnieuw te proberen'],
+
       en: [
         'A host that cannot be reached now shows that it is still being retried, with a button to try again straight away instead of waiting for the next poll',
       ],
@@ -234,6 +303,19 @@ export const releases: Release[] = [
     version: '0.0.16',
     date: '2026-08-20',
     changes: {
+      vi: [
+        'Tự động thử lại: khi CLI kết thúc do lỗi và đã hết lượt tự thử, máy chủ nhập lệnh thử lại vào ô terminal, có giới hạn số lần, thời gian chờ tăng dần và thông báo. Hoạt động ngay cả khi đóng mọi trình duyệt; bật tắt, nội dung và giới hạn nằm trong Cài đặt',
+        'Phiên Pi báo các lượt chạy thất bại nên cũng được tự động thử lại',
+        'Điện thoại đã được phê duyệt trở thành ứng dụng đầy đủ với mọi cửa sổ và tính năng như máy tính; phê duyệt thiết bị mới vẫn thực hiện trên máy tính',
+        'Ẩn phần đường dẫn tệp kéo thả trong cài đặt web nếu trình duyệt không thể cấp quyền thư mục',
+      ],
+      nl: [
+        'Automatisch opnieuw proberen: als een CLI met een fout eindigt en zelf niet meer probeert, voert de server een herhaalopdracht in, met een pogingslimiet, oplopende wachttijd en een melding. Werkt ook met alle browsers gesloten; schakelaar, tekst en limiet staan in Instellingen',
+        'Pi-sessies melden nu mislukte beurten, zodat automatisch opnieuw proberen ook daarvoor werkt',
+        'Een goedgekeurde telefoon is nu een volledige client met alle vensters en mogelijkheden van de desktop; nieuwe apparaten goedkeuren blijft op de desktop',
+        'Webinstellingen verbergen het onderdeel voor bestandspaden als de browser geen maptoegang kan verlenen',
+      ],
+
       en: [
         'Auto retry: when a CLI reports its turn ended in error and its own retries have given up, the server types a retry command into the pane for you - with an attempt budget and growing backoff, and a notice on the pane so you can tell "it retried" from "it hung". Runs on the server, so it works with every browser closed. Toggle, retry text and attempt cap live in Settings',
         'Pi sessions now report failed runs, so auto retry covers them too',
@@ -270,6 +352,15 @@ export const releases: Release[] = [
     version: '0.0.15',
     date: '2026-08-19',
     changes: {
+      vi: [
+        'Khôi phục bracketed paste khi kết nối với mọi AI CLI, để văn bản nhiều dòng được gửi thành một tin nhắn thay vì gửi từng dòng',
+        'CLI đề nghị cài bản nâng cấp thay vì chỉ mô tả, tối đa một lần mỗi ngày',
+      ],
+      nl: [
+        'Bracketed paste wordt bij het koppelen voor elke AI CLI hersteld, zodat geplakte tekst met meerdere regels één bericht blijft',
+        'De CLI biedt aan updates te installeren in plaats van ze alleen te beschrijven, maximaal één keer per dag',
+      ],
+
       en: [
         'Bracketed paste is restored on attach for every AI CLI, so a multi-line paste stays one message instead of one submit per line',
         'The CLI offers to install an upgrade instead of describing it, and asks at most once a day',
@@ -296,6 +387,21 @@ export const releases: Release[] = [
     version: '0.0.14',
     date: '2026-08-19',
     changes: {
+      vi: [
+        'Giao diện điện thoại có trang vào riêng, ngăn tác vụ, dán ảnh chụp màn hình vào hộp tin nhắn và chế độ văn bản dễ đọc cho mọi ô terminal',
+        'Thiết bị đã ghép nối có thể thêm nhiều cửa sổ; máy tính hiển thị điện thoại đang kết nối và cho phép ngắt từng thiết bị',
+        'Chọn địa chỉ mà mã QR trỏ đến',
+        'Lượt chạy thất bại xuất hiện trong danh sách cần chú ý và được gỡ trạng thái lỗi sau khi xử lý',
+        'Cuộn cảm ứng mượt hơn, nút dễ chạm hơn và điện thoại không còn thay đổi bố cục cửa sổ trên máy tính',
+      ],
+      nl: [
+        'De telefooninterface heeft een eigen startpunt, een takenlade, geplakte schermafbeeldingen in het berichtvak en een leesbare tekstweergave van elk terminalvenster',
+        'Een gekoppeld apparaat kan meerdere vensters verzamelen; de desktop toont verbonden telefoons en kan hun verbinding verbreken',
+        'Kies naar welk adres de QR-code verwijst',
+        'Mislukte beurten verschijnen in de lijst met taken die aandacht nodig hebben; na afhandeling kan die foutstatus verdwijnen',
+        'Soepeler scrollen met aanraking, beter bedienbare knoppen en telefoons kunnen de vensterindeling op de desktop niet meer veranderen',
+      ],
+
       en: [
         'Phones grew up: their own entry point, a task drawer, screenshot paste into the message box, and a readable text view of any pane instead of an 80-column picture',
         'A paired device collects windows; the desktop shows which phones are connected and can cut any of them off',
@@ -337,6 +443,9 @@ export const releases: Release[] = [
     version: '0.0.13',
     date: '2026-08-18',
     changes: {
+      vi: ['Các thẻ tác vụ trên bảng điều khiển được gom theo nhóm, tiêu đề thông báo kèm biểu tượng CLI'],
+      nl: ['Taakchips op het dashboard worden per groep gebundeld en meldingen tonen het CLI-pictogram in de titel'],
+
       en: ['Dashboard task chips cluster by group, and toasts carry the CLI mark on the title'],
       ja: ['ダッシュボードのタスクチップをグループごとにまとめ、トーストのタイトルに CLI マークを表示'],
       ko: ['대시보드 작업 칩이 그룹별로 묶이고, 토스트 제목에 CLI 마크가 표시됩니다'],
@@ -348,6 +457,9 @@ export const releases: Release[] = [
     version: '0.0.12',
     date: '2026-08-18',
     changes: {
+      vi: ['Hiển thị lời nhắc nâng cấp khi phiên bản đã phát hành khác phiên bản đang dùng, không chỉ khi mới hơn'],
+      nl: ['De updatemelding verschijnt zodra de gepubliceerde versie verschilt, niet alleen wanneer die nieuwer is'],
+
       en: ['The upgrade prompt fires whenever the published version differs, not only when it is newer'],
       ja: ['公開バージョンが異なれば常にアップグレードを促すように——新しい場合だけではなく'],
       ko: ['게시된 버전이 다르기만 하면 업그레이드를 안내합니다 - 더 새로울 때만이 아니라'],
@@ -359,6 +471,19 @@ export const releases: Release[] = [
     version: '0.0.11',
     date: '2026-08-18',
     changes: {
+      vi: [
+        'Bản phát hành đầu tiên của cầu nối AI Anywhere: tương tác với AI CLI trên máy (claude, codex, gemini, ...) từ thanh bên trình duyệt hoặc bảng điều khiển web',
+        'Chia sẻ một cửa sổ tmux với điện thoại bằng mã QR khi bật --share',
+        'Máy chủ từ xa qua SSH, thư mục tạm riêng cho từng tài khoản và dấu tích xanh trên các máy đã kết nối',
+        'Phát hành lên npm bằng Trusted Publishing (OIDC), không dùng token dài hạn',
+      ],
+      nl: [
+        "Eerste gepubliceerde versie van de AI Anywhere-brug: gebruik AI CLI's op je machine (claude, codex, gemini, ...) vanuit een browserzijpaneel of het webdashboard",
+        'Deel een tmux-venster met een telefoon via een QR-code met --share',
+        'Externe hosts via SSH, tijdelijke mappen per account en een groen vinkje bij verbonden hosts',
+        'Publicatie naar npm via Trusted Publishing (OIDC), zonder langdurig token',
+      ],
+
       en: [
         'First published release of the AI Anywhere bridge: chat with the AI CLIs on your machine (claude, codex, gemini, ...) from a browser side panel or the web dashboard',
         'Hand one tmux window to a phone by QR code, behind --share',

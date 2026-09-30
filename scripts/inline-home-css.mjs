@@ -14,7 +14,15 @@ import { readFile, writeFile } from 'node:fs/promises'
  * first paint is not a metric anyone optimises for. Add a locale's home here when you add the
  * locale — this mirrors the per-route Cache-Control rules in public/_headers.
  */
-const HOME_PAGES = ['index.html', 'zh-Hans/index.html', 'zh-Hant/index.html', 'ja/index.html', 'ko/index.html']
+const HOME_PAGES = [
+  'index.html',
+  'vi/index.html',
+  'nl/index.html',
+  'zh-Hans/index.html',
+  'zh-Hant/index.html',
+  'ja/index.html',
+  'ko/index.html',
+]
 
 // Match a whole <link> tag; we then keep only the ones that are local CSS stylesheets.
 const LINK = /<link\b[^>]*>/gi

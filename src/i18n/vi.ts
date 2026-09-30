@@ -1,0 +1,465 @@
+import { INSTALL_URL, ISSUES_URL, NPM_URL, REPO_URL } from '../config'
+import type { Copy } from './index'
+
+export const vi: Copy = {
+  meta: {
+    title: 'Tác tử lập trình AI trong trình duyệt của bạn | tmux.online',
+    description:
+      'Theo dõi và điều khiển Claude Code, Codex, Gemini CLI, Aider, Copilot CLI và mọi phiên tmux từ bất kỳ trình duyệt nào. Dữ liệu terminal luôn ở trên máy của bạn',
+    ogAlt: 'Không gian làm việc tmux.online hiển thị các tác vụ lập trình AI cần chú ý',
+  },
+  brand: {
+    name: 'tmux.online',
+    tagline: 'by AI Anywhere',
+  },
+  nav: {
+    primaryLabel: 'Điều hướng chính',
+    install: 'Cài đặt',
+    features: 'Tính năng',
+    faq: 'Câu hỏi thường gặp',
+    github: 'GitHub',
+    signIn: 'Đăng nhập',
+    account: 'Tài khoản',
+    skipToContent: 'Chuyển đến nội dung',
+  },
+  dashboard: {
+    label: 'Bảng điều khiển',
+    navLabel: 'Quản lý tài khoản',
+    open: 'Mở bảng điều khiển',
+    redirecting: 'Đang mở bảng điều khiển…',
+    continue: 'Tiếp tục',
+    titleSuffix: ' — tmux.online',
+  },
+  hero: {
+    installMethodLabel: 'Cách cài đặt',
+    eyebrow: 'Dòng lệnh, đơn giản như một trang web',
+    title: 'Your agents. Any browser. Anywhere',
+    lede: 'Theo dõi Claude Code, Codex và mọi tác vụ lập trình AI đang chạy trong tmux. Chỉ cần can thiệp từ trình duyệt khi tác vụ cần bạn',
+    installLabel: 'macOS và Linux',
+    copy: 'Sao chép',
+    copied: 'Đã sao chép',
+    copyAria: 'Sao chép lệnh cài đặt',
+    scriptLink: 'Xem nội dung script trước',
+    requirement: 'Cần tmux và Node.js 22.5+',
+  },
+  download: {
+    label: 'Ứng dụng máy tính',
+    mac: 'macOS',
+    windows: 'Windows',
+    soon: 'Sắp ra mắt',
+    soonTitle: 'Chưa có bản tải xuống',
+    note: 'Ứng dụng máy tính đang được phát triển. Trong lúc chờ, hãy dùng lệnh cài đặt ở trên; ứng dụng chạy trong mọi trình duyệt',
+  },
+  demo: {
+    caption: 'Một không gian làm việc cho máy cục bộ và máy từ xa, với mọi tác vụ và tab trong tầm mắt',
+    tabs: ['tmux.online', 'localhost:51984'],
+    url: '127.0.0.1:51984',
+    railTitle: 'Máy và tác vụ',
+    groups: [
+      {
+        name: 'Máy này',
+        items: [
+          {
+            name: 'api-server',
+            detail: 'main · 3 panes',
+            state: 'waiting',
+          },
+          {
+            name: 'web',
+            detail: 'feat/i18n',
+            state: 'busy',
+          },
+          {
+            name: 'notes',
+            detail: 'main',
+            state: 'idle',
+          },
+        ],
+      },
+      {
+        name: 'caniforia',
+        items: [
+          {
+            name: 'deploy',
+            detail: 'main · 2 panes',
+            state: 'idle',
+          },
+          {
+            name: 'logs',
+            detail: 'tail -f',
+            state: 'busy',
+          },
+        ],
+      },
+    ],
+    paneTabs: ['claude', 'server', 'git'],
+    stateLabels: {
+      waiting: 'Đang chờ bạn',
+      busy: 'Đang chạy',
+      idle: '',
+    },
+    terminal: [
+      {
+        kind: 'prompt',
+        text: 'claude',
+      },
+      {
+        kind: 'dim',
+        text: '  ⏵ reading src/lib/layout.ts',
+      },
+      {
+        kind: 'dim',
+        text: '  ⏵ reading src/state/useAttention.ts',
+      },
+      {
+        kind: 'plain',
+        text: 'The drag target is computed from the pane tree, not the tmux',
+      },
+      {
+        kind: 'plain',
+        text: 'layout, so splitting the view never sends a tmux command',
+      },
+      {
+        kind: 'blank',
+        text: '',
+      },
+      {
+        kind: 'attention',
+        text: '  Apply this change to layout.ts?',
+      },
+      {
+        kind: 'plain',
+        text: '  1. Yes   2. Yes, and don’t ask again   3. No',
+      },
+      {
+        kind: 'cursor',
+        text: '  ❯ ',
+      },
+    ],
+  },
+  steps: {
+    title: 'Bắt đầu chỉ với ba bước',
+    items: [
+      {
+        n: '01',
+        title: 'Chạy trình cài đặt',
+        body: 'Tự cài tmux nếu cần, tải AI Anywhere từ npm và cấu hình launchd hoặc systemd để tự chạy lại sau khi khởi động máy',
+      },
+      {
+        n: '02',
+        title: 'Mở liên kết được hiển thị',
+        body: 'Sau khi máy chủ sẵn sàng, trình cài đặt hiển thị URL localhost có token. Mở URL bằng bất kỳ trình duyệt nào trên máy đó',
+      },
+      {
+        n: '03',
+        title: 'Tiếp tục từ chỗ bạn dừng lại',
+        body: 'Các cửa sổ hiện có xuất hiện bên trái, không bị khởi động lại, kết nối lại hay di chuyển',
+      },
+    ],
+  },
+  features: {
+    title: 'Tự chạy và báo bạn khi cần',
+    items: [
+      {
+        icon: 'terminal',
+        title: 'Mở các phiên tmux hiện có',
+        body: 'Các phiên đang chạy được mở nguyên trạng trong trình duyệt, không di chuyển, sao chép hay khởi động lại. Tiếp tục ngay từ chỗ bạn dừng',
+      },
+      {
+        icon: 'nodes',
+        title: 'Mọi máy trong một thanh bên',
+        body: 'Xem máy này và mọi máy chủ kết nối qua SSH trong cùng thanh bên. Tác vụ được nhóm theo từng máy và luôn dễ truy cập',
+      },
+      {
+        icon: 'signal',
+        title: 'Biết ngay khi tác vụ cần bạn',
+        body: 'Ngay khi CLI dừng để hỏi, tác vụ sẽ sáng lên để báo bạn. Cứ làm việc khác trong lúc chờ, không cần canh terminal',
+      },
+      {
+        icon: 'checklist',
+        title: 'Theo dõi từng tác tử phụ',
+        body: 'Khi CLI tạo các tác tử phụ, mỗi tác tử trở thành một tác vụ được theo dõi riêng. Bạn thấy rõ từng nhánh đang làm gì và nhánh nào đang chờ',
+      },
+      {
+        icon: 'history',
+        title: 'Ngắt kết nối, tác vụ vẫn chạy',
+        body: 'Đóng tab hoặc mất kết nối SSH, tác vụ vẫn chạy trong tmux. Kết nối lại bất cứ lúc nào để tiếp tục',
+      },
+      {
+        icon: 'power',
+        title: 'Tự khôi phục sau khi khởi động máy',
+        body: 'Sau khi khởi động lại máy, không gian làm việc tự trở lại với các tác vụ và tab quen thuộc, không cần tạo lại thủ công',
+      },
+      {
+        icon: 'shield',
+        title: 'Dữ liệu không rời máy của bạn',
+        body: 'Toàn bộ không gian làm việc chạy trên phần cứng bạn quản lý. Đầu ra, phím bấm, tệp và khóa không được tải lên',
+      },
+      {
+        icon: 'image',
+        title: 'Giảm 75% token hình ảnh',
+        body: 'Ảnh chụp màn hình được tối ưu trước khi đến mô hình, giảm 75% token hình ảnh mà không cần thao tác thêm',
+      },
+      {
+        icon: 'phone',
+        title: 'Dùng ngay trên điện thoại',
+        body: 'Mở cùng không gian làm việc trên điện thoại để kiểm tra tác vụ, trả lời lời nhắc hoặc thao tác máy chủ từ xa khi không ở bàn làm việc',
+      },
+    ],
+  },
+  stats: {
+    eyebrow: 'Những con số',
+    items: [
+      {
+        to: 75,
+        unit: '%',
+        icon: null,
+        label: 'ít token hình ảnh hơn',
+      },
+      {
+        to: 70,
+        unit: '%',
+        icon: null,
+        label: 'ảnh tải lên nhỏ hơn',
+      },
+      {
+        to: null,
+        unit: '',
+        icon: 'shield',
+        label: 'không bao giờ yêu cầu tệp của bạn',
+      },
+    ],
+  },
+  sells: {
+    eyebrow: 'Và còn nữa',
+    items: [
+      {
+        icon: 'history',
+        label: 'Phiên làm việc không bị mất',
+      },
+      {
+        icon: 'signal',
+        label: 'Báo bạn khi tác vụ cần can thiệp',
+      },
+      {
+        icon: 'power',
+        label: 'Tác vụ trở lại sau khi khởi động máy',
+      },
+      {
+        icon: 'nodes',
+        label: 'Quản lý mọi máy từ xa tại một nơi',
+      },
+      {
+        icon: 'phone',
+        label: 'Hoạt động trên điện thoại',
+      },
+      {
+        icon: 'shield',
+        label: 'Dữ liệu terminal không đến dịch vụ tài khoản',
+      },
+    ],
+  },
+  extension: {
+    label: 'Tiện ích Chrome',
+    title: 'Hoặc dùng ngay trong thanh bên',
+    body: 'Cùng không gian làm việc chạy trong thanh bên Chrome, cạnh nội dung bạn đang đọc. Công cụ chọn phần tử cho phép nhấp vào một phần của trang để gửi URL, bộ chọn CSS và đoạn HTML thẳng đến CLI, giúp AI hiểu chính xác phần bạn muốn sửa',
+    cta: 'Xem tiện ích',
+  },
+  security: {
+    label: 'Chạy ở đâu',
+    title: 'Trên máy của bạn, không nơi nào khác',
+    body: 'tmux.online cung cấp tài khoản và cấp quyền thiết bị cho AI Anywhere. Phiên terminal, tiến trình CLI, phím bấm và khóa cục bộ luôn nằm trên phần cứng bạn quản lý',
+    points: [
+      'Máy chủ mặc định lắng nghe trên 127.0.0.1; kết nối được bảo vệ bằng thông tin xác thực',
+      'Mọi kết nối đều kiểm tra Origin, giá trị mà trang web không thể giả mạo, để các tab không liên quan không truy cập được máy chủ',
+      'Kết nối từ xa dùng cấu hình SSH của bạn. Không có trung gian truyền terminal hay đo lường từ xa',
+    ],
+  },
+  faq: {
+    title: 'Câu hỏi',
+    items: [
+      {
+        q: 'Ứng dụng có thay đổi cấu hình tmux không?',
+        a: 'Không ghi gì vào cấu hình. Phiên tmux mặc định là AA. Các cửa sổ được ứng dụng đổi kích thước sẽ trở lại chế độ tự động khi bạn đóng trang',
+      },
+      {
+        q: 'Cần chuẩn bị gì?',
+        a: 'tmux và Node.js 22.5 trở lên',
+      },
+      {
+        q: 'Có dùng được trên máy chủ từ xa không?',
+        a: 'Chỉ cần cài tmux trên máy chủ từ xa',
+      },
+      {
+        q: 'Có bắt buộc cài tiện ích không?',
+        a: 'Không. Máy chủ cung cấp ứng dụng web tại 127.0.0.1:51984. Tiện ích bổ sung thanh bên và công cụ chọn phần tử',
+      },
+    ],
+  },
+  cta: {
+    title: 'Để terminal tiếp tục chạy, bạn không cần canh chừng',
+    body: 'Một lệnh để cài đặt, một liên kết để mở. Rồi bạn có thể làm việc khác',
+  },
+  changelog: {
+    eyebrow: 'Ghi chú phát hành',
+    title: 'Nhật ký thay đổi',
+    description: 'Thay đổi trong từng bản phát hành AI Anywhere: phiên bản, ngày và nội dung cập nhật',
+    intro: 'Mọi bản phát hành của cầu nối CLI, tiện ích trình duyệt và bảng điều khiển web, từ mới đến cũ',
+    home: 'Trang chủ',
+    versionPrefix: 'v',
+  },
+  footer: {
+    rights: 'Mặc định chỉ dùng cục bộ. Truy cập terminal được bảo vệ bằng thông tin xác thực',
+    columns: [
+      {
+        title: 'Dự án',
+        links: [
+          {
+            label: 'GitHub',
+            href: REPO_URL,
+          },
+          {
+            label: 'Báo lỗi',
+            href: ISSUES_URL,
+          },
+          {
+            label: 'Nhật ký thay đổi',
+            href: '/changelog',
+          },
+        ],
+      },
+      {
+        title: 'Cài đặt',
+        links: [
+          {
+            label: 'install.sh',
+            href: INSTALL_URL,
+          },
+          {
+            label: '@ai-anywhere/cli',
+            href: NPM_URL,
+          },
+        ],
+      },
+    ],
+    langLabel: 'Ngôn ngữ',
+  },
+  analytics: {
+    label: 'Tùy chọn cookie',
+    body: 'Cho phép cookie? Nếu đồng ý, cookie phân tích giúp thống kê lượt truy cập và cách sử dụng trang web. Nội dung terminal, lệnh, thông tin tài khoản và mã mời không bao giờ được gửi đi',
+    accept: 'Đồng ý',
+    reject: 'Từ chối',
+    settings: 'Cài đặt cookie',
+  },
+  auth: {
+    signInWithGitHub: 'Tiếp tục với GitHub',
+    switchAccount: 'Dùng tài khoản GitHub khác',
+    signOut: 'Đăng xuất',
+    loading: 'Đang kiểm tra…',
+    genericError: 'Đã xảy ra lỗi. Vui lòng thử lại sau ít phút',
+    networkError: 'Không thể kết nối đến dịch vụ tài khoản',
+  },
+  account: {
+    metaTitle: 'Tài khoản — tmux.online',
+    metaDescription: 'Quản lý tài khoản tmux.online, thiết bị đã đăng nhập và khóa API',
+    label: 'Tài khoản',
+    signedOutTitle: 'Đăng nhập tmux.online',
+    signedOutBody: 'Đăng nhập để cấp quyền thiết bị, thu hồi truy cập từ xa và quản lý khóa API',
+    signedInAs: 'Đã đăng nhập với',
+    devicesTitle: 'Thiết bị',
+    devicesBody: 'Xem mọi thiết bị được cấp quyền chạy AI Anywhere. Xóa thiết bị sẽ khóa giao diện cục bộ nhưng không dừng các tác vụ tmux',
+    devicesEmpty: 'Chưa có thiết bị đăng nhập',
+    deviceOnline: 'Trực tuyến',
+    deviceOffline: 'Ngoại tuyến',
+    deviceLastSeen: 'Hoạt động lần cuối',
+    deviceRevoke: 'Xóa',
+    deviceRevokeConfirm: 'Xóa {name}? AI Anywhere trên thiết bị đó sẽ bị khóa ngay',
+    confirmCancel: 'Hủy',
+    keysTitle: 'Khóa API',
+    keysBody: 'Thông tin xác thực dài hạn cho script và CI. Gửi qua header x-api-key. Việc thu hồi có hiệu lực ngay',
+    keysEmpty: 'Chưa có khóa',
+    keyNameLabel: 'Tên',
+    keyNamePlaceholder: 'ci-deploy',
+    keyCreate: 'Tạo khóa',
+    keyCreating: 'Đang tạo…',
+    keyCreatedTitle: 'Sao chép khóa ngay',
+    keyCreatedBody: 'Chỉ giá trị băm được lưu; khóa sẽ không hiển thị lần nữa. Nếu làm mất, hãy thu hồi và tạo khóa mới',
+    keyCopy: 'Sao chép',
+    keyCopied: 'Đã sao chép',
+    keyRevoke: 'Thu hồi',
+    keyRevokeConfirm: 'Thu hồi khóa này? Mọi ứng dụng đang dùng khóa sẽ ngừng hoạt động ngay',
+    keyCreatedAt: 'Đã tạo',
+    keyNameRequired: 'Đặt tên khóa để dễ phân biệt sau này',
+  },
+  membership: {
+    navTitle: 'Ưu đãi mời bạn có thời hạn',
+    invalidInviteLink: 'Liên kết mời không hợp lệ. Hãy xin bạn của bạn liên kết mới',
+    dismissInvalidInvite: 'Đóng',
+    title: 'Mời 3 người bạn để nhận tư cách thành viên trọn đời',
+    intro: 'Tư cách thành viên trọn đời thường phải trả phí. Trong thời gian ưu đãi, mời 3 người bạn đăng ký để nhận miễn phí',
+    deadline: 'Ưu đãi kết thúc {deadline}',
+    progressTitle: 'Tiến độ mời bạn',
+    progressCount: '{points} / {threshold} người bạn đã tham gia',
+    progressRemaining: 'Cần thêm {n} người để mở khóa thành viên trọn đời',
+    progressComplete: 'Đã mở khóa thành viên trọn đời',
+    tierTrial: 'Dùng thử',
+    tierPermanent: 'Thành viên trọn đời',
+    trialLeft: 'Còn {n} ngày dùng thử',
+    trialEnded: 'Thời gian dùng thử đã kết thúc',
+    permanentBody: 'Bạn đã có quyền truy cập trọn đời',
+    premiumBadge: 'Thành viên cao cấp',
+    inviteModeLabel: 'Cách mời',
+    inviteLinkTab: 'Liên kết mời',
+    inviteCodeTab: 'Mã mời',
+    inviteBody: 'Bạn bè đăng ký qua liên kết này trước khi ưu đãi kết thúc sẽ được tính vào tiến độ mời của bạn',
+    inviteCodeBody: 'Sau khi đăng ký, bạn bè có thể liên kết mã này trên trang thành viên để được tính vào tiến độ mời của bạn',
+    inviteCopy: 'Sao chép liên kết mời',
+    inviteCodeCopy: 'Sao chép mã mời',
+    inviteCopied: 'Đã sao chép',
+    bindTitle: 'Liên kết mã mời',
+    bindBody: 'Liên kết mã mời của một người bạn để thêm 7 ngày dùng thử. Chỉ được liên kết mã một lần',
+    bindPlaceholder: 'MÃ MỜI',
+    bind: 'Liên kết',
+    binding: 'Đang liên kết…',
+    bindErrors: {
+      invalid_code: 'Mã không hợp lệ. Kiểm tra rồi thử lại',
+      already_redeemed: 'Bạn đã liên kết mã mời rồi',
+      self_invite: 'Không thể liên kết mã mời của chính bạn',
+      cycle: 'Không thể liên kết mã của người do bạn mời',
+    },
+    downlineTitle: 'Bạn bè đã tham gia',
+    downlineRevenueHint: 'Khi bạn bè được mời chi tiêu trên nền tảng, bạn sẽ nhận được một phần doanh thu',
+    downlineEmpty: 'Chưa có ai tham gia',
+    downlineEmptyCta: 'Chia sẻ liên kết trước khi ưu đãi kết thúc. Mời 3 người bạn để mở khóa thành viên trọn đời',
+    downlineJoined: 'Đã tham gia',
+    downlineAnon: 'Một người',
+    downlineMore: 'Tải thêm',
+    downlineLoading: 'Đang tải…',
+  },
+  device: {
+    metaTitle: 'Cấp quyền thiết bị — tmux.online',
+    metaDescription: 'Chấp nhận hoặc từ chối yêu cầu đăng nhập thiết bị vào tài khoản tmux.online của bạn',
+    label: 'Thiết bị',
+    title: 'Cấp quyền thiết bị',
+    body: 'Một thiết bị đang yêu cầu truy cập tài khoản của bạn. Kiểm tra mã bên dưới khớp với mã trên thiết bị rồi phê duyệt',
+    codeLabel: 'Mã từ thiết bị',
+    codePlaceholder: 'ABCD-1234',
+    continue: 'Tiếp tục',
+    approve: 'Chấp nhận',
+    deny: 'Từ chối',
+    working: 'Đang xử lý…',
+    approvedTitle: 'Đã cấp quyền thiết bị',
+    approvedBody: 'Đã cấp quyền thiết bị. Chuyển đến danh sách thiết bị sau 3 giây',
+    deniedTitle: 'Đã từ chối thiết bị',
+    deniedBody: 'Không có quyền nào được cấp. Bạn có thể đóng tab này',
+    invalidCode: 'Mã không hợp lệ. Kiểm tra lại mã hiển thị trên thiết bị',
+    expiredCode: 'Mã đã hết hạn. Hãy yêu cầu mã mới trên thiết bị',
+    missingCode: 'Nhập mã hiển thị trên thiết bị',
+  },
+  notFound: {
+    code: '404',
+    title: 'Không có ô terminal ở đây',
+    body: 'Địa chỉ này không tồn tại trên trang web',
+    cta: 'Về trang chủ',
+  },
+}

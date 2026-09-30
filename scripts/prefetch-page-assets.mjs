@@ -2,6 +2,8 @@ import { readFile, writeFile } from 'node:fs/promises'
 
 const HOME_PAGES = [
   { file: 'index.html', dashboard: '/dashboard/devices' },
+  { file: 'vi/index.html', dashboard: '/vi/dashboard/devices' },
+  { file: 'nl/index.html', dashboard: '/nl/dashboard/devices' },
   { file: 'zh-Hans/index.html', dashboard: '/zh-Hans/dashboard/devices' },
   { file: 'zh-Hant/index.html', dashboard: '/zh-Hant/dashboard/devices' },
   { file: 'ja/index.html', dashboard: '/ja/dashboard/devices' },
@@ -10,6 +12,8 @@ const HOME_PAGES = [
 
 const DASHBOARD_LOCALES = [
   { dir: '', home: '/' },
+  { dir: 'vi/', home: '/vi' },
+  { dir: 'nl/', home: '/nl' },
   { dir: 'zh-Hans/', home: '/zh-Hans' },
   { dir: 'zh-Hant/', home: '/zh-Hant' },
   { dir: 'ja/', home: '/ja' },
@@ -25,6 +29,8 @@ const JS_IMPORT = /(?:from\s*|import\s*)[(']?\s*["']\.\/([^"']+\.js)["']/g
 const collectPageAssets = async (dir) => {
   const pages = [
     'dashboard/devices.html',
+    'vi/dashboard/devices.html',
+    'nl/dashboard/devices.html',
     'zh-Hans/dashboard/devices.html',
     'zh-Hant/dashboard/devices.html',
     'ja/dashboard/devices.html',

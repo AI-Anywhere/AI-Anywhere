@@ -1,4 +1,6 @@
 import type { Lang } from './index'
+import { vi } from './guides-vi'
+import { nl } from './guides-nl'
 
 export const GUIDE_PATHS = {
   tmuxWebUi: '/tmux-web-ui',
@@ -27,7 +29,7 @@ interface GuidePage {
   sections: GuideSection[]
 }
 
-interface GuideCollection {
+export interface GuideCollection {
   navTitle: string
   home: string
   pages: Record<GuideId, GuidePage>
@@ -1148,7 +1150,7 @@ const pt: GuideCollection = {
   },
 }
 
-const collections: Record<Lang, GuideCollection> = { en, ja, ko, pt, 'zh-Hans': zhHans, 'zh-Hant': zhHant }
+const collections: Record<Lang, GuideCollection> = { en, vi, nl, ja, ko, pt, 'zh-Hans': zhHans, 'zh-Hant': zhHant }
 
 export function useGuides(lang: Lang): GuideCollection {
   return collections[lang] ?? en

@@ -18,6 +18,12 @@
 /
   Cache-Control: public, max-age=1800, stale-while-revalidate=1800
 
+/vi
+  Cache-Control: public, max-age=1800, stale-while-revalidate=1800
+
+/nl
+  Cache-Control: public, max-age=1800, stale-while-revalidate=1800
+
 /zh-Hans
   Cache-Control: public, max-age=1800, stale-while-revalidate=1800
 
@@ -33,6 +39,12 @@
 # Documentation uses the same browser cache window as the landing pages.
 # Explicit locale prefixes also cover future pages added under /docs.
 /docs/*
+  Cache-Control: public, max-age=1800, stale-while-revalidate=1800
+
+/vi/docs/*
+  Cache-Control: public, max-age=1800, stale-while-revalidate=1800
+
+/nl/docs/*
   Cache-Control: public, max-age=1800, stale-while-revalidate=1800
 
 /zh-Hans/docs/*
@@ -125,12 +137,32 @@
   Cloudflare-CDN-Cache-Control: no-store
   X-Robots-Tag: noindex, nofollow
 
+/vi/dashboard
+  Cache-Control: private, max-age=600, must-revalidate
+  Cloudflare-CDN-Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+/nl/dashboard
+  Cache-Control: private, max-age=600, must-revalidate
+  Cloudflare-CDN-Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
 /zh-Hans/dashboard
   Cache-Control: private, max-age=600, must-revalidate
   Cloudflare-CDN-Cache-Control: no-store
   X-Robots-Tag: noindex, nofollow
 
 /zh-Hant/dashboard
+  Cache-Control: private, max-age=600, must-revalidate
+  Cloudflare-CDN-Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+/vi/dashboard/*
+  Cache-Control: private, max-age=600, must-revalidate
+  Cloudflare-CDN-Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+/nl/dashboard/*
   Cache-Control: private, max-age=600, must-revalidate
   Cloudflare-CDN-Cache-Control: no-store
   X-Robots-Tag: noindex, nofollow

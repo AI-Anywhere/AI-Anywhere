@@ -13,10 +13,20 @@ import dashboardDeviceKo from '../dist/ko/dashboard/device.html'
 import dashboardDevicesKo from '../dist/ko/dashboard/devices.html'
 import dashboardIndexKo from '../dist/ko/dashboard/index.html'
 import dashboardMembershipKo from '../dist/ko/dashboard/membership.html'
+import dashboardApiKeysVi from '../dist/vi/dashboard/api-keys.html'
+import dashboardApiKeysNl from '../dist/nl/dashboard/api-keys.html'
 import dashboardApiKeysZhHans from '../dist/zh-Hans/dashboard/api-keys.html'
+import dashboardDeviceVi from '../dist/vi/dashboard/device.html'
+import dashboardDeviceNl from '../dist/nl/dashboard/device.html'
 import dashboardDeviceZhHans from '../dist/zh-Hans/dashboard/device.html'
+import dashboardDevicesVi from '../dist/vi/dashboard/devices.html'
+import dashboardDevicesNl from '../dist/nl/dashboard/devices.html'
 import dashboardDevicesZhHans from '../dist/zh-Hans/dashboard/devices.html'
+import dashboardIndexVi from '../dist/vi/dashboard/index.html'
+import dashboardIndexNl from '../dist/nl/dashboard/index.html'
 import dashboardIndexZhHans from '../dist/zh-Hans/dashboard/index.html'
+import dashboardMembershipVi from '../dist/vi/dashboard/membership.html'
+import dashboardMembershipNl from '../dist/nl/dashboard/membership.html'
 import dashboardMembershipZhHans from '../dist/zh-Hans/dashboard/membership.html'
 import dashboardApiKeysZhHant from '../dist/zh-Hant/dashboard/api-keys.html'
 import dashboardDeviceZhHant from '../dist/zh-Hant/dashboard/device.html'
@@ -45,10 +55,20 @@ const DASHBOARD_HTML = new Map([
   ['/ko/dashboard/device', dashboardDeviceKo],
   ['/ko/dashboard/devices', dashboardDevicesKo],
   ['/ko/dashboard/membership', dashboardMembershipKo],
+  ['/vi/dashboard', dashboardIndexVi],
+  ['/nl/dashboard', dashboardIndexNl],
   ['/zh-Hans/dashboard', dashboardIndexZhHans],
+  ['/vi/dashboard/api-keys', dashboardApiKeysVi],
+  ['/nl/dashboard/api-keys', dashboardApiKeysNl],
   ['/zh-Hans/dashboard/api-keys', dashboardApiKeysZhHans],
+  ['/vi/dashboard/device', dashboardDeviceVi],
+  ['/nl/dashboard/device', dashboardDeviceNl],
   ['/zh-Hans/dashboard/device', dashboardDeviceZhHans],
+  ['/vi/dashboard/devices', dashboardDevicesVi],
+  ['/nl/dashboard/devices', dashboardDevicesNl],
   ['/zh-Hans/dashboard/devices', dashboardDevicesZhHans],
+  ['/vi/dashboard/membership', dashboardMembershipVi],
+  ['/nl/dashboard/membership', dashboardMembershipNl],
   ['/zh-Hans/dashboard/membership', dashboardMembershipZhHans],
   ['/zh-Hant/dashboard', dashboardIndexZhHant],
   ['/zh-Hant/dashboard/api-keys', dashboardApiKeysZhHant],
@@ -56,7 +76,7 @@ const DASHBOARD_HTML = new Map([
   ['/zh-Hant/dashboard/devices', dashboardDevicesZhHant],
   ['/zh-Hant/dashboard/membership', dashboardMembershipZhHant],
 ])
-const NOT_FOUND_PATHS = new Set(['/404', '/ja/404', '/ko/404', '/zh-Hans/404', '/zh-Hant/404'])
+const NOT_FOUND_PATHS = new Set(['/404', '/ja/404', '/ko/404', '/vi/404', '/nl/404', '/zh-Hans/404', '/zh-Hant/404'])
 
 const DASHBOARD_HEADERS = {
   'Cache-Control': 'private, max-age=600, must-revalidate',

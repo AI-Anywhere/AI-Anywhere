@@ -28,6 +28,8 @@ const REFERRAL_KEY = 'aa_ref'
 const REFERRAL_CAPTURED_AT_KEY = 'aa_ref_at'
 const DATE_LOCALES: Record<Lang, string> = {
   en: 'en-US',
+  vi: 'vi-VN',
+  nl: 'nl-NL',
   ja: 'ja-JP',
   ko: 'ko-KR',
   pt: 'pt-BR',
