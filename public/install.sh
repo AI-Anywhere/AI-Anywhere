@@ -293,13 +293,19 @@ install_cli_with_npm() {
     '' | *[!0-9]*) _npm_major=0 ;;
   esac
 
+  # Scope-specific registries take precedence over npm's default registry. Override both the
+  # CLI and its scoped native dependency without changing the user's prefix or proxy settings.
+  set -- "$@" install -g --registry=https://registry.npmjs.org \
+    --@ai-anywhere:registry=https://registry.npmjs.org \
+    --@homebridge:registry=https://registry.npmjs.org
+
   # npm 11 asks global installers to explicitly approve dependencies with lifecycle scripts.
   # npm 10 does not know this option. Error-level logging keeps failures visible while omitting
   # transitive deprecation, funding and update notices from the one-line installer.
   if [ "$_npm_major" -ge 11 ]; then
-    "$@" install -g --allow-scripts="$PTY_PKG" --loglevel=error --no-fund --no-audit "$PKG@$CLI_VERSION"
+    "$@" --allow-scripts="$PTY_PKG" --loglevel=error --no-fund --no-audit "$PKG@$CLI_VERSION"
   else
-    "$@" install -g --loglevel=error --no-fund --no-audit "$PKG@$CLI_VERSION"
+    "$@" --loglevel=error --no-fund --no-audit "$PKG@$CLI_VERSION"
   fi
 }
 
