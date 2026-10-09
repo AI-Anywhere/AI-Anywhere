@@ -366,7 +366,7 @@ if [ -n "$CLI_BIN" ]; then
     if desktop_check; then exit 0; fi
     desktop_state starting
     _start_exit=0
-    "$CLI_BIN" up -d --host 0.0.0.0 --port 51984 --no-qr </dev/null || _start_exit=$?
+    "$CLI_BIN" up -d --host 0.0.0.0 --port 51984 </dev/null || _start_exit=$?
     # A competing startup can win the port while this CLI is waiting for account authorisation.
     # Reuse that healthy bridge rather than treating the losing process as a failed launch.
     if desktop_check; then exit 0; fi
