@@ -7,9 +7,19 @@
 #   4. ai-anywhere up    (signs in when needed, then runs in the foreground)
 #
 # Usage:  curl -fsSL https://tmux.online/install.sh | sh
+# Desktop: curl -fsSL https://tmux.online/install.sh | sh -s -- --desktop
+# Desktop mode reuses an existing bridge, never restarts it, and starts a detached LAN listener.
 #
 # POSIX sh, no bashisms. Safe to re-run.
 set -eu
+
+DESKTOP=0
+case "${1:-}" in
+  '') ;;
+  --desktop) DESKTOP=1; shift ;;
+  *) printf 'Unknown installer option: %s\n' "$1" >&2; exit 2 ;;
+esac
+[ "$#" -eq 0 ] || { printf 'Unexpected installer arguments\n' >&2; exit 2; }
 
 # ── output ───────────────────────────────────────────────────────────
 # Real escape bytes (not the literal string "\033…") so they render whether they land in a
@@ -34,10 +44,68 @@ die() {
 }
 have() { command -v "$1" >/dev/null 2>&1; }
 
+# Stable, uncoloured status lines consumed by the desktop client. No token or account secret is
+# included. Normal CLI output (including the browser sign-in URL) remains available to the user.
+DESKTOP_STATE=''
+desktop_state() {
+  DESKTOP_STATE="$1"
+  printf 'AA_DESKTOP_STATE=%s\n' "$1"
+}
+
+desktop_requirement() {
+  desktop_state blocked
+  printf 'AA_DESKTOP_REQUIREMENT=%s\n' "$1"
+  printf 'AA_DESKTOP_INSTRUCTION=%s\n' "$2"
+  warn "$2"
+  exit 1
+}
+
+requirement() {
+  if [ "$DESKTOP" -eq 1 ]; then desktop_requirement "$1" "$2"; fi
+  die "$2"
+}
+
+desktop_finish() {
+  if [ "$1" -ne 0 ] && [ "$DESKTOP_STATE" != blocked ] && [ "$DESKTOP_STATE" != failed ]; then
+    desktop_state failed
+  fi
+}
+
+# 0 = healthy bridge; 1 = no TCP listener; 2 = occupied/unresponsive/unrecognised service.
+# The exact JSON prefix is the CLI's /healthz wire response; no Node dependency is needed for
+# this early check. Curl never follows redirects or uses a proxy for the loopback request.
+desktop_probe() {
+  _health_exit=0
+  _health="$(curl -fsS --noproxy '*' --connect-timeout 1 --max-time 2 --max-filesize 65536 \
+    http://127.0.0.1:51984/healthz 2>/dev/null)" || _health_exit=$?
+  if [ "$_health_exit" -eq 7 ]; then return 1; fi
+  [ "$_health_exit" -eq 0 ] || return 2
+  case "$_health" in
+    '{"ok":true,"name":"ai-anywhere-server","version":"'*'"}') return 0 ;;
+    *) return 2 ;;
+  esac
+}
+
+desktop_check() {
+  _health_status=0
+  desktop_probe || _health_status=$?
+  case "$_health_status" in
+    0)
+      desktop_state ready
+      printf 'AA_DESKTOP_ENDPOINT=ws://127.0.0.1:51984\n'
+      return 0
+      ;;
+    1) return 1 ;;
+    *) desktop_requirement port "Port 51984 is occupied or its service did not identify itself as AI Anywhere. Close that service or fix its health check, then retry." ;;
+  esac
+}
+
 # Run a command as root: directly if we already are, via sudo otherwise.
 as_root() {
   if [ "$(id -u)" -eq 0 ]; then
     "$@"
+  elif [ "$DESKTOP" -eq 1 ]; then
+    desktop_requirement sudo "Administrator access is required. Run in a terminal: sudo $* ; then reopen AI Anywhere."
   elif have sudo; then
     sudo "$@"
   else
@@ -70,6 +138,9 @@ tmux_ok() {
 install_tmux_linux() {
   # One of the usual package managers, whichever this distro ships.
   if have apt-get; then
+    if [ "$DESKTOP" -eq 1 ] && [ "$(id -u)" -ne 0 ]; then
+      desktop_requirement tmux "tmux 3.1+ is required. Run in a terminal: sudo apt-get update -qq && sudo apt-get install -y tmux ; then reopen AI Anywhere."
+    fi
     as_root apt-get update -qq
     as_root apt-get install -y tmux
   elif have dnf; then
@@ -87,7 +158,7 @@ install_tmux_linux() {
   elif have pkg; then
     as_root pkg install -y tmux
   else
-    die "could not find a package manager to install tmux — install it manually and re-run"
+    requirement tmux "could not find a package manager to install tmux — install tmux 3.1+ manually and re-run"
   fi
 }
 
@@ -103,14 +174,14 @@ ensure_tmux() {
   fi
   case "$OS" in
     Darwin)
-      have brew || die "Homebrew is required to install tmux on macOS — get it at https://brew.sh, then re-run"
+      have brew || requirement brew "Homebrew is required to install tmux on macOS — get it at https://brew.sh, then re-run"
       brew install tmux || brew upgrade tmux
       ;;
     Linux | FreeBSD | *BSD)
       install_tmux_linux
       ;;
     *)
-      die "unsupported OS for automatic tmux install: $OS — install tmux manually and re-run"
+      requirement tmux "unsupported OS for automatic tmux install: $OS — on Windows, run wsl --install, then run the installer inside WSL; otherwise install tmux manually and re-run"
       ;;
   esac
   have tmux || die "tmux was installed, but it is still not on PATH"
@@ -197,13 +268,13 @@ ensure_node() {
   elif nvm_sh >/dev/null 2>&1; then
     install_node_nvm
   else
-    die "Node.js ${NODE_MIN_MAJOR}.${NODE_MIN_MINOR}+ is required. Install it from https://nodejs.org and re-run. (If you use nvm or fnm, this script installs the latest LTS through it automatically.)"
+    requirement node "Node.js ${NODE_MIN_MAJOR}.${NODE_MIN_MINOR}+ is required. Install it from https://nodejs.org and re-run. (If you use nvm or fnm, this script installs the latest LTS through it automatically.)"
   fi
 
   # A version manager can report success and still leave this shell pointing elsewhere — an older
   # node earlier in PATH, or an env import that did not take. Check rather than assume.
-  have node || die "the version manager finished, but Node.js is still not on PATH — open a new shell and re-run, or install Node.js from https://nodejs.org"
-  node_ok || die "the version manager installed $(node -v), which is below the required ${NODE_MIN_MAJOR}.${NODE_MIN_MINOR} — an older Node.js binary may be earlier in PATH. Install Node.js from https://nodejs.org and re-run."
+  have node || requirement node "the version manager finished, but Node.js is still not on PATH — open a new shell and re-run, or install Node.js from https://nodejs.org"
+  node_ok || requirement node "the version manager installed $(node -v), which is below the required ${NODE_MIN_MAJOR}.${NODE_MIN_MINOR} — an older Node.js binary may be earlier in PATH. Install Node.js from https://nodejs.org and re-run."
   ok "Node.js $(node -v) installed"
 }
 
@@ -239,11 +310,11 @@ install_cli() {
     ok "${PKG} v${CLI_VERSION} already installed: $CLI_BIN"
     return
   fi
-  have npm || die "npm is required to install ${PKG} but was not found — install it alongside Node.js and re-run"
+  have npm || requirement npm "npm is required to install ${PKG} but was not found — install it alongside Node.js and re-run"
   # Being on PATH is not enough: a distro can leave npm as a dangling alternatives symlink when the
   # npm package itself is absent (openSUSE's /usr/bin/npm-default does exactly this). Without this
   # check the script marches on and fails later inside npm with a bare "No such file or directory".
-  npm -v >/dev/null 2>&1 || die "npm is on PATH at $(command -v npm), but it does not run — install your distro's npm package for Node.js ${NODE_MIN_MAJOR}, then re-run"
+  npm -v >/dev/null 2>&1 || requirement npm "npm is on PATH at $(command -v npm), but it does not run — install your distro's npm package for Node.js ${NODE_MIN_MAJOR}, then re-run"
   say "installing ${PKG}@${CLI_VERSION}…"
   # A root-owned global prefix (system Node on Linux) needs sudo; a user-owned one (nvm, fnm,
   # Homebrew) must NOT get it — installing as root there leaves files the user can't later update.
@@ -270,6 +341,13 @@ install_cli() {
 }
 
 # ── run ──────────────────────────────────────────────────────────────
+if [ "$DESKTOP" -eq 1 ]; then
+  trap 'desktop_finish "$?"' 0
+  desktop_state checking
+  have curl || desktop_requirement curl "curl is required. Install curl with your system package manager, then retry the official installer: curl -fsSL https://tmux.online/install.sh | sh -s -- --desktop"
+  if desktop_check; then exit 0; fi
+  desktop_state installing
+fi
 say "setting up AI Anywhere…"
 ensure_tmux
 ensure_node
@@ -277,6 +355,20 @@ install_cli
 
 printf '\n'
 if [ -n "$CLI_BIN" ]; then
+  if [ "$DESKTOP" -eq 1 ]; then
+    # A second app or terminal may have started the bridge during dependency installation.
+    if desktop_check; then exit 0; fi
+    desktop_state starting
+    _start_exit=0
+    "$CLI_BIN" up -d --host 0.0.0.0 --port 51984 --no-qr </dev/null || _start_exit=$?
+    # A competing startup can win the port while this CLI is waiting for account authorisation.
+    # Reuse that healthy bridge rather than treating the losing process as a failed launch.
+    if desktop_check; then exit 0; fi
+    if [ "$_start_exit" -ne 0 ]; then
+      die "AI Anywhere could not start (exit $_start_exit). Follow the instructions above, then retry."
+    fi
+    die "AI Anywhere exited without a healthy service on port 51984. Run ai-anywhere logs in a terminal for details."
+  fi
   ok "${B}All set.${Z} Starting AI Anywhere…"
   # The installer owns this restart, so apply the same validated shutdown as answering "y" to
   # `up`'s occupied-port prompt. `down` refuses to signal a process it cannot identify as ours.
@@ -288,5 +380,8 @@ if [ -n "$CLI_BIN" ]; then
   fi
   exec "$CLI_BIN" up
 else
+  if [ "$DESKTOP" -eq 1 ]; then
+    desktop_requirement path "AI Anywhere was installed but its executable could not be found. Add npm's global bin directory to PATH, then reopen the app."
+  fi
   ok "${B}Installed.${Z} Update PATH as shown above, then run:  ${Y}ai-anywhere up${Z}"
 fi
