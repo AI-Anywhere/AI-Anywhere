@@ -346,7 +346,7 @@ PKG='@ai-anywhere/cli'
 # The latest published version, updated on every release (scripts/publish-cli.sh in the core repo
 # enforces that this matches the package.json being published). Pinning makes the script
 # reproducible and lets a re-run skip npm entirely when nothing changed.
-CLI_VERSION='0.0.29'
+CLI_VERSION='0.0.30'
 PTY_PKG='@homebridge/node-pty-prebuilt-multiarch'
 CLI_BIN=''
 
@@ -358,9 +358,11 @@ install_cli_with_npm() {
 
   # Scope-specific registries take precedence over npm's default registry. Override both the
   # CLI and its scoped native dependency without changing the user's prefix or proxy settings.
+  # Always revalidate metadata online, including when npmrc enables offline mode.
   set -- "$@" install -g --registry=https://registry.npmjs.org \
     --@ai-anywhere:registry=https://registry.npmjs.org \
-    --@homebridge:registry=https://registry.npmjs.org
+    --@homebridge:registry=https://registry.npmjs.org \
+    --prefer-online --prefer-offline=false --offline=false
 
   # npm 11 asks global installers to explicitly approve dependencies with lifecycle scripts.
   # npm 10 does not know this option. Error-level logging keeps failures visible while omitting
