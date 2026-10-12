@@ -27,6 +27,25 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.29',
+    date: '2026-10-12',
+    changes: {
+      en: [
+        'The official installer now supports desktop startup, reusing a healthy bridge or starting it in the background',
+        'Desktop bundle versions now stay in sync with CLI releases',
+      ],
+      ja: [
+        '公式インストーラーがデスクトップ起動に対応し、正常なブリッジを再利用するかバックグラウンドで起動します',
+        'デスクトップアプリのバージョンを CLI リリースと同期します',
+      ],
+      ko: [
+        '공식 설치 프로그램이 데스크톱 시작을 지원하며 정상 작동 중인 브리지를 재사용하거나 백그라운드에서 시작합니다',
+        '데스크톱 앱 버전을 CLI 릴리스와 동기화합니다',
+      ],
+      'zh-Hant': ['官方安裝程式支援桌面啟動，重用正常運作的橋接服務或在背景啟動服務', '桌面安裝包版本與 CLI 發布版本保持同步'],
+    },
+  },
+  {
     version: '0.0.28',
     date: '2026-10-12',
     changes: {
