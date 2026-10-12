@@ -27,6 +27,22 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.30',
+    date: '2026-10-12',
+    changes: {
+      en: [
+        'The installer always uses the official npm registry and refreshes package metadata online, preventing stale caches from hiding new releases',
+      ],
+      ja: [
+        'インストーラーは常に公式 npm レジストリを使用し、パッケージ情報をオンラインで更新して古いキャッシュによる新バージョンの取得失敗を防ぎます',
+      ],
+      ko: [
+        '설치 프로그램이 항상 공식 npm 레지스트리를 사용하고 패키지 정보를 온라인으로 갱신하여 오래된 캐시로 새 버전을 찾지 못하는 문제를 방지합니다',
+      ],
+      'zh-Hant': ['安裝程式固定使用官方 npm 源並在線更新套件資訊，避免舊快取導致找不到新版本'],
+    },
+  },
+  {
     version: '0.0.29',
     date: '2026-10-12',
     changes: {
