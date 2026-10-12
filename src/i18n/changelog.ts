@@ -27,6 +27,25 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.28',
+    date: '2026-10-12',
+    changes: {
+      en: [
+        'The installer now configures automatic tmux session saving every 5 minutes and restoration on tmux startup, including pane contents',
+        'Repeated installs reuse existing recovery plugins and preserve your tmux configuration',
+      ],
+      ja: [
+        'インストーラーが tmux セッションを 5 分ごとに自動保存し、tmux 起動時にペインの内容を含めて復元するよう設定します',
+        '再インストール時は既存の復元プラグインを再利用し、tmux の設定を保持します',
+      ],
+      ko: [
+        '설치 프로그램이 tmux 세션을 5분마다 자동 저장하고 tmux 시작 시 창 내용과 함께 복원하도록 설정합니다',
+        '반복 설치 시 기존 복원 플러그인을 재사용하고 tmux 설정을 유지합니다',
+      ],
+      'zh-Hant': ['安裝程式自動設定每 5 分鐘儲存 tmux 會話，啟動 tmux 時恢復會話與面板內容', '重複安裝會重用既有恢復插件並保留 tmux 設定'],
+    },
+  },
+  {
     version: '0.0.27',
     date: '2026-10-08',
     changes: {
