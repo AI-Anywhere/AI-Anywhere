@@ -27,6 +27,48 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.31',
+    date: '2026-10-12',
+    changes: {
+      en: [
+        "New private data dialog: tokens and passwords are saved to a per-tab file on the pane's machine, and the AI is given the path instead of the value in the conversation",
+        'Continue on phone opens the tab in the AI Anywhere mobile app; the CLI accepts --no-qr to skip printing the QR code',
+        'The installer restarts tmux and resumes pi, Codex and Claude sessions by their exact IDs after the machine or tmux server goes away',
+        'The desktop app reads local panes directly from tmux for faster output',
+        'Reattaching no longer loses the first output or captures a half-painted screen after a resize, and restores mouse and keypad modes so scrolling and arrow keys keep working',
+        'A returning browser gets its window sizes back at once instead of one repaint per tab',
+        'Vietnamese and Dutch interface',
+      ],
+      ja: [
+        '新しいプライベートデータ入力: トークンやパスワードはペインのマシン上のタブ専用ファイルに保存され、AI には会話内の値ではなくパスが渡されます',
+        '「スマホで続ける」で AI Anywhere モバイルアプリにそのタブを開けるようになりました。CLI は --no-qr で QR コードの表示を省略できます',
+        'インストーラーが tmux を再起動し、マシンや tmux サーバーが停止した後も pi・Codex・Claude のセッションを正確な ID で再開します',
+        'デスクトップアプリはローカルのペインを tmux から直接読み取り、出力がより高速になりました',
+        '再接続時に最初の出力を取りこぼしたり、リサイズ後に描画途中の画面を取得したりしなくなり、マウスとキーパッドのモードも復元されるためスクロールや矢印キーが引き続き使えます',
+        'ブラウザに戻ると、タブごとに再描画することなくウィンドウサイズが一度に復元されます',
+        'ベトナム語とオランダ語のインターフェース',
+      ],
+      ko: [
+        '새 개인 데이터 입력: 토큰과 비밀번호는 패널이 실행 중인 머신의 탭 전용 파일에 저장되며, AI에는 대화 속 값 대신 경로가 전달됩니다',
+        '휴대폰에서 계속하기로 AI Anywhere 모바일 앱에서 해당 탭을 열 수 있습니다. CLI는 --no-qr로 QR 코드 출력을 생략할 수 있습니다',
+        '설치 프로그램이 tmux를 다시 시작하고, 머신이나 tmux 서버가 종료된 뒤에도 pi, Codex, Claude 세션을 정확한 ID로 재개합니다',
+        '데스크톱 앱이 로컬 패널을 tmux에서 직접 읽어 출력이 더 빨라졌습니다',
+        '다시 연결할 때 첫 출력을 놓치거나 크기 변경 후 반쯤 그려진 화면을 캡처하지 않으며, 마우스와 키패드 모드를 복원해 스크롤과 방향키가 계속 동작합니다',
+        '브라우저로 돌아오면 탭마다 다시 그리지 않고 창 크기가 한 번에 복원됩니다',
+        '베트남어와 네덜란드어 인터페이스',
+      ],
+      'zh-Hant': [
+        '新增私密資料對話框：權杖與密碼會存到窗格所在機器上的分頁專用檔案，AI 拿到的是路徑，而不是對話裡的明文',
+        '「在手機上繼續」可直接在 AI Anywhere 手機 App 中開啟該分頁；CLI 新增 --no-qr 可不列印 QR 碼',
+        '安裝程式會重新啟動 tmux，並在機器或 tmux 伺服器停止後依精確 ID 恢復 pi、Codex 與 Claude 會話',
+        '桌面 App 直接從 tmux 讀取本機窗格，輸出更快',
+        '重新連線不再遺漏第一段輸出，調整大小後也不會擷取到畫到一半的畫面，並會恢復滑鼠與鍵盤模式，捲動與方向鍵持續可用',
+        '回到瀏覽器時一次恢復所有視窗尺寸，不再每個分頁各重繪一次',
+        '新增越南語與荷蘭語介面',
+      ],
+    },
+  },
+  {
     version: '0.0.30',
     date: '2026-10-12',
     changes: {
