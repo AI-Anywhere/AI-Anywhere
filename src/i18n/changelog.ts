@@ -27,6 +27,68 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.33',
+    date: '2026-10-13',
+    changes: {
+      en: [
+        'The macOS terminal scrollbar appears on hover or scrolling without taking space from the terminal grid',
+        'The dotted space around the terminal uses GPU rendering and matches the terminal background, including transparency',
+        'Dragging the sidebar and releasing over a terminal no longer leaves the drag stuck',
+        'Windows local bridge discovery handles refused connections more reliably',
+        'Installer update announcements wait until all client packages have built and published successfully',
+      ],
+      'zh-Hans': [
+        'macOS 终端滚动条在悬停或滚动时显示，不再占用终端网格宽度',
+        '终端周围的点阵区域改用 GPU 渲染，并与终端背景及透明度保持一致',
+        '拖动侧边栏后在终端上松开鼠标，不再导致拖拽卡住',
+        'Windows 本机桥接服务探测更可靠地处理连接被拒绝的情况',
+        '所有客户端包构建和发布成功后，安装入口才会提示新版本',
+      ],
+      'zh-Hant': [
+        'macOS 終端捲軸在停留或捲動時顯示，不再占用終端網格寬度',
+        '終端周圍的點陣區域改用 GPU 渲染，並與終端背景及透明度保持一致',
+        '拖動側邊欄後在終端上放開滑鼠，不再導致拖曳卡住',
+        'Windows 本機橋接服務探測更可靠地處理連線遭拒的情況',
+        '所有客戶端套件構建與發布成功後，安裝入口才會提示新版本',
+      ],
+      ja: [
+        'macOS ターミナルのスクロールバーはホバー時やスクロール時に表示され、グリッドの幅を占有しなくなりました',
+        'ターミナル周囲のドット領域は GPU で描画され、透明度を含めターミナルの背景と一致します',
+        'サイドバーをドラッグしてターミナル上で離しても、ドラッグが解除されない状態にならなくなりました',
+        'Windows でローカルブリッジを検出する際、接続拒否をより確実に処理します',
+        'すべてのクライアントパッケージのビルドと公開が成功してから、インストーラーが新バージョンを案内します',
+      ],
+      ko: [
+        'macOS 터미널 스크롤바는 마우스를 올리거나 스크롤할 때 나타나며 터미널 격자의 너비를 차지하지 않습니다',
+        '터미널 주변의 점 무늬 영역을 GPU로 그리며 투명도를 포함한 터미널 배경과 일치시킵니다',
+        '사이드바를 드래그한 뒤 터미널 위에서 마우스를 놓아도 드래그가 고정되지 않습니다',
+        'Windows에서 로컬 브리지를 찾을 때 연결 거부를 더 안정적으로 처리합니다',
+        '모든 클라이언트 패키지의 빌드와 배포가 성공한 뒤에만 설치 프로그램이 새 버전을 안내합니다',
+      ],
+      vi: [
+        'Thanh cuộn terminal macOS xuất hiện khi di chuột tới hoặc cuộn mà không chiếm chiều rộng của lưới terminal',
+        'Vùng chấm quanh terminal được dựng bằng GPU và khớp với nền terminal, kể cả độ trong suốt',
+        'Kéo thanh bên rồi thả chuột trên terminal không còn khiến thao tác kéo bị kẹt',
+        'Windows xử lý kết nối bị từ chối ổn định hơn khi tìm cầu nối cục bộ',
+        'Trình cài đặt chỉ thông báo phiên bản mới sau khi mọi gói ứng dụng được xây dựng và phát hành thành công',
+      ],
+      nl: [
+        'De macOS-terminal toont de schuifbalk bij aanwijzen of scrollen zonder ruimte van het terminalraster in te nemen',
+        'Het puntengebied rondom de terminal wordt op de GPU getekend en volgt de terminalachtergrond, inclusief transparantie',
+        'De zijbalk verslepen en boven een terminal loslaten laat de sleepactie niet meer vastlopen',
+        'Windows handelt geweigerde verbindingen betrouwbaarder af bij het zoeken naar de lokale bridge',
+        'De installer kondigt een update pas aan nadat alle clientpakketten succesvol zijn gebouwd en gepubliceerd',
+      ],
+      pt: [
+        'A barra de rolagem do terminal macOS aparece ao passar o mouse ou rolar, sem ocupar espaço da grade',
+        'A área pontilhada ao redor do terminal usa renderização por GPU e acompanha o fundo do terminal, incluindo a transparência',
+        'Arrastar a barra lateral e soltar sobre o terminal não deixa mais o arraste travado',
+        'A descoberta da ponte local no Windows trata conexões recusadas com mais confiabilidade',
+        'O instalador só anuncia uma atualização depois que todos os pacotes de clientes forem compilados e publicados com sucesso',
+      ],
+    },
+  },
+  {
     version: '0.0.32',
     date: '2026-10-13',
     changes: {
@@ -61,6 +123,38 @@ export const releases: Release[] = [
         '網格未填滿窗格時，空出的區域顯示 tmux 的點陣（有桌布時也一樣），且不會畫在文字下方',
         '不追蹤滑鼠的全螢幕程式中，滾輪會以方向鍵送出，可以捲動',
         '窗格尺寸跟隨已連接終端的設定改為預設關閉',
+      ],
+      'zh-Hans': [
+        'macOS 桌面终端改用 Ghostty 的 GPU（Metal）渲染器：输出解析在 UI 线程外加快数倍，滚动和缩放更流畅，清屏后不再残留旧内容',
+        'Codex 等 TUI 连接后底部不再错位或缺行：保留捕获画面中的空行',
+        '新窗口不再先闪出缩小的画面再填满，拖动侧边栏时终端会跟随指针',
+        '网格未填满面板时，空白区域显示 tmux 点阵，使用壁纸时也一样，且不会画在文字下方',
+        '在不跟踪鼠标的全屏程序中，滚轮会发送方向键以滚动内容',
+        '面板尺寸跟随已连接终端的设置改为默认关闭',
+      ],
+      vi: [
+        'Terminal trên macOS chuyển sang bộ dựng GPU (Metal) của Ghostty: phân tích đầu ra nhanh hơn nhiều lần ngoài luồng giao diện, cuộn và đổi kích thước mượt hơn, xóa màn hình không còn để lại dòng cũ',
+        'Các TUI như Codex không còn lệch hoặc thiếu dòng ở cuối sau khi kết nối: giữ nguyên các dòng trống của ảnh chụp màn hình terminal',
+        'Cửa sổ mới không còn nháy thành một khối thu nhỏ trước khi lấp đầy khung; terminal theo sát con trỏ khi kéo thanh bên',
+        'Khoảng trống ngoài lưới hiển thị họa tiết chấm của tmux, kể cả khi có hình nền, và không vẽ dưới văn bản',
+        'Con lăn gửi phím mũi tên để cuộn trong ứng dụng toàn màn hình không theo dõi chuột',
+        'Tùy chọn đổi kích thước khung theo terminal đang kết nối mặc định được tắt',
+      ],
+      nl: [
+        'De macOS-terminal gebruikt nu de GPU-renderer (Metal) van Ghostty: uitvoer wordt buiten de UI-thread veel sneller verwerkt, scrollen en schalen blijven soepel en wissen laat geen oude regels achter',
+        'TUI’s zoals Codex tonen na het verbinden geen verschoven of ontbrekende regels onderaan meer: lege regels in de schermopname blijven behouden',
+        'Een nieuw venster flitst niet meer als een verkleind blok voordat het paneel gevuld wordt; bij het slepen van de zijbalk volgt de terminal de aanwijzer',
+        'De ruimte buiten het raster toont het puntenpatroon van tmux, ook met een achtergrondafbeelding, maar nooit onder de tekst',
+        'Het muiswiel verstuurt pijltjestoetsen om te scrollen in schermvullende apps zonder muisregistratie',
+        'Paneelafmetingen aanpassen aan de verbonden terminal staat nu standaard uit',
+      ],
+      pt: [
+        'O terminal do macOS agora usa o renderizador GPU (Metal) do Ghostty: a saída é processada várias vezes mais rápido fora da thread da interface, a rolagem e o redimensionamento ficam suaves e limpar a tela não deixa linhas antigas',
+        'TUIs como o Codex não mostram mais linhas deslocadas ou ausentes na parte inferior após conectar: as linhas vazias da captura são preservadas',
+        'Uma nova janela não pisca mais como um bloco reduzido antes de preencher o painel, e o terminal acompanha o ponteiro ao arrastar a barra lateral',
+        'O espaço fora da grade mostra o padrão de pontos do tmux, inclusive com papel de parede, sem desenhar sob o texto',
+        'A roda do mouse envia teclas de seta para rolar aplicativos em tela cheia que não rastreiam o mouse',
+        'Ajustar o painel ao tamanho do terminal conectado agora vem desativado por padrão',
       ],
     },
   },
@@ -108,6 +202,46 @@ export const releases: Release[] = [
         '回到瀏覽器時一次恢復所有視窗尺寸，不再每個分頁各重繪一次',
         '新增越南語與荷蘭語介面',
       ],
+      'zh-Hans': [
+        '重启后，即使在服务启动前手动重建了 AA 的 tmux 会话，已保存的标签页也会恢复；此前快照会被静默丢弃并覆盖',
+        '新增私密数据对话框：令牌和密码保存到面板所在机器上的标签页专用文件，AI 收到的是路径，而非对话中的明文',
+        '“在手机上继续”可在 AI Anywhere 手机 App 中打开对应标签页；CLI 新增 --no-qr 可跳过打印二维码',
+        '机器或 tmux 服务停止后，安装程序会重启 tmux，并根据精确 ID 恢复 pi、Codex 和 Claude 会话',
+        '桌面 App 直接从 tmux 读取本机面板，输出更快',
+        '重新连接不再丢失首段输出或在缩放后捕获未画完的画面，并恢复鼠标和小键盘模式，保持滚动和方向键可用',
+        '返回浏览器时一次恢复所有窗口尺寸，不再逐个标签页重绘',
+        '新增越南语和荷兰语界面',
+      ],
+      vi: [
+        'Sau khi khởi động lại, các thẻ đã lưu vẫn được khôi phục dù phiên tmux AA được tạo lại thủ công trước khi máy chủ chạy; trước đây bản chụp bị bỏ qua và ghi đè',
+        'Hộp thoại dữ liệu riêng tư mới lưu token và mật khẩu vào tệp riêng của thẻ trên máy chạy khung terminal; AI nhận đường dẫn thay vì giá trị trong hội thoại',
+        'Tiếp tục trên điện thoại mở thẻ trong ứng dụng AI Anywhere; CLI hỗ trợ --no-qr để không in mã QR',
+        'Trình cài đặt khởi động lại tmux và khôi phục phiên pi, Codex, Claude theo đúng ID khi máy hoặc máy chủ tmux dừng',
+        'Ứng dụng desktop đọc trực tiếp các khung cục bộ từ tmux để xuất nhanh hơn',
+        'Kết nối lại không còn mất đầu ra ban đầu hay chụp màn hình đang vẽ dở sau khi đổi kích thước; chế độ chuột và bàn phím số được khôi phục để cuộn và phím mũi tên tiếp tục hoạt động',
+        'Khi quay lại trình duyệt, kích thước mọi cửa sổ được khôi phục cùng lúc thay vì vẽ lại từng thẻ',
+        'Thêm giao diện tiếng Việt và tiếng Hà Lan',
+      ],
+      nl: [
+        'Na een herstart komen opgeslagen tabs terug, ook als de AA-tmux-sessie handmatig is hersteld voordat de server start; voorheen werd de momentopname stilzwijgend weggegooid en overschreven',
+        'Een nieuw venster voor privégegevens bewaart tokens en wachtwoorden in een bestand per tab op de paneelcomputer; de AI krijgt het pad in plaats van de waarde in het gesprek',
+        'Doorgaan op telefoon opent de tab in de mobiele AI Anywhere-app; --no-qr slaat de QR-code in de CLI over',
+        'Het installatieprogramma herstart tmux en hervat pi-, Codex- en Claude-sessies op hun exacte ID nadat de computer of tmux-server stopt',
+        'De desktopapp leest lokale panelen rechtstreeks uit tmux voor snellere uitvoer',
+        'Opnieuw verbinden verliest geen eerste uitvoer meer en legt geen half getekend scherm vast na een formaatwijziging; muis- en toetsenblokmodi worden hersteld zodat scrollen en pijltjestoetsen blijven werken',
+        'Terugkeren naar de browser herstelt alle vensterafmetingen tegelijk in plaats van tab voor tab opnieuw te tekenen',
+        'Een Vietnamese en Nederlandse interface',
+      ],
+      pt: [
+        'Após reiniciar, as abas salvas voltam mesmo se a sessão tmux AA tiver sido recriada manualmente antes do servidor iniciar; antes, a captura era descartada e sobrescrita silenciosamente',
+        'Novo diálogo de dados privados: tokens e senhas ficam em um arquivo por aba na máquina do painel, e a IA recebe o caminho em vez do valor na conversa',
+        'Continuar no celular abre a aba no aplicativo AI Anywhere; a CLI aceita --no-qr para não imprimir o código QR',
+        'O instalador reinicia o tmux e retoma sessões pi, Codex e Claude pelos IDs exatos após a máquina ou o servidor tmux parar',
+        'O aplicativo desktop lê os painéis locais diretamente do tmux para acelerar a saída',
+        'Reconectar não perde mais a saída inicial nem captura uma tela parcialmente desenhada após redimensionar; os modos do mouse e do teclado numérico são restaurados para manter a rolagem e as setas funcionando',
+        'Ao voltar ao navegador, todos os tamanhos de janela são restaurados de uma vez, sem redesenhar aba por aba',
+        'Interface em vietnamita e neerlandês',
+      ],
     },
   },
   {
@@ -124,6 +258,14 @@ export const releases: Release[] = [
         '설치 프로그램이 항상 공식 npm 레지스트리를 사용하고 패키지 정보를 온라인으로 갱신하여 오래된 캐시로 새 버전을 찾지 못하는 문제를 방지합니다',
       ],
       'zh-Hant': ['安裝程式固定使用官方 npm 源並在線更新套件資訊，避免舊快取導致找不到新版本'],
+      'zh-Hans': ['安装程序始终使用官方 npm 源并在线刷新包元数据，避免旧缓存导致找不到新版本'],
+      vi: ['Trình cài đặt luôn dùng registry npm chính thức và làm mới siêu dữ liệu trực tuyến, tránh bộ nhớ đệm cũ che mất phiên bản mới'],
+      nl: [
+        'Het installatieprogramma gebruikt altijd het officiële npm-register en vernieuwt pakketgegevens online, zodat een oude cache nieuwe releases niet verbergt',
+      ],
+      pt: [
+        'O instalador sempre usa o registro oficial do npm e atualiza os metadados online, evitando que caches antigos ocultem novas versões',
+      ],
     },
   },
   {
@@ -143,6 +285,19 @@ export const releases: Release[] = [
         '데스크톱 앱 버전을 CLI 릴리스와 동기화합니다',
       ],
       'zh-Hant': ['官方安裝程式支援桌面啟動，重用正常運作的橋接服務或在背景啟動服務', '桌面安裝包版本與 CLI 發布版本保持同步'],
+      'zh-Hans': ['官方安装程序支持桌面端启动，可复用正常运行的桥接服务或在后台启动服务', '桌面安装包版本与 CLI 发布版本保持同步'],
+      vi: [
+        'Trình cài đặt chính thức hỗ trợ khởi động desktop, tái sử dụng cầu nối đang hoạt động hoặc khởi chạy nó trong nền',
+        'Phiên bản gói desktop đồng bộ với bản phát hành CLI',
+      ],
+      nl: [
+        'Het officiële installatieprogramma ondersteunt het starten van de desktopapp en hergebruikt een werkende bridge of start deze op de achtergrond',
+        'Versies van desktopbundels blijven gelijk aan CLI-releases',
+      ],
+      pt: [
+        'O instalador oficial agora suporta a inicialização do desktop, reutilizando uma ponte saudável ou iniciando-a em segundo plano',
+        'As versões dos pacotes desktop ficam sincronizadas com as versões da CLI',
+      ],
     },
   },
   {
@@ -162,6 +317,22 @@ export const releases: Release[] = [
         '반복 설치 시 기존 복원 플러그인을 재사용하고 tmux 설정을 유지합니다',
       ],
       'zh-Hant': ['安裝程式自動設定每 5 分鐘儲存 tmux 會話，啟動 tmux 時恢復會話與面板內容', '重複安裝會重用既有恢復插件並保留 tmux 設定'],
+      'zh-Hans': [
+        '安装程序自动配置每 5 分钟保存 tmux 会话，并在 tmux 启动时恢复会话及面板内容',
+        '重复安装会复用现有恢复插件并保留 tmux 配置',
+      ],
+      vi: [
+        'Trình cài đặt tự động lưu phiên tmux mỗi 5 phút và khôi phục khi tmux khởi động, bao gồm nội dung khung terminal',
+        'Cài lại sẽ tái sử dụng plugin khôi phục hiện có và giữ nguyên cấu hình tmux',
+      ],
+      nl: [
+        'Het installatieprogramma stelt automatisch opslaan van tmux-sessies om de 5 minuten in en herstelt ze bij het starten van tmux, inclusief paneelinhoud',
+        'Opnieuw installeren hergebruikt bestaande herstelplugins en behoudt je tmux-configuratie',
+      ],
+      pt: [
+        'O instalador configura o salvamento automático de sessões tmux a cada 5 minutos e a restauração ao iniciar o tmux, incluindo o conteúdo dos painéis',
+        'Reinstalações reutilizam os plugins de recuperação existentes e preservam sua configuração do tmux',
+      ],
     },
   },
   {
@@ -282,7 +453,6 @@ export const releases: Release[] = [
         'Het slepen van aangrenzende tabbladen en herschikken van taken met dezelfde werkmap behoudt nu de gewenste volgorde',
         'Hostgroepen kunnen worden ingeklapt en hun status wordt tussen webclients onthouden',
       ],
-
       en: [
         'Choose a local or network IP when starting the CLI and open the printed connection link; forwarded public URLs are also supported',
         'Local access at 127.0.0.1 stays available when the CLI listens on a selected network interface',
@@ -318,6 +488,13 @@ export const releases: Release[] = [
         '修正相鄰分頁拖曳與相同工作目錄任務的排序，保留預期的排列順序',
         '主機區段可折疊，並在不同網頁客戶端之間同步記住折疊狀態',
       ],
+      pt: [
+        'Escolha um IP local ou de rede ao iniciar a CLI e abra o link de conexão exibido; URLs públicas encaminhadas também são suportadas',
+        'O acesso local por 127.0.0.1 continua disponível quando a CLI escuta em uma interface de rede selecionada',
+        'Vários servidores de ponte podem espelhar o mesmo painel tmux sem interromper uns aos outros',
+        'Arrastar abas adjacentes e reordenar tarefas com o mesmo diretório de trabalho preserva a ordem desejada',
+        'As seções de hosts podem ser recolhidas, com o estado lembrado entre clientes web',
+      ],
     },
   },
   {
@@ -334,7 +511,6 @@ export const releases: Release[] = [
         'Ook tmux.online is nu beschikbaar in het Portugees op tmux.online/pt',
         'Opgelost: na het verwijderen van een historische sessie kun je een andere verwijderen zonder de pagina te herladen',
       ],
-
       en: [
         'The web dashboard is now available in Portuguese - the browser language is picked up automatically, or choose it in Settings',
         'tmux.online itself now speaks Portuguese too, at tmux.online/pt',
@@ -383,7 +559,6 @@ export const releases: Release[] = [
         'Klik op een sessie voor details, om de hervatopdracht te kopiëren of om de sessie uit de eigen opslag van de CLI te verwijderen',
         'Dashboard met twee kolommen op brede schermen: actieve taken links, geschiedenis rechts',
       ],
-
       en: [
         'The dashboard now shows agent session history from six CLI stores: claude, codex, pi, opencode, cursor, and copilot - including sessions from before this app existed',
         'History clusters flat, by CLI, or by folder; entries show token weight per session with a time/tokens sort toggle',
@@ -414,6 +589,12 @@ export const releases: Release[] = [
         '點擊歷史列可查看完整詳情、複製 resume 命令，或從 CLI 的存檔刪除該會話',
         '寬螢幕雙欄佈局：左側為進行中任務，右側為歷史',
       ],
+      pt: [
+        'O painel agora mostra o histórico de sessões de seis CLIs: claude, codex, pi, opencode, cursor e copilot, incluindo sessões anteriores à existência deste aplicativo',
+        'O histórico pode ser exibido sem agrupamento, por CLI ou por pasta; cada sessão mostra seu consumo de tokens, com ordenação por tempo ou tokens',
+        'Clique em uma entrada para ver os detalhes completos, copiar o comando de retomada ou excluir a sessão do armazenamento da própria CLI',
+        'Em telas largas, o painel tem duas colunas: tarefas ativas à esquerda e histórico à direita',
+      ],
     },
   },
   {
@@ -426,7 +607,6 @@ export const releases: Release[] = [
       nl: [
         'Soepel scrollen in Claude Code hersteld: muistracking in Claude Code 2.1 veroorzaakte bij elke scrollstap en muisbeweging een retourverzoek en volledige hertekening. De terminal verwerkt de muis nu lokaal en bundelt scrollinvoer, zoals bij OpenCode; slepen om tekst te selecteren werkt weer',
       ],
-
       en: [
         'Smooth scrolling in Claude Code panes again: Claude Code 2.1 turned on mouse tracking, so every wheel tick and pointer move cost a round trip and a full repaint. The terminal now keeps the mouse local and batches wheel input, as it already does for OpenCode, and dragging to select text works again',
       ],
@@ -441,6 +621,9 @@ export const releases: Release[] = [
       ],
       'zh-Hant': [
         'Claude Code 分頁的捲動恢復流暢：Claude Code 2.1 開啟了滑鼠追蹤，導致每格滾輪與每次滑鼠移動都要一次往返與整屏重繪。現在比照 OpenCode 把滑鼠留在本地並批次送出滾輪輸入，拖曳選取文字也恢復可用',
+      ],
+      pt: [
+        'A rolagem voltou a ser suave nos painéis do Claude Code: a versão 2.1 ativou o rastreamento do mouse, fazendo cada movimento e passo da roda exigir uma ida e volta e um redesenho completo. O terminal agora mantém o mouse local e agrupa a entrada da roda, como já faz no OpenCode, e arrastar para selecionar texto funciona novamente',
       ],
     },
   },
@@ -458,7 +641,6 @@ export const releases: Release[] = [
         'De deeloptie blijft zichtbaar in het tabbladmenu wanneer delen op de server uitstaat en toont de opdracht om het in te schakelen',
         'Aantallen bij mappen en machines worden verborgen wanneer ze zijn uitgeklapt, omdat de onderliggende rijen de inhoud al tonen',
       ],
-
       en: [
         'Cursor Agent joins the supported CLIs, with lifecycle hooks reporting busy and waiting state',
         'The share option in the tab menu now stays visible when the server has sharing off, and shows the command to enable it instead of disappearing',
@@ -484,6 +666,11 @@ export const releases: Release[] = [
         '分頁選單的分享選項在伺服器未開啟分享時不再消失，改為顯示啟用分享的指令',
         '展開文件夾或機器時隱藏總數，下方列出的內容已經一目了然',
       ],
+      pt: [
+        'O Cursor Agent passa a integrar as CLIs suportadas, com hooks de ciclo de vida informando os estados de atividade e espera',
+        'A opção de compartilhar no menu da aba permanece visível quando o compartilhamento está desativado no servidor e mostra o comando para ativá-lo',
+        'As contagens de pastas e máquinas ficam ocultas quando expandidas, pois as linhas abaixo já mostram seu conteúdo',
+      ],
     },
   },
   {
@@ -498,7 +685,6 @@ export const releases: Release[] = [
         'Taakmappen hebben een duidelijkere hiërarchie met map- en machinepictogrammen, ingesprongen onderdelen en een aparte sectie voor ongegroepeerde taken',
         'Totalen van mappen en machines tellen nu tabbladen, inclusief actieve samengevoegde tabbladen, in plaats van alleen taakrijen',
       ],
-
       en: [
         'Task folders now have a clearer hierarchy with folder and machine icons, indented children, and a separate ungrouped section',
         'Folder and machine totals now count tabs, including live merged tabs, instead of counting only task rows',
@@ -519,6 +705,10 @@ export const releases: Release[] = [
         '任務文件夾層級更清楚：加入文件夾與機器圖示、子任務縮排，以及獨立的未分組區段',
         '文件夾與機器總數現在計算分頁，包含即時合併進來的分頁，不再只計算任務列',
       ],
+      pt: [
+        'As pastas de tarefas têm uma hierarquia mais clara, com ícones de pasta e máquina, itens recuados e uma seção separada para itens sem grupo',
+        'Os totais de pastas e máquinas agora contam abas, incluindo abas mescladas ativas, em vez de apenas linhas de tarefas',
+      ],
     },
   },
   {
@@ -527,7 +717,6 @@ export const releases: Release[] = [
     changes: {
       vi: ['Máy chủ không truy cập được giờ hiển thị trạng thái đang thử lại và có nút thử ngay, không cần chờ lần kiểm tra tiếp theo'],
       nl: ['Een onbereikbare host toont nu dat opnieuw verbinden wordt geprobeerd, met een knop om direct opnieuw te proberen'],
-
       en: [
         'A host that cannot be reached now shows that it is still being retried, with a button to try again straight away instead of waiting for the next poll',
       ],
@@ -535,6 +724,9 @@ export const releases: Release[] = [
       ko: ['연결할 수 없는 호스트가 계속 재시도 중임을 표시합니다. 다음 폴링을 기다리지 않고 바로 다시 시도하는 버튼도 함께'],
       'zh-Hans': ['无法连接的主机现在会显示仍在重试，并附上立即重试的按钮，不必等下一次轮询'],
       'zh-Hant': ['無法連線的主機現在會顯示仍在重試，並附上立即重試的按鈕，不必等下一次輪詢'],
+      pt: [
+        'Um host inacessível agora mostra que as tentativas continuam, com um botão para tentar novamente imediatamente sem esperar a próxima consulta',
+      ],
     },
   },
   {
@@ -553,7 +745,6 @@ export const releases: Release[] = [
         'Een goedgekeurde telefoon is nu een volledige client met alle vensters en mogelijkheden van de desktop; nieuwe apparaten goedkeuren blijft op de desktop',
         'Webinstellingen verbergen het onderdeel voor bestandspaden als de browser geen maptoegang kan verlenen',
       ],
-
       en: [
         'Auto retry: when a CLI reports its turn ended in error and its own retries have given up, the server types a retry command into the pane for you - with an attempt budget and growing backoff, and a notice on the pane so you can tell "it retried" from "it hung". Runs on the server, so it works with every browser closed. Toggle, retry text and attempt cap live in Settings',
         'Pi sessions now report failed runs, so auto retry covers them too',
@@ -584,6 +775,12 @@ export const releases: Release[] = [
         '獲批准的手機現在是完整客戶端：每個視窗、每項能力，與桌面相同。批准新裝置仍只在桌面進行',
         '瀏覽器無法授權資料夾時，Web 設定會隱藏拖放檔案路徑區塊',
       ],
+      pt: [
+        'Nova tentativa automática: quando uma CLI encerra o turno com erro após esgotar suas próprias tentativas, o servidor envia um comando de nova tentativa ao painel, com limite de tentativas, espera crescente e um aviso para distinguir uma nova tentativa de um travamento. Funciona com todos os navegadores fechados. A ativação, o texto e o limite ficam em Configurações',
+        'As sessões Pi agora informam execuções com falha, permitindo novas tentativas automáticas',
+        'Um celular aprovado agora é um cliente completo, com todas as janelas e capacidades do desktop; a aprovação de novos dispositivos permanece no desktop',
+        'As configurações web ocultam a seção de caminho dos arquivos arrastados em navegadores que não podem conceder acesso a uma pasta',
+      ],
     },
   },
   {
@@ -598,7 +795,6 @@ export const releases: Release[] = [
         'Bracketed paste wordt bij het koppelen voor elke AI CLI hersteld, zodat geplakte tekst met meerdere regels één bericht blijft',
         'De CLI biedt aan updates te installeren in plaats van ze alleen te beschrijven, maximaal één keer per dag',
       ],
-
       en: [
         'Bracketed paste is restored on attach for every AI CLI, so a multi-line paste stays one message instead of one submit per line',
         'The CLI offers to install an upgrade instead of describing it, and asks at most once a day',
@@ -618,6 +814,10 @@ export const releases: Release[] = [
       'zh-Hant': [
         '每個 AI CLI 重新連上時都會恢復括號貼上模式，多行貼上仍是一則訊息，不會逐行送出',
         'CLI 會直接提出安裝升級，而不只是描述它，且一天最多詢問一次',
+      ],
+      pt: [
+        'O modo de colagem delimitada é restaurado ao conectar a qualquer CLI de IA, mantendo uma colagem de várias linhas como uma única mensagem',
+        'A CLI oferece instalar a atualização em vez de apenas descrevê-la e pergunta no máximo uma vez por dia',
       ],
     },
   },
@@ -639,7 +839,6 @@ export const releases: Release[] = [
         'Mislukte beurten verschijnen in de lijst met taken die aandacht nodig hebben; na afhandeling kan die foutstatus verdwijnen',
         'Soepeler scrollen met aanraking, beter bedienbare knoppen en telefoons kunnen de vensterindeling op de desktop niet meer veranderen',
       ],
-
       en: [
         'Phones grew up: their own entry point, a task drawer, screenshot paste into the message box, and a readable text view of any pane instead of an 80-column picture',
         'A paired device collects windows; the desktop shows which phones are connected and can cut any of them off',
@@ -675,6 +874,13 @@ export const releases: Release[] = [
         '失敗的輪次會出現在儀表板的「需要我」清單，處理後標記也會消失',
         '手指滑動更順、控制項可點按，且手機不會再改變桌面視窗的格線',
       ],
+      pt: [
+        'Os celulares ganham uma entrada própria, um menu de tarefas, colagem de capturas no campo de mensagem e uma visualização legível do texto de qualquer painel em vez de uma imagem de 80 colunas',
+        'Um dispositivo pareado reúne janelas; o desktop mostra os celulares conectados e permite desconectar qualquer um',
+        'Escolha o endereço para o qual o código QR aponta',
+        'Turnos com falha aparecem na lista de tarefas que precisam de atenção e deixam esse estado após serem tratados',
+        'Rolagem mais suave ao toque, controles fáceis de tocar e o celular não pode mais alterar a grade da janela do desktop',
+      ],
     },
   },
   {
@@ -683,12 +889,12 @@ export const releases: Release[] = [
     changes: {
       vi: ['Các thẻ tác vụ trên bảng điều khiển được gom theo nhóm, tiêu đề thông báo kèm biểu tượng CLI'],
       nl: ['Taakchips op het dashboard worden per groep gebundeld en meldingen tonen het CLI-pictogram in de titel'],
-
       en: ['Dashboard task chips cluster by group, and toasts carry the CLI mark on the title'],
       ja: ['ダッシュボードのタスクチップをグループごとにまとめ、トーストのタイトルに CLI マークを表示'],
       ko: ['대시보드 작업 칩이 그룹별로 묶이고, 토스트 제목에 CLI 마크가 표시됩니다'],
       'zh-Hans': ['仪表盘任务签依群组聚合，toast 标题带上 CLI 标记'],
       'zh-Hant': ['儀表板任務籤依群組聚合，toast 標題帶上 CLI 標記'],
+      pt: ['Os indicadores de tarefas no painel são reunidos por grupo, e as notificações mostram o ícone da CLI no título'],
     },
   },
   {
@@ -697,12 +903,12 @@ export const releases: Release[] = [
     changes: {
       vi: ['Hiển thị lời nhắc nâng cấp khi phiên bản đã phát hành khác phiên bản đang dùng, không chỉ khi mới hơn'],
       nl: ['De updatemelding verschijnt zodra de gepubliceerde versie verschilt, niet alleen wanneer die nieuwer is'],
-
       en: ['The upgrade prompt fires whenever the published version differs, not only when it is newer'],
       ja: ['公開バージョンが異なれば常にアップグレードを促すように——新しい場合だけではなく'],
       ko: ['게시된 버전이 다르기만 하면 업그레이드를 안내합니다 - 더 새로울 때만이 아니라'],
       'zh-Hans': ['只要发布版本与本地不同就会提示升级，而不只在较新时'],
       'zh-Hant': ['只要發布版本與本機不同就會提示升級，而不只在較新時'],
+      pt: ['O aviso de atualização aparece sempre que a versão publicada difere da instalada, não apenas quando é mais recente'],
     },
   },
   {
@@ -721,7 +927,6 @@ export const releases: Release[] = [
         'Externe hosts via SSH, tijdelijke mappen per account en een groen vinkje bij verbonden hosts',
         'Publicatie naar npm via Trusted Publishing (OIDC), zonder langdurig token',
       ],
-
       en: [
         'First published release of the AI Anywhere bridge: chat with the AI CLIs on your machine (claude, codex, gemini, ...) from a browser side panel or the web dashboard',
         'Hand one tmux window to a phone by QR code, behind --share',
@@ -751,6 +956,12 @@ export const releases: Release[] = [
         '透過 QR code 把單個 tmux 視窗交給手機（需 --share）',
         '支援 ssh 遠端主機、每帳號獨立暫存目錄，已連線主機以全站綠色勾號標示',
         '透過 npm Trusted Publishing（OIDC）發布，無長期 token',
+      ],
+      pt: [
+        'Primeira versão publicada da ponte AI Anywhere: converse com as CLIs de IA da sua máquina (claude, codex, gemini e outras) pelo painel lateral do navegador ou pelo painel web',
+        'Compartilhe uma janela tmux com um celular por código QR usando --share',
+        'Hosts remotos por SSH, diretórios temporários por conta e hosts conectados marcados com o indicador verde do aplicativo',
+        'Publicação no npm por Trusted Publishing (OIDC), sem token de longa duração',
       ],
     },
   },
