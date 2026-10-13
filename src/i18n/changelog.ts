@@ -27,6 +27,44 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.32',
+    date: '2026-10-13',
+    changes: {
+      en: [
+        "The macOS desktop terminal now runs on Ghostty's GPU (Metal) renderer: output parses many times faster off the UI thread, scrolling and resizing stay smooth, and clearing the screen no longer leaves stale rows behind",
+        'TUIs such as Codex no longer show shifted or missing lines at the bottom after attaching: blank rows of the captured screen are kept',
+        'A new window no longer flashes as a shrunken block before filling the pane, and dragging the sidebar keeps the terminal following the pointer',
+        "The space beside a grid that does not fill the pane shows tmux's dot pattern, with a wallpaper too, and never under the text",
+        'The mouse wheel scrolls full-screen apps that do not track the mouse by sending arrow keys',
+        'Sizing a pane to the attached terminal is now off by default',
+      ],
+      ja: [
+        'macOS デスクトップ版のターミナルが Ghostty の GPU（Metal）レンダラーで動作するようになりました。出力の解析は UI スレッド外で何倍も速くなり、スクロールやリサイズは滑らかになり、画面クリア後に古い行が残らなくなりました',
+        'Codex などの TUI でアタッチ後に下部の行がずれたり欠けたりしなくなりました。キャプチャした画面の空行を保持します',
+        '新しいウィンドウが縮んだブロックとして一瞬表示されることがなくなり、サイドバーのドラッグ中もターミナルがポインターに追従します',
+        'グリッドがペインを満たさないときの余白に、壁紙使用時も tmux のドット模様を表示します。テキストの下には描画しません',
+        'マウスを追跡しない全画面アプリでは、ホイールが矢印キーとして送られスクロールできます',
+        '接続中のターミナルにペインサイズを合わせる設定は既定でオフになりました',
+      ],
+      ko: [
+        'macOS 데스크톱 터미널이 Ghostty의 GPU(Metal) 렌더러로 동작합니다. 출력 파싱이 UI 스레드 밖에서 몇 배 빨라지고, 스크롤과 크기 조절이 부드러워졌으며, 화면을 지운 뒤 이전 줄이 남지 않습니다',
+        'Codex 같은 TUI에서 연결 후 하단 줄이 밀리거나 사라지지 않습니다. 캡처한 화면의 빈 줄을 유지합니다',
+        '새 창이 줄어든 블록으로 잠깐 보였다가 채워지는 현상이 사라졌고, 사이드바를 드래그할 때 터미널이 포인터를 따라옵니다',
+        '그리드가 패널을 다 채우지 못할 때 남는 공간에 배경화면을 쓸 때도 tmux 점 무늬를 표시하며, 텍스트 아래에는 그리지 않습니다',
+        '마우스를 추적하지 않는 전체 화면 앱에서 휠이 화살표 키로 전달되어 스크롤됩니다',
+        '연결된 터미널 크기에 패널을 맞추는 설정이 기본으로 꺼졌습니다',
+      ],
+      'zh-Hant': [
+        'macOS 桌面版終端改用 Ghostty 的 GPU（Metal）渲染：輸出解析在 UI 執行緒外快上數倍，捲動與縮放更順暢，清屏後不再殘留舊內容',
+        'Codex 等 TUI 連上後底部不再錯位或缺行：保留擷取畫面中的空行',
+        '新視窗不再先閃出一塊縮小的畫面再填滿，拖動側邊欄時終端會跟手',
+        '網格未填滿窗格時，空出的區域顯示 tmux 的點陣（有桌布時也一樣），且不會畫在文字下方',
+        '不追蹤滑鼠的全螢幕程式中，滾輪會以方向鍵送出，可以捲動',
+        '窗格尺寸跟隨已連接終端的設定改為預設關閉',
+      ],
+    },
+  },
+  {
     version: '0.0.31',
     date: '2026-10-13',
     changes: {
