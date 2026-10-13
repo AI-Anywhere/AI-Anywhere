@@ -28,9 +28,10 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 export const releases: Release[] = [
   {
     version: '0.0.31',
-    date: '2026-10-12',
+    date: '2026-10-13',
     changes: {
       en: [
+        'After a reboot the saved tabs come back even when the AA tmux session was recreated by hand before the server started; previously the snapshot was silently dropped and overwritten',
         "New private data dialog: tokens and passwords are saved to a per-tab file on the pane's machine, and the AI is given the path instead of the value in the conversation",
         'Continue on phone opens the tab in the AI Anywhere mobile app; the CLI accepts --no-qr to skip printing the QR code',
         'The installer restarts tmux and resumes pi, Codex and Claude sessions by their exact IDs after the machine or tmux server goes away',
@@ -40,6 +41,7 @@ export const releases: Release[] = [
         'Vietnamese and Dutch interface',
       ],
       ja: [
+        '再起動後、サーバー起動前に AA の tmux セッションを手動で作り直していても保存されたタブが復元されます。これまではスナップショットが黙って破棄され上書きされていました',
         '新しいプライベートデータ入力: トークンやパスワードはペインのマシン上のタブ専用ファイルに保存され、AI には会話内の値ではなくパスが渡されます',
         '「スマホで続ける」で AI Anywhere モバイルアプリにそのタブを開けるようになりました。CLI は --no-qr で QR コードの表示を省略できます',
         'インストーラーが tmux を再起動し、マシンや tmux サーバーが停止した後も pi・Codex・Claude のセッションを正確な ID で再開します',
@@ -49,6 +51,7 @@ export const releases: Release[] = [
         'ベトナム語とオランダ語のインターフェース',
       ],
       ko: [
+        '재부팅 후 서버를 시작하기 전에 AA tmux 세션을 직접 다시 만들었더라도 저장된 탭이 복원됩니다. 이전에는 스냅샷이 조용히 버려지고 덮어써졌습니다',
         '새 개인 데이터 입력: 토큰과 비밀번호는 패널이 실행 중인 머신의 탭 전용 파일에 저장되며, AI에는 대화 속 값 대신 경로가 전달됩니다',
         '휴대폰에서 계속하기로 AI Anywhere 모바일 앱에서 해당 탭을 열 수 있습니다. CLI는 --no-qr로 QR 코드 출력을 생략할 수 있습니다',
         '설치 프로그램이 tmux를 다시 시작하고, 머신이나 tmux 서버가 종료된 뒤에도 pi, Codex, Claude 세션을 정확한 ID로 재개합니다',
@@ -58,6 +61,7 @@ export const releases: Release[] = [
         '베트남어와 네덜란드어 인터페이스',
       ],
       'zh-Hant': [
+        '重開機後即使在伺服器啟動前手動重建了 AA 的 tmux 工作階段，已儲存的分頁也會恢復；先前快照會被默默丟棄並覆寫',
         '新增私密資料對話框：權杖與密碼會存到窗格所在機器上的分頁專用檔案，AI 拿到的是路徑，而不是對話裡的明文',
         '「在手機上繼續」可直接在 AI Anywhere 手機 App 中開啟該分頁；CLI 新增 --no-qr 可不列印 QR 碼',
         '安裝程式會重新啟動 tmux，並在機器或 tmux 伺服器停止後依精確 ID 恢復 pi、Codex 與 Claude 會話',
