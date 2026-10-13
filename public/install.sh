@@ -5,6 +5,7 @@
 #                     script stops and points at nodejs.org — it never installs Node system-wide)
 #   3. @ai-anywhere/cli  (npm install -g)
 #   4. ai-anywhere up    (signs in when needed, then runs in the foreground)
+# Re-running starts tmux and resumes saved pi/Codex/Claude IDs. No login service is installed.
 #
 # Usage:  curl -fsSL https://tmux.online/install.sh | sh
 # Desktop: curl -fsSL https://tmux.online/install.sh | sh -s -- --desktop
@@ -219,13 +220,17 @@ ensure_tmux_restore() {
 
   _restore_conf="$_restore_dir/recovery.conf"
   # Versioned marker is the fast path; bump it whenever the managed config changes.
-  _restore_marker='# AI Anywhere tmux recovery v1'
+  _restore_marker='# AI Anywhere tmux recovery v2'
   if ! grep -qxF "$_restore_marker" "$_restore_conf" 2>/dev/null; then
     cat > "$_restore_conf" <<'TMUX_RECOVERY'
-# AI Anywhere tmux recovery v1
-set -g @continuum-save-interval '5'
-set -g @continuum-restore 'on'
+# AI Anywhere tmux recovery v2
+# The managed watcher saves every five minutes even without an attached client.
+# Avoid concurrent saves from continuum's status-line timer.
+set -g @continuum-save-interval '0'
+# The installer restores explicitly, after Node and the AI-session helper are ready.
+set -g @continuum-restore 'off'
 set -g @resurrect-capture-pane-contents 'on'
+set -g @resurrect-hook-post-save-all '"$HOME/.config/ai-anywhere/tmux/ai-sessions.sh" save'
 run-shell '"$HOME/.config/ai-anywhere/tmux/tmux-resurrect/resurrect.tmux"'
 # Load continuum last, after themes that may replace status-right.
 run-shell '"$HOME/.config/ai-anywhere/tmux/tmux-continuum/continuum.tmux"'
@@ -244,12 +249,192 @@ TMUX_RECOVERY
   _restore_source='source-file "~/.config/ai-anywhere/tmux/recovery.conf"'
   if ! grep -qxF "$_restore_source" "$_tmux_conf" 2>/dev/null; then
     printf '\n# AI Anywhere: automatic tmux session recovery\n%s\n' "$_restore_source" >> "$_tmux_conf"
-    # Apply only our config, without reloading unrelated settings or starting a server.
-    if tmux list-sessions >/dev/null 2>&1; then
-      tmux source-file "$_restore_conf" || warn "Reload tmux recovery with: tmux source-file \"$_restore_conf\""
-    fi
   fi
-  ok "tmux recovery configured (save every 5 minutes; restore on tmux startup)"
+  ok "tmux recovery configured (save every 5 minutes; restore when running this installer)"
+}
+
+# Standalone helpers are embedded so curl | sh needs no checkout or extra downloads.
+# They persist exact IDs, never select a conversation merely because its directory matches.
+ensure_ai_session_restore() {
+  _restore_dir="$HOME/.config/ai-anywhere/tmux"
+  [ -f "$_restore_dir/recovery.conf" ] || return 0
+  mkdir -p "$_restore_dir"
+  cat > "$_restore_dir/ai-sessions.cjs" <<'AI_SESSIONS'
+const fs = require('node:fs')
+const path = require('node:path')
+const { execFileSync, spawn } = require('node:child_process')
+const home = process.env.HOME
+const dir = path.join(home, '.config/ai-anywhere/tmux')
+const file = path.join(dir, 'ai-sessions.json')
+const run = (args) => execFileSync('tmux', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trimEnd()
+const quote = (s) => "'" + s.replace(/'/g, "'\\''") + "'"
+const uuid = /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i
+const panes = () => run(['list-panes', '-a', '-F', '#{pane_id}\t#{session_name}:#{window_index}.#{pane_index}\t#{pane_current_path}\t#{pane_current_command}\t#{pane_pid}\t#{@ai-session-id}\t#{@ai-session-tool}\t#{@ai-session-file}'])
+  .split('\n').filter(Boolean).map((line) => {
+    const [pane, target, cwd, command, pid, id, tool, sessionFile] = line.split('\t')
+    return { pane, target, cwd, command, pid: Number(pid), id, tool, sessionFile }
+  })
+const processes = () => execFileSync('ps', ['-axo', 'pid=,ppid=,command='], { encoding: 'utf8' }).split('\n').flatMap((line) => {
+  const m = line.trim().match(/^(\d+)\s+(\d+)\s+(.*)$/)
+  return m ? [{ pid: Number(m[1]), parent: Number(m[2]), command: m[3] }] : []
+})
+const descendants = (pid, rows) => {
+  const ids = new Set([pid])
+  let size
+  do { size = ids.size; for (const row of rows) if (ids.has(row.parent)) ids.add(row.pid) } while (ids.size !== size)
+  return rows.filter((row) => ids.has(row.pid))
+}
+const identify = (pane, rows) => {
+  const children = descendants(pane.pid, rows)
+  const ai = children.find((row) => /(?:^|[/ ])(?:codex|claude|pi)(?:\.exe)?(?: |$)/.test(row.command))
+  if (!ai) return null // Don't revive an AI process the user already exited.
+  const tool = ai.command.match(/(?:^|[/ ])(codex|claude|pi)(?:\.exe)?(?: |$)/)[1]
+  const explicit = ai.command.match(/(?:resume|--resume|--session|--session-id)\s+([0-9a-f-]{36})(?:\s|$)/i)
+  let id = explicit?.[1] || (pane.tool === tool || !pane.tool ? pane.id : '')
+  let sessionFile = pane.sessionFile || ''
+  if (!uuid.test(id || '')) {
+    // Normal fresh Codex/Claude launches may keep their transcript open.
+    for (const child of children) {
+      let open = ''
+      try { open = execFileSync('lsof', ['-p', String(child.pid), '-Fn'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }) } catch {}
+      const files = open.split('\n').filter((s) => s.startsWith('n') && s.endsWith('.jsonl') &&
+        (tool === 'codex' ? s.includes('/.codex/sessions/') : tool === 'claude' ? s.includes('/.claude/projects/') && !s.includes('/subagents/') : s.includes('/.pi/agent/sessions/')))
+      if (files.length !== 1) continue
+      const match = files[0].match(/([0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12})\.jsonl$/i)
+      if (match) { id = match[1]; sessionFile = files[0].slice(1); break }
+    }
+  }
+  if (!uuid.test(id || '')) { console.error(`AI recovery: cannot determine exact ${tool} session in ${pane.target}; not saved`); return null }
+  return { target: pane.target, cwd: pane.cwd, tool, id, sessionFile }
+}
+const save = () => {
+  const rows = processes()
+  const entries = panes().map((pane) => identify(pane, rows)).filter(Boolean)
+  fs.mkdirSync(dir, { recursive: true, mode: 0o700 })
+  const temp = file + '.' + process.pid
+  fs.writeFileSync(temp, JSON.stringify({ version: 1, entries }, null, 2), { mode: 0o600 })
+  fs.renameSync(temp, file)
+}
+const restore = () => {
+  if (!fs.existsSync(file)) return
+  const { version, entries } = JSON.parse(fs.readFileSync(file, 'utf8'))
+  if (version !== 1 || !Array.isArray(entries)) throw new Error('Invalid AI session snapshot')
+  const current = panes()
+  const rows = processes()
+  const active = new Set(current.map((pane) => identify(pane, rows)).filter(Boolean).map((x) => x.tool + ':' + x.id))
+  for (const entry of entries) {
+    const { target, cwd, tool, id, sessionFile } = entry
+    if (!['pi', 'codex', 'claude'].includes(tool) || !uuid.test(id || '') || typeof target !== 'string' || typeof cwd !== 'string') continue
+    const key = tool + ':' + id
+    if (active.has(key)) continue
+    const pane = current.find((p) => p.target === target)
+    // Never send resume commands into an existing application or user's occupied shell.
+    if (!pane || !['sh', 'bash', 'zsh', 'fish', 'dash', 'ksh'].includes(pane.command) || descendants(pane.pid, rows).length !== 1) continue
+    if (!fs.existsSync(cwd)) { console.error(`AI recovery: directory missing for ${target}: ${cwd}`); continue }
+    try { execFileSync('/bin/sh', ['-c', 'command -v "$1"', 'sh', tool], { stdio: 'ignore' }) } catch { console.error(`AI recovery: ${tool} is not installed; skipped ${target}`); continue }
+    const args = tool === 'pi' ? ['pi', '--no-extensions', '--extension', path.join(dir, 'pi-session.ts'), '--session', sessionFile && fs.existsSync(sessionFile) ? sessionFile : id]
+      : tool === 'codex' ? ['codex', 'resume', id] : ['claude', '--resume', id]
+    // Launch directly in the restored pane: avoids shell startup races and quoting differences.
+    const command = args.map(quote).join(' ') + '; exec ' + quote(process.env.SHELL || '/bin/sh')
+    run(['set-option', '-p', '-t', pane.pane, '@ai-session-id', id])
+    run(['set-option', '-p', '-t', pane.pane, '@ai-session-tool', tool])
+    if (sessionFile) run(['set-option', '-p', '-t', pane.pane, '@ai-session-file', sessionFile])
+    run(['respawn-pane', '-k', '-t', pane.pane, '-c', cwd, command])
+    active.add(key)
+  }
+}
+try {
+  if (process.argv[2] === 'save') save()
+  else if (process.argv[2] === 'restore') restore()
+  else if (process.argv[2] === 'start-watch') {
+    const pid = Number(run(['show-option', '-gqv', '@ai-recovery-watcher-pid']))
+    let alive = false
+    if (pid) { try { process.kill(pid, 0); alive = true } catch {} }
+    if (!alive) {
+      const child = spawn(process.execPath, [__filename, 'watch', run(['display-message', '-p', '#{pid}'])], { detached: true, stdio: 'ignore' })
+      run(['set-option', '-g', '@ai-recovery-watcher-pid', String(child.pid)])
+      child.unref()
+    }
+  }
+  else if (process.argv[2] === 'watch') {
+    setInterval(() => {
+      try {
+        if (run(['display-message', '-p', '#{pid}']) !== process.argv[3]) process.exit(0)
+        execFileSync(path.join(dir, 'tmux-resurrect/scripts/save.sh'), ['quiet'], { stdio: 'ignore', timeout: 120000 })
+      } catch { process.exit(0) }
+    }, 300000)
+  }
+  else if (process.argv[2] === 'record') {
+    const data = JSON.parse(fs.readFileSync(0, 'utf8'))
+    const id = data.session_id || data.sessionId
+    const tool = process.argv[3]
+    if (process.env.TMUX_PANE && uuid.test(id || '') && ['codex', 'claude'].includes(tool) && !data.parent_session_id && !data.parent_thread_id) {
+      run(['set-option', '-p', '-t', process.env.TMUX_PANE, '@ai-session-id', id])
+      run(['set-option', '-p', '-t', process.env.TMUX_PANE, '@ai-session-tool', tool])
+      run(['set-option', '-p', '-t', process.env.TMUX_PANE, '@ai-session-file', ''])
+    }
+  }
+  else if (process.argv[2] === 'install-hooks') {
+    for (const [tool, name] of [['codex', '.codex/hooks.json'], ['claude', '.claude/settings.json']]) {
+      const configFile = path.join(home, name)
+      try {
+        const config = fs.existsSync(configFile) ? JSON.parse(fs.readFileSync(configFile, 'utf8')) : {}
+        const command = quote(path.join(dir, 'ai-sessions.sh')) + ' record ' + tool
+        config.hooks ||= {}
+        config.hooks.SessionStart ||= []
+        if (config.hooks.SessionStart.some((group) => group.hooks?.some((hook) => hook.command === command))) continue
+        config.hooks.SessionStart.push({ hooks: [{ type: 'command', command, timeout: 3 }] })
+        fs.mkdirSync(path.dirname(configFile), { recursive: true })
+        const temp = configFile + '.' + process.pid
+        fs.writeFileSync(temp, JSON.stringify(config, null, 2) + '\n', { mode: 0o600 })
+        fs.renameSync(temp, configFile)
+      } catch (error) { console.error(`AI recovery: preserved unreadable ${configFile}: ${error.message}`) }
+    }
+  }
+  else throw new Error('Expected save or restore')
+} catch (error) { console.error('AI recovery:', error.message); process.exitCode = 1 }
+AI_SESSIONS
+  # Absolute Node path also works when tmux's environment predates nvm/fnm initialisation.
+  _recovery_node="$(command -v node)"
+  printf '#!/bin/sh\nexec "%s" "$HOME/.config/ai-anywhere/tmux/ai-sessions.cjs" "$@"\n' "$_recovery_node" > "$_restore_dir/ai-sessions.sh"
+  chmod 700 "$_restore_dir/ai-sessions.sh"
+  cat > "$_restore_dir/pi-session.ts" <<'PI_SESSION'
+import { execFileSync } from 'node:child_process'
+export default function (pi: any) {
+  pi.on('session_start', (_event: any, ctx: any) => {
+    if (!process.env.TMUX_PANE) return
+    const values = { '@ai-session-tool': 'pi', '@ai-session-id': ctx.sessionManager.getSessionId(), '@ai-session-file': ctx.sessionManager.getSessionFile() || '' }
+    for (const [key, value] of Object.entries(values)) {
+      try { execFileSync('tmux', ['set-option', '-p', '-t', process.env.TMUX_PANE, key, value], { stdio: 'ignore' }) } catch {}
+    }
+  })
+}
+PI_SESSION
+  # Fresh Pi sessions record IDs too. Explicit --no-extensions users can pass --extension
+  # to this same helper; resumed sessions above do so without enabling unrelated loops.
+  mkdir -p "$HOME/.pi/agent/extensions"
+  cat > "$HOME/.pi/agent/extensions/ai-anywhere-session.ts" <<'PI_LOADER'
+export { default } from '../../../.config/ai-anywhere/tmux/pi-session.ts'
+PI_LOADER
+
+  "$_restore_dir/ai-sessions.sh" install-hooks
+
+  _restore_layout=0
+  if ! tmux has-session -t AA 2>/dev/null; then
+    # new-session keeps a fresh server alive; start-server alone exits without sessions.
+    tmux new-session -d -s AA || tmux has-session -t AA
+    _restore_layout=1
+  fi
+  tmux source-file "$_restore_dir/recovery.conf"
+  # Suppress continuum's asynchronous startup restore; resurrect is run synchronously here.
+  if [ "$_restore_layout" -eq 1 ]; then
+    "$_restore_dir/tmux-resurrect/scripts/restore.sh" || warn "Could not restore tmux layout; saved files have been kept"
+  fi
+  "$_restore_dir/ai-sessions.sh" start-watch || warn "Could not start periodic tmux snapshot saving"
+  "$_restore_dir/ai-sessions.sh" restore || warn "Some AI sessions could not be restored; saved files have been kept"
+  # Save immediately as well as on continuum's schedule (which needs an attached client).
+  "$_restore_dir/tmux-resurrect/scripts/save.sh" quiet || warn "Could not save tmux layout"
+  ok "tmux started; saved pi, Codex and Claude sessions restored where available"
 }
 
 # ── 2. Node.js ───────────────────────────────────────────────────────
@@ -346,7 +531,7 @@ PKG='@ai-anywhere/cli'
 # The latest published version, updated on every release (scripts/publish-cli.sh in the core repo
 # enforces that this matches the package.json being published). Pinning makes the script
 # reproducible and lets a re-run skip npm entirely when nothing changed.
-CLI_VERSION='0.0.30'
+CLI_VERSION='0.0.31'
 PTY_PKG='@homebridge/node-pty-prebuilt-multiarch'
 CLI_BIN=''
 
@@ -358,7 +543,7 @@ install_cli_with_npm() {
 
   # Scope-specific registries take precedence over npm's default registry. Override both the
   # CLI and its scoped native dependency without changing the user's prefix or proxy settings.
-  # Always revalidate metadata online, including when npmrc enables offline mode.
+  # Always revalidate metadata online, even when npmrc enables offline/prefer-offline mode.
   set -- "$@" install -g --registry=https://registry.npmjs.org \
     --@ai-anywhere:registry=https://registry.npmjs.org \
     --@homebridge:registry=https://registry.npmjs.org \
@@ -416,13 +601,20 @@ if [ "$DESKTOP" -eq 1 ]; then
   trap 'desktop_finish "$?"' 0
   desktop_state checking
   have curl || desktop_requirement curl "curl is required. Install curl with your system package manager, then retry the official installer: curl -fsSL https://tmux.online/install.sh | sh -s -- --desktop"
-  if desktop_check; then exit 0; fi
+  if desktop_check; then
+    if have tmux && node_ok; then
+      ensure_tmux_restore
+      ensure_ai_session_restore
+    fi
+    exit 0
+  fi
   desktop_state installing
 fi
 say "setting up AI Anywhere…"
 ensure_tmux
 ensure_tmux_restore
 ensure_node
+ensure_ai_session_restore
 install_cli
 
 printf '\n'
