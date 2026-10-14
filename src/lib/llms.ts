@@ -1,6 +1,18 @@
 import { languages, localizePath, shippedLangs, useCopy, type Lang } from '../i18n'
 import { guideEntries, useGuides } from '../i18n/guides'
-import { API_URL, INSTALL_COMMAND, INSTALL_URL, ISSUES_URL, NPM_URL, REPO_URL, SITE_URL } from '../config'
+import {
+  API_URL,
+  DESKTOP_RELEASE_URL,
+  DESKTOP_VERSION,
+  INSTALL_COMMAND,
+  INSTALL_URL,
+  ISSUES_URL,
+  MACOS_DMG_URL,
+  MACOS_MINIMUM,
+  NPM_URL,
+  REPO_URL,
+  SITE_URL,
+} from '../config'
 
 /**
  * llms.txt and llms-full.txt, generated from the same copy table the page renders from.
@@ -42,6 +54,10 @@ before the local service starts; terminal sessions, prompts and keystrokes stay 
 - Language of this file: ${languages[lang]} (${lang})
 - Install (macOS, Linux): \`${INSTALL_COMMAND}\`
 - Requirements: tmux, Node.js 22.5 or newer
+- Desktop app for macOS ${MACOS_MINIMUM}+ (universal: Apple silicon and Intel), v${DESKTOP_VERSION}: ${MACOS_DMG_URL}
+  (release notes: ${DESKTOP_RELEASE_URL}). Same version as the CLI. On first launch it installs the
+  local bridge itself (or use the install line); the build is not notarized yet. The site does not
+  offer a Windows build yet
 - Server package: \`@ai-anywhere/cli\` (npm), default port 51984, bound to 127.0.0.1
 - Interface: the server hosts the web UI at http://127.0.0.1:51984; a Chrome extension adds
   the same workspace as a side panel plus a page element picker

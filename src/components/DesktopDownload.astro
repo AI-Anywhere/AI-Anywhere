@@ -1,15 +1,24 @@
 ---
+import Icon from './Icon.astro'
 import { useCopy, type Lang } from '../i18n'
+import { DESKTOP_RELEASE_URL, DESKTOP_VERSION, MACOS_DMG_SHA256_URL, MACOS_DMG_URL, MACOS_MINIMUM } from '../config'
 
 /**
- * The desktop builds, before there are any.
+ * The desktop downloads: macOS ships, Windows does not yet.
  *
- * Shown disabled on purpose rather than hidden: people arrive looking for an app to download, and
- * "not yet" answers that question where "nothing here" only makes them look harder. The buttons
- * carry `disabled` and `aria-disabled` so a pointer, a keyboard and a screen reader all get the
- * same answer, and the note underneath points at the install line above, which does work today.
+ * The macOS button is a plain link to the versioned DMG on the GitHub release (see
+ * `DESKTOP_VERSION` in src/config.ts). GitHub answers it with Content-Disposition: attachment, so
+ * one click is one download and no script is involved. The checksum and release notes sit next to
+ * it as ordinary links.
  *
- * When the builds exist, each button becomes an anchor to its artifact and the note goes.
+ * Windows stays shown but disabled rather than hidden: people arrive looking for an app for their
+ * platform, and "not yet" answers that question where "nothing here" only makes them look harder.
+ * The button carries `disabled` and `aria-disabled` so a pointer, a keyboard and a screen reader
+ * all get the same answer.
+ *
+ * The steps underneath are not decoration. The build is not notarized, so Gatekeeper stops the
+ * first launch, and the app has to install the local bridge before it can show anything; both
+ * would otherwise read as "the app is broken".
  */
 interface Props {
   lang: Lang
@@ -27,40 +36,55 @@ const c = useCopy(lang)
  * Apple's is its published mark. Windows has no equivalent in the icon set this site borrows
  * from, and its logo is four squares in a grid, so it is drawn here rather than copied.
  */
-const MARKS: Record<string, string> = {
+const MARKS = {
   mac: '<path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/>',
   windows: '<path d="M3.6 4.9 10.7 4v7.4H3.6zM12.2 3.8 20.4 2.6v8.8h-8.2zM3.6 12.6h7.1V20L3.6 19.1zM12.2 12.6h8.2v8.8l-8.2-1.2z"/>',
 }
 
-const platforms = [
-  { id: 'mac', label: c.download.mac },
-  { id: 'windows', label: c.download.windows },
-]
+const requires = c.download.requires.replace('{min}', MACOS_MINIMUM)
 ---
 
 <div class="download">
   <p class="label">{c.download.label}</p>
   <div class="row">
-    {
-      platforms.map((p) => (
-        <button type="button" class="btn" disabled aria-disabled="true" title={c.download.soonTitle}>
-          <svg
-            class="mark"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            aria-hidden="true"
-            focusable="false"
-            set:html={MARKS[p.id]}
-          />
-          <span class="name">{p.label}</span>
-          <span class="tag">{c.download.soon}</span>
-        </button>
-      ))
-    }
+    <a class="btn btn-mac" href={MACOS_DMG_URL} title={c.download.macTitle} data-desktop-download="macos">
+      <svg
+        class="mark"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
+        focusable="false"
+        set:html={MARKS.mac}
+      />
+      <span class="name">{c.download.mac}</span>
+      <span class="version">v{DESKTOP_VERSION}</span>
+      <Icon name="download" size={15} class="arrow" />
+    </a>
+    <button type="button" class="btn btn-soon" disabled aria-disabled="true" title={c.download.soonTitle}>
+      <svg
+        class="mark"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
+        focusable="false"
+        set:html={MARKS.windows}
+      />
+      <span class="name">{c.download.windows}</span>
+      <span class="tag">{c.download.soon}</span>
+    </button>
   </div>
-  <p class="note">{c.download.note}</p>
+  <p class="meta">
+    <span>{requires}</span>
+    <a href={MACOS_DMG_SHA256_URL}>{c.download.checksum}</a>
+    <a href={DESKTOP_RELEASE_URL} target="_blank" rel="noopener">{c.download.releaseNotes}</a>
+  </p>
+  <ol class="steps">
+    {c.download.steps.map((step) => <li>{step}</li>)}
+  </ol>
 </div>
 
 <style>
@@ -85,10 +109,6 @@ const platforms = [
     margin-top: 10px;
   }
 
-  /**
-   * Dimmed but never invisible: the button has to stay readable, because the platform name is the
-   * information. `not-allowed` is the honest cursor here; the tag says the rest.
-   */
   .btn {
     display: inline-flex;
     align-items: center;
@@ -100,6 +120,32 @@ const platforms = [
     color: var(--fg-dim);
     font: inherit;
     font-size: 0.9rem;
+    text-decoration: none;
+  }
+
+  .btn-mac {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--fg);
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .btn-mac:hover {
+    background: rgb(25 186 31 / 0.22);
+  }
+
+  .btn-mac:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /**
+   * Dimmed but never invisible: the button has to stay readable, because the platform name is the
+   * information. `not-allowed` is the honest cursor here; the tag says the rest.
+   */
+  .btn-soon {
     cursor: not-allowed;
     opacity: 0.72;
   }
@@ -111,6 +157,17 @@ const platforms = [
 
   .name {
     font-weight: 500;
+  }
+
+  .version {
+    color: var(--fg-dim);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+
+  .btn-mac :global(.arrow) {
+    flex: none;
+    color: var(--accent);
   }
 
   .tag {
@@ -125,11 +182,45 @@ const platforms = [
     opacity: 0.9;
   }
 
-  .note {
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
     margin-top: 10px;
     color: var(--fg-muted);
     font-size: 0.8125rem;
     line-height: 1.55;
+  }
+
+  .meta a {
+    color: var(--fg-dim);
+    text-decoration: underline;
+    text-decoration-color: var(--line-strong);
+    text-underline-offset: 3px;
+  }
+
+  .meta a:hover {
+    color: var(--fg);
+  }
+
+  /* global.css resets lists to `none`; these steps are an order, so the numbers come back */
+  .steps {
+    margin: 10px 0 0;
+    padding-left: 1.25em;
+    list-style: decimal;
+    color: var(--fg-muted);
+    font-size: 0.8125rem;
+    line-height: 1.55;
+  }
+
+  .steps li + li {
+    margin-top: 4px;
+  }
+
+  .steps li::marker {
+    color: var(--fg-muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
   }
 
   @media (max-width: 520px) {

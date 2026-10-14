@@ -82,6 +82,9 @@ Point at a local API: `PUBLIC_API_URL=http://localhost:51994 pnpm dev`.
   flip the default to make the numbers look better.
 - **`public/install.sh` is synced in by the core repo's release pipeline.** Check whether your
   change belongs there instead before editing it here.
+- **The desktop download buttons take their version from `public/install.meta`.** The core
+  release writes it last, after every installer is public, so it never names a missing DMG. Do
+  not hardcode a desktop version anywhere else.
 - **There is no CSP yet.** Adding one has to account for `api.tmux.online`, the inline scripts
   everywhere, and GA4.
 

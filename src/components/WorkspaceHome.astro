@@ -1,0 +1,721 @@
+---
+import InstallCommand from './InstallCommand.astro'
+import DesktopDownload from './DesktopDownload.astro'
+import Icon from './Icon.astro'
+import { MACOS_DMG_URL } from '../config'
+import { homepage } from '../i18n/homepage'
+import { type Lang } from '../i18n'
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const c = homepage[lang] ?? homepage.en!
+const marks = import.meta.glob<string>('../marks/*.svg', { eager: true, query: '?url', import: 'default' })
+const agents = [
+  { id: 'claude', name: 'Claude Code' },
+  { id: 'codex', name: 'Codex' },
+  { id: 'gemini', name: 'Gemini CLI' },
+  { id: 'cursor', name: 'Cursor Agent' },
+  { id: 'opencode', name: 'OpenCode' },
+  { id: 'copilot', name: 'Copilot' },
+]
+---
+
+<section class="new-hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow"><span class="live-dot"></span>{c.eyebrow}</p>
+      <h1 lang="en">{c.title.split('\n')[0]}<br /><span>{c.title.split('\n')[1]}</span></h1>
+      <p class="lede">{c.lede}</p>
+      <div class="actions">
+        <a class="primary" href="#install">{c.explore}<span aria-hidden="true">&#8599;</span></a>
+        <a class="secondary" href={MACOS_DMG_URL} data-desktop-download="macos"><Icon name="download" size={16} />{c.download}</a>
+      </div>
+      <div class="platforms">
+        {
+          c.platforms.map((platform, i) => (
+            <span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                {i === 2 ? (
+                  <>
+                    <rect x="6" y="2" width="12" height="20" rx="3" />
+                    <path d="M10 18h4" />
+                  </>
+                ) : (
+                  <>
+                    <rect x="2" y="3" width="20" height="14" rx="2" />
+                    <path d={i === 0 ? 'M8 21h8M12 17v4' : 'M2 7h20M5 5h1'} />
+                  </>
+                )}
+              </svg>
+              {platform}
+            </span>
+          ))
+        }
+      </div>
+    </div>
+    <div class="visual">
+      <div class="workspace" role="img" aria-label={c.preview}>
+        <div class="window-bar">
+          <div class="dots"><i></i><i></i><i></i></div><span>AI Anywhere</span><span class="window-tag">{c.preview}</span>
+        </div>
+        <div class="workspace-grid">
+          <aside>
+            <div class="rail-title">{c.workspace}</div><p class="machine">{c.local}</p>{
+              c.projects.map((project, i) => (
+                <div class:list={['task', i === 0 && 'selected']}>
+                  <span aria-hidden="true">&#128193;</span>
+                  {project}
+                  <i class:list={['status', i === 0 && 'attention']} />
+                </div>
+              ))
+            }<p class="machine remote">{c.remote}</p><div class="task">
+              <span aria-hidden="true">&#128193;</span>production<i class="status"></i>
+            </div><div class="rail-foot"><span class="live-dot"></span>{c.active}</div>
+          </aside>
+          <div class="terminal">
+            <div class="terminal-head">
+              <img src={marks['../marks/claude.svg']} width="20" height="20" alt="" />Claude Code<span>{c.running}</span>
+            </div><div class="terminal-body">
+              <p class="prompt">~/website <span>$ claude</span></p><p class="terminal-muted">{c.terminal[0]}</p><div class="code-lines">
+                <p><span>01</span> <b>export</b> const workspace = &#123;</p><p><span>02</span> &nbsp; agents: <em>'anywhere'</em>,</p><p>
+                  <span>03</span> &nbsp; session: <em>'persistent'</em>
+                </p><p><span>04</span> &#125;</p>
+              </div><p class="done">+ 128 &nbsp; - 42</p><p>{c.terminal[1]}</p><div class="approval">
+                <span class="live-dot"></span>{c.waiting}<strong>{c.terminal[2]}</strong>
+              </div><p class="cursor">&#10095; <span></span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="handoff">
+        <svg width="22" height="28" viewBox="0 0 24 30" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"
+          ><rect x="5" y="1" width="14" height="28" rx="3"></rect><path d="M10 25h4"></path></svg
+        ><div><span>{c.platforms[2]}</span><strong>{c.response}</strong></div><span class="handoff-arrow" aria-hidden="true">&#8599;</span>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="agent-strip wrap">
+  <p class="eyebrow">{c.agents}</p><div>
+    {
+      agents.map((agent) => (
+        <span>
+          <img src={marks[`../marks/${agent.id}.svg`]} width="24" height="24" alt="" loading="lazy" />
+          {agent.name}
+        </span>
+      ))
+    }
+  </div>
+</section>
+<section class="capabilities section" id="features">
+  <div class="wrap">
+    <p class="eyebrow">{c.intro}</p><h2>{c.heading.split('\n').map((line) => <span>{line}</span>)}</h2>
+    <div class="spotlights">
+      <article class="saving">
+        <div class="metric">
+          75<span>%</span><svg
+            viewBox="0 0 80 80"
+            width="66"
+            height="66"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"><path d="M20 12v52h50M32 25l14 14 16-16M46 39V19"></path></svg
+          >
+        </div><h3>{c.saving}</h3><p>{c.savingBody}</p><div class="comparison">
+          <div><span>{c.original}</span><i></i></div><div><span>{c.optimized}</span><i></i></div>
+        </div><small>{c.savingNote}</small>
+      </article>
+      <article class="secure">
+        <div class="lock" aria-hidden="true">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"
+            ><rect x="5" y="10" width="14" height="11" rx="2"></rect><path d="M8 10V6a4 4 0 0 1 8 0v4M12 14v3"></path></svg
+          >
+        </div><h3>{c.security}</h3><p>{c.securityBody}</p><div class="secret-path">
+          <code>******</code><span aria-hidden="true">&#8594;</span><code>/private/secret</code>
+        </div><small>{c.path}</small>
+      </article>
+    </div>
+    <div class="cards">
+      {
+        c.cards.map((card) => (
+          <article>
+            <>
+              <span class="number">{card.n} /</span>
+              <h3>{card.title}</h3>
+              <p>{card.body}</p>
+            </>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+<section class="section setup" id="install">
+  <div class="wrap">
+    <p class="eyebrow">AI ANYWHERE</p><h2>{c.explore}</h2><div class="setup-inner">
+      <InstallCommand lang={lang} id="install-command-hero" /><DesktopDownload lang={lang} />
+    </div>
+  </div>
+</section>
+<style>
+  .new-hero {
+    overflow: hidden;
+    background: radial-gradient(ellipse at 76% 40%, rgb(25 186 31 / 0.1), transparent 52%);
+    border-bottom: 1px solid var(--line);
+  }
+  .hero-grid {
+    max-width: 1320px;
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 60px;
+    align-items: center;
+    padding-block: 100px 110px;
+  }
+  .hero-copy .eyebrow {
+    color: var(--fg-dim);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .live-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  h1 {
+    font-size: clamp(3.5rem, 6vw, 5.6rem);
+    letter-spacing: -0.06em;
+    line-height: 1.02;
+    margin: 28px 0;
+  }
+  h1 span {
+    color: var(--accent);
+  }
+  .lede {
+    max-width: 460px;
+    font-size: 17px;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+  }
+  .primary,
+  .secondary {
+    display: inline-flex;
+    align-items: center;
+    padding: 13px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  .secondary {
+    gap: 10px;
+    border: 1px solid var(--line-strong);
+    color: var(--fg);
+  }
+  .secondary:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .secondary :global(svg) {
+    color: var(--accent);
+  }
+  .primary {
+    gap: 38px;
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  .primary:hover {
+    filter: brightness(1.12);
+  }
+  .platforms {
+    display: flex;
+    gap: 24px;
+    margin-top: 26px;
+    color: var(--fg-muted);
+    font-size: 12px;
+  }
+  .platforms > span {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .visual {
+    position: relative;
+    min-width: 0;
+    padding-bottom: 30px;
+  }
+  .workspace {
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    background: var(--bg-raised);
+    overflow: hidden;
+    box-shadow: 0 30px 100px #0008;
+    transform: perspective(1500px) rotateY(-5deg) rotateX(2deg);
+  }
+  .window-bar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    height: 45px;
+    border-bottom: 1px solid var(--line);
+    padding: 0 16px;
+    font-size: 11px;
+    color: var(--fg-dim);
+  }
+  .dots {
+    display: flex;
+    gap: 5px;
+  }
+  .dots i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--line-strong);
+  }
+  .window-tag {
+    margin-left: auto;
+    color: var(--fg-muted);
+    font-size: 10px;
+  }
+  .workspace-grid {
+    display: grid;
+    grid-template-columns: 190px 1fr;
+    min-height: 350px;
+  }
+  aside {
+    position: relative;
+    padding: 18px 10px 55px;
+    border-right: 1px solid var(--line);
+    font-size: 11px;
+  }
+  .rail-title {
+    padding: 0 10px;
+    font-weight: 600;
+    color: var(--fg);
+  }
+  .machine {
+    font-size: 10px;
+    color: var(--fg-muted);
+    margin: 22px 10px 10px;
+  }
+  .task {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 8px;
+    border-radius: 5px;
+    color: var(--fg-dim);
+    white-space: nowrap;
+  }
+  .selected {
+    background: var(--accent-soft);
+    color: var(--fg);
+  }
+  .status {
+    width: 5px;
+    height: 5px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-left: auto;
+  }
+  .status.attention {
+    background: var(--attention);
+  }
+  .rail-foot {
+    position: absolute;
+    bottom: 18px;
+    left: 20px;
+    font-size: 10px;
+    color: var(--fg-muted);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .terminal {
+    min-width: 0;
+  }
+  .terminal-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 15px;
+    border-bottom: 1px solid var(--line);
+    font-size: 11px;
+  }
+  .terminal-head > span {
+    color: var(--accent);
+    font-size: 9px;
+    margin-left: auto;
+  }
+  .terminal-body {
+    padding: 20px;
+    font: 11px/1.9 var(--font-mono);
+  }
+  .terminal-body p {
+    overflow-wrap: anywhere;
+  }
+  .prompt {
+    color: var(--fg-muted);
+    margin-bottom: 14px;
+  }
+  .prompt span {
+    color: var(--fg);
+  }
+  .terminal-muted {
+    color: var(--fg-muted);
+  }
+  .code-lines {
+    padding-block: 20px;
+  }
+  .code-lines span {
+    color: var(--fg-muted);
+    margin-right: 12px;
+  }
+  .code-lines b {
+    color: #baa6dc;
+    font-weight: 400;
+  }
+  .code-lines em {
+    color: #8fbc8f;
+    font-style: normal;
+  }
+  .done {
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .approval {
+    background: rgb(245 181 68 / 0.06);
+    border: 1px solid rgb(245 181 68 / 0.18);
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin-top: 15px;
+    color: var(--attention);
+    font-size: 10px;
+  }
+  .approval .live-dot {
+    background: var(--attention);
+    margin-right: 7px;
+  }
+  .approval strong {
+    display: block;
+    color: var(--fg);
+    font-weight: 400;
+    margin-top: 4px;
+  }
+  .cursor {
+    margin-top: 10px;
+    color: var(--accent);
+  }
+  .cursor span {
+    display: inline-block;
+    width: 6px;
+    height: 12px;
+    background: var(--accent);
+    vertical-align: middle;
+  }
+  .handoff {
+    position: absolute;
+    right: -14px;
+    bottom: -2px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding: 17px 20px;
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: 0 16px 40px #0006;
+  }
+  .handoff > svg {
+    color: var(--accent);
+  }
+  .handoff div span {
+    display: block;
+    color: var(--fg-muted);
+    font-size: 10px;
+  }
+  .handoff strong {
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .handoff-arrow {
+    margin-left: 12px;
+    color: var(--accent);
+  }
+  .agent-strip {
+    text-align: center;
+    padding-block: 32px 38px;
+  }
+  .agent-strip > div {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+  }
+  .agent-strip > div > span {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--fg-dim);
+  }
+  .capabilities {
+    background: var(--bg-raised);
+  }
+  h2 {
+    font-size: clamp(2rem, 3.8vw, 3.1rem);
+    margin-top: 20px;
+  }
+  h2 > span {
+    display: block;
+  }
+  .spotlights {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 44px;
+  }
+  .spotlights article {
+    padding: 38px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--surface);
+  }
+  .spotlights .saving {
+    background: linear-gradient(140deg, rgb(25 186 31 / 0.1), var(--surface) 70%);
+  }
+  .metric {
+    display: flex;
+    align-items: center;
+    font: 500 86px/1 var(--font-sans);
+    letter-spacing: -0.06em;
+    color: var(--accent);
+    margin-bottom: 30px;
+  }
+  .metric > span {
+    font-size: 42px;
+  }
+  .metric > svg {
+    margin-left: auto;
+    opacity: 0.5;
+  }
+  h3 {
+    font-size: 22px;
+    line-height: 1.35;
+  }
+  .spotlights p,
+  .cards p {
+    font-size: 14px;
+    color: var(--fg-dim);
+    margin-top: 14px;
+  }
+  .comparison {
+    margin-top: 28px;
+  }
+  .comparison > div {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-top: 12px;
+    font-size: 11px;
+    color: var(--fg-muted);
+  }
+  .comparison span {
+    min-width: 84px;
+  }
+  .comparison i {
+    height: 8px;
+    background: var(--line-strong);
+    border-radius: 3px;
+    width: 65%;
+  }
+  .comparison > div + div i {
+    width: 16.25%;
+    background: var(--accent);
+  }
+  small {
+    display: block;
+    margin-top: 20px;
+    font-size: 11px;
+    color: var(--fg-muted);
+  }
+  .lock {
+    width: 80px;
+    height: 80px;
+    border: 1px solid var(--line-strong);
+    border-radius: 20px;
+    display: grid;
+    place-items: center;
+    color: var(--accent);
+    margin-bottom: 36px;
+    background: var(--bg-raised);
+  }
+  .secret-path {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    padding: 16px;
+    margin-top: 24px;
+    border-radius: 8px;
+    color: var(--accent);
+    font-size: 13px;
+  }
+  .secret-path code:first-child {
+    color: var(--fg-muted);
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 26px;
+    margin-top: 44px;
+  }
+  .cards article {
+    border-top: 1px solid var(--line-strong);
+    padding-top: 22px;
+  }
+  .number {
+    color: var(--accent);
+    font: 12px var(--font-mono);
+  }
+  .cards h3 {
+    font-size: 18px;
+    margin-top: 20px;
+  }
+  .setup {
+    text-align: center;
+  }
+  .setup-inner {
+    max-width: 560px;
+    margin: 32px auto 0;
+    text-align: left;
+  }
+  @media (max-width: 1100px) {
+    .hero-grid {
+      gap: 30px;
+    }
+    .workspace-grid {
+      grid-template-columns: 150px 1fr;
+    }
+    .terminal-body {
+      padding: 15px;
+      font-size: 10px;
+    }
+    .task {
+      font-size: 10px;
+    }
+    .cards {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 850px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      padding-block: 60px 70px;
+      gap: 48px;
+    }
+    .hero-copy {
+      max-width: 600px;
+    }
+    .visual {
+      max-width: 680px;
+      width: 100%;
+      margin: auto;
+    }
+    .workspace {
+      transform: none;
+    }
+    .handoff {
+      right: 10px;
+    }
+    .workspace-grid {
+      grid-template-columns: 180px 1fr;
+    }
+    .spotlights article {
+      padding: 28px;
+    }
+    .agent-strip > div {
+      gap: 22px;
+    }
+    h1 {
+      font-size: clamp(3.7rem, 10vw, 5.6rem);
+    }
+  }
+  @media (max-width: 560px) {
+    .spotlights,
+    .cards {
+      grid-template-columns: 1fr;
+    }
+    .spotlights {
+      margin-top: 30px;
+    }
+    .workspace-grid {
+      grid-template-columns: 120px 1fr;
+    }
+    .terminal-body {
+      font-size: 9px;
+      padding: 12px;
+    }
+    .terminal-head {
+      font-size: 10px;
+      padding: 12px;
+    }
+    .task {
+      padding: 8px 4px;
+      gap: 4px;
+      font-size: 9px;
+    }
+    .rail-title {
+      font-size: 10px;
+    }
+    .rail-foot {
+      font-size: 8px;
+      left: 12px;
+    }
+    .window-tag {
+      font-size: 8px;
+    }
+    .window-bar {
+      gap: 12px;
+    }
+    .handoff {
+      padding: 12px 15px;
+    }
+    .platforms {
+      gap: 18px;
+    }
+    .code-lines span {
+      margin-right: 4px;
+    }
+    .spotlights article {
+      padding: 26px;
+    }
+    .cards {
+      gap: 28px;
+    }
+    .agent-strip > div > span {
+      font-size: 11px;
+    }
+    .agent-strip > div {
+      gap: 18px;
+    }
+    .metric {
+      font-size: 76px;
+    }
+    .hero-grid {
+      padding-block: 48px 62px;
+    }
+    .hero-copy .eyebrow {
+      font-size: 10px;
+    }
+  }
+</style>

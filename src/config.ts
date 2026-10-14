@@ -1,3 +1,5 @@
+import installMeta from '../public/install.meta?raw'
+
 /** Outbound URLs, kept in one place so every page and machine-readable mirror stays aligned. */
 export const SITE_URL = 'https://tmux.online'
 export const REPO_URL = 'https://github.com/AI-Anywhere/AI-Anywhere'
@@ -18,6 +20,26 @@ export const INSTALL_COMMANDS = [
 
 /** The single canonical one-liner for docs and machine-readable mirrors (curl is conventional). */
 export const INSTALL_COMMAND = `curl -fsSL ${SITE_URL}${INSTALL_URL} | sh`
+
+/**
+ * The desktop client release the download buttons point at.
+ *
+ * One release, one version: the desktop app ships with the CLI's version number, and the core
+ * repo's release workflow attaches the installers to the GitHub release on REPO_URL as
+ * `AI-Anywhere-<version>-macos-universal.dmg`, with a `.sha256` next to it.
+ *
+ * So the version is the one in public/install.meta. That workflow writes it as its very LAST step,
+ * after every client has built and every download is public; a release that fails anywhere leaves
+ * it on the previous complete one. The file therefore never names a version without a DMG, and
+ * a release redeploys the site right after writing it. The button links the versioned asset rather
+ * than `releases/latest` so one click is one download. Everything below is derived from it.
+ */
+export const DESKTOP_VERSION: string = JSON.parse(installMeta).version
+export const DESKTOP_RELEASE_URL = `${REPO_URL}/releases/tag/v${DESKTOP_VERSION}`
+export const MACOS_DMG_URL = `${REPO_URL}/releases/download/v${DESKTOP_VERSION}/AI-Anywhere-${DESKTOP_VERSION}-macos-universal.dmg`
+export const MACOS_DMG_SHA256_URL = `${MACOS_DMG_URL}.sha256`
+/** The oldest macOS the universal build supports (the app's LSMinimumSystemVersion). */
+export const MACOS_MINIMUM = '13'
 
 /**
  * Star count baked into the header so a number is on screen from first paint — the live
