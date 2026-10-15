@@ -27,6 +27,60 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.34',
+    date: '2026-10-15',
+    changes: {
+      en: [
+        'Drop files from Finder straight onto a macOS terminal pane: a pane on this machine gets their paths, one on another machine gets them uploaded first',
+        'Messages sent from the composer to panes on this machine are confirmed and cleared once they arrive, instead of staying marked as sent',
+        "The composer's frosted glass shows the wallpaper behind it again when it sits below a terminal",
+        'Newer pi builds are shown as working while a run is in flight',
+      ],
+      'zh-Hans': [
+        '可以把 Finder 里的文件直接拖到 macOS 终端面板：本机面板会填入文件路径，其他机器上的面板会先上传再填入',
+        '从输入框发送到本机面板的消息，送达后会被确认并清除，不再一直停留在已发送状态',
+        '输入框位于终端下方时，毛玻璃效果重新透出背后的壁纸',
+        '新版 pi 运行时会正确显示为工作中',
+      ],
+      'zh-Hant': [
+        '可以把 Finder 裡的檔案直接拖到 macOS 終端面板：本機面板會填入檔案路徑，其他機器上的面板會先上傳再填入',
+        '從輸入框送到本機面板的訊息，送達後會被確認並清除，不再一直停在已送出狀態',
+        '輸入框位於終端下方時，毛玻璃效果重新透出背後的桌布',
+        '新版 pi 執行時會正確顯示為工作中',
+      ],
+      ja: [
+        'Finder のファイルを macOS のターミナルペインへ直接ドロップできます。このマシンのペインにはパスが入力され、他のマシンのペインには先にアップロードされます',
+        'コンポーザーからこのマシンのペインへ送ったメッセージは、到着を確認すると消去され、送信済みのまま残らなくなりました',
+        'ターミナルの下にあるコンポーザーのすりガラスが、再び背後の壁紙を透かして表示します',
+        '新しい pi のビルドも実行中は作業中として表示されます',
+      ],
+      ko: [
+        'Finder의 파일을 macOS 터미널 패널로 바로 끌어다 놓을 수 있습니다. 이 기기의 패널에는 경로가 입력되고, 다른 기기의 패널에는 먼저 업로드됩니다',
+        '작성기에서 이 기기의 패널로 보낸 메시지는 도착이 확인되면 지워지며, 더 이상 보냄 상태로 남지 않습니다',
+        '터미널 아래에 있는 작성기의 반투명 유리 효과가 다시 뒤의 배경화면을 비춰 줍니다',
+        '새 pi 빌드도 실행 중에는 작업 중으로 표시됩니다',
+      ],
+      vi: [
+        'Kéo tệp từ Finder thả thẳng vào khung terminal trên macOS: khung trên máy này nhận đường dẫn, khung trên máy khác được tải tệp lên trước',
+        'Tin nhắn gửi từ ô soạn thảo tới khung trên máy này được xác nhận và xóa khi đã tới nơi, thay vì cứ ở trạng thái đã gửi',
+        'Hiệu ứng kính mờ của ô soạn thảo lại hiện hình nền phía sau khi nằm dưới terminal',
+        'Các bản pi mới được hiển thị là đang làm việc trong khi chạy',
+      ],
+      nl: [
+        'Sleep bestanden vanuit Finder direct op een macOS-terminalvenster: een venster op deze machine krijgt hun paden, een venster op een andere machine krijgt ze eerst geüpload',
+        'Berichten die je vanuit de editor naar vensters op deze machine stuurt, worden bevestigd en gewist zodra ze aankomen, in plaats van als verzonden te blijven staan',
+        'Het matglas van de editor laat de achtergrond weer doorschemeren wanneer het onder een terminal staat',
+        'Nieuwere pi-versies worden tijdens een run als bezig getoond',
+      ],
+      pt: [
+        'Arraste arquivos do Finder direto para um painel de terminal no macOS: um painel nesta máquina recebe os caminhos, um em outra máquina recebe os arquivos enviados antes',
+        'Mensagens enviadas do editor para painéis nesta máquina são confirmadas e removidas quando chegam, em vez de ficarem marcadas como enviadas',
+        'O vidro fosco do editor volta a mostrar o papel de parede quando fica abaixo de um terminal',
+        'Versões mais novas do pi aparecem como trabalhando durante uma execução',
+      ],
+    },
+  },
+  {
     version: '0.0.33',
     date: '2026-10-14',
     changes: {
