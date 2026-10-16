@@ -27,6 +27,42 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.35',
+    date: '2026-10-16',
+    changes: {
+      en: [
+        'Desktop notifications sit at the upper right below the tabs, with a compact card and an inset close button that leaves tab switching accessible',
+        'The macOS desktop app uses smaller graphics buffers to reduce memory use while keeping the native Metal terminal renderer',
+        'Setup reuses a compatible Node.js installation, including installations managed by nvm that are missing from the app environment',
+        'Repeat desktop launches reuse the matching cached installer instead of downloading it again',
+      ],
+      'zh-Hans': [
+        '桌面通知移到标签页下方的右上角，卡片更紧凑，关闭按钮收进卡片内，不再挡住标签切换',
+        'macOS 桌面应用使用更小的图形缓冲来降低内存占用，保留原生 Metal 终端渲染',
+        '安装时复用兼容的 Node.js，包括由 nvm 管理但未出现在应用环境中的版本',
+        '再次启动桌面应用时复用匹配版本的安装脚本缓存，不再重复下载',
+      ],
+      'zh-Hant': [
+        '桌面通知移到分頁下方的右上角，卡片更精簡，關閉按鈕收進卡片內，不再擋住分頁切換',
+        'macOS 桌面應用程式使用更小的圖形緩衝來降低記憶體佔用，保留原生 Metal 終端繪製',
+        '安裝時沿用相容的 Node.js，包括由 nvm 管理但未出現在應用程式環境中的版本',
+        '再次啟動桌面應用程式時沿用符合版本的安裝腳本快取，不再重複下載',
+      ],
+      ja: [
+        'デスクトップ通知をタブの下の右上に移動し、カードをコンパクトにして閉じるボタンを内側に配置しました。タブの切り替えを妨げません',
+        'macOS デスクトップアプリは小さな描画バッファでメモリ使用量を抑え、ネイティブの Metal ターミナル描画を維持します',
+        'セットアップは既存の互換性のある Node.js を再利用します。アプリの環境に含まれていない nvm 管理のバージョンも検出します',
+        'デスクトップアプリの再起動時は、対応するインストーラーのキャッシュを再利用して再ダウンロードを省きます',
+      ],
+      ko: [
+        '데스크톱 알림을 탭 아래 오른쪽 위로 옮기고 카드를 간결하게 다듬었으며 닫기 버튼을 안쪽에 배치해 탭 전환을 가리지 않습니다',
+        'macOS 데스크톱 앱은 더 작은 그래픽 버퍼로 메모리 사용량을 줄이면서 네이티브 Metal 터미널 렌더러를 유지합니다',
+        '설치 시 호환되는 기존 Node.js를 재사용하며, 앱 환경에 없는 nvm 관리 버전도 찾습니다',
+        '데스크톱 앱을 다시 실행할 때는 일치하는 버전의 설치 스크립트 캐시를 재사용해 다시 다운로드하지 않습니다',
+      ],
+    },
+  },
+  {
     version: '0.0.34',
     date: '2026-10-15',
     changes: {
