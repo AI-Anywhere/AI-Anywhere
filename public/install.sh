@@ -1,8 +1,9 @@
 #!/bin/sh
 # AI Anywhere installer — gets this machine ready and installs the CLI:
 #   1. tmux          (installed via the system package manager if absent)
-#   2. Node.js 22.5+ (installed as the latest LTS if you already use fnm or nvm; otherwise the
-#                     script stops and points at nodejs.org — it never installs Node system-wide)
+#   2. Node.js 22.5+ (an installed one is reused even when it is not on this shell's PATH; else
+#                     the latest LTS through fnm or nvm if you use one, or the script stops and
+#                     points at nodejs.org — it never installs Node system-wide)
 #   3. @ai-anywhere/cli  (npm install -g)
 #   4. ai-anywhere up    (signs in when needed, then runs in the foreground)
 # Re-running starts tmux and resumes saved pi/Codex/Claude IDs. No login service is installed.
@@ -474,6 +475,37 @@ nvm_sh() {
   return 1
 }
 
+# A Node.js that is installed but not on this shell's PATH. The desktop app runs this script from a
+# login shell, which never reads ~/.zshrc — where nvm and fnm are usually loaded — so "not on PATH"
+# rarely means "not installed". Reuse what is there before installing anything: the user's own
+# default first, then the newest version the manager already has, then plain installs outside
+# PATH. AA_NODE_DIRS replaces that last list (tests, and layouts it does not know).
+use_installed_node() {
+  if _nvm="$(nvm_sh)"; then
+    # nvm.sh is not written against `set -eu` (see install_node_nvm).
+    set +eu
+    # shellcheck source=/dev/null
+    . "$_nvm"
+    nvm use --silent default >/dev/null 2>&1 || true
+    node_ok || nvm use --silent node >/dev/null 2>&1 || true
+    set -eu
+    node_ok && return 0
+  fi
+  if have fnm; then
+    eval "$(fnm env --shell bash)" >/dev/null 2>&1 || true
+    node_ok || fnm use default >/dev/null 2>&1 || true
+    node_ok && return 0
+  fi
+  for _dir in ${AA_NODE_DIRS-/opt/homebrew/bin /usr/local/bin $HOME/.volta/bin $HOME/.local/share/mise/shims $HOME/.asdf/shims}; do
+    [ -x "$_dir/node" ] || continue
+    _path="$PATH"
+    PATH="$_dir:$PATH"
+    node_ok && return 0
+    PATH="$_path"
+  done
+  return 1
+}
+
 install_node_fnm() {
   say "found fnm ($(command -v fnm)) — installing the latest LTS…"
   fnm install --lts
@@ -505,6 +537,10 @@ ensure_node() {
     ok "Node.js $(node -v) ✓"
     return
   fi
+  if use_installed_node; then
+    ok "Node.js $(node -v) ✓ ($(command -v node))"
+    return
+  fi
   if have node; then
     say "Node.js $(node -v) is older than ${NODE_MIN_MAJOR}.${NODE_MIN_MINOR}"
   else
@@ -531,7 +567,7 @@ PKG='@ai-anywhere/cli'
 # The latest published version, updated on every release (scripts/publish-cli.sh in the core repo
 # enforces that this matches the package.json being published). Pinning makes the script
 # reproducible and lets a re-run skip npm entirely when nothing changed.
-CLI_VERSION='0.0.34'
+CLI_VERSION='0.0.35'
 PTY_PKG='@homebridge/node-pty-prebuilt-multiarch'
 CLI_BIN=''
 
