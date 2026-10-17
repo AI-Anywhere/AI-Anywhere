@@ -25,11 +25,11 @@ export const INSTALL_COMMAND = `curl -fsSL ${SITE_URL}${INSTALL_URL} | sh`
  * The desktop client release the download buttons point at.
  *
  * One release, one version: the desktop app ships with the CLI's version number, and the core
- * repo's release workflow attaches the installers to the GitHub release on REPO_URL as
+ * repo's local publisher attaches the installers to the GitHub release on REPO_URL as
  * `AI-Anywhere-<version>-macos-universal.dmg`, with a `.sha256` next to it.
  *
- * So the version is the one in public/install.meta. That workflow writes it as its very LAST step,
- * after every client has built and every download is public; a release that fails anywhere leaves
+ * So the version is the one in public/install.meta. The local publisher writes it as its LAST step,
+ * after every supported client has built and every download is public; a release that fails anywhere leaves
  * it on the previous complete one. The file therefore never names a version without a DMG, and
  * a release redeploys the site right after writing it. The button links the versioned asset rather
  * than `releases/latest` so one click is one download. Everything below is derived from it.
