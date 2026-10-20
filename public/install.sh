@@ -251,7 +251,7 @@ TMUX_RECOVERY
   if ! grep -qxF "$_restore_source" "$_tmux_conf" 2>/dev/null; then
     printf '\n# AI Anywhere: automatic tmux session recovery\n%s\n' "$_restore_source" >> "$_tmux_conf"
   fi
-  ok "tmux recovery configured (save every 5 minutes; restore when running this installer)"
+  ok "tmux recovery configured (save every 5 minutes; watchdog restores after server loss)"
 }
 
 # Standalone helpers are embedded so curl | sh needs no checkout or extra downloads.
@@ -267,9 +267,22 @@ const { execFileSync, spawn } = require('node:child_process')
 const home = process.env.HOME
 const dir = path.join(home, '.config/ai-anywhere/tmux')
 const file = path.join(dir, 'ai-sessions.json')
-const run = (args) => execFileSync('tmux', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trimEnd()
+const run = (args) => execFileSync('tmux', process.env.AA_RECOVERY_SOCKET ? ['-S', process.env.AA_RECOVERY_SOCKET, ...args] : args,
+  { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 15000 }).trimEnd()
 const quote = (s) => "'" + s.replace(/'/g, "'\\''") + "'"
 const uuid = /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i
+const windowIds = () => Object.fromEntries(run(['list-windows', '-a', '-F', '#{session_name}:#{window_index}\t#{window_id}'])
+  .split('\n').filter(Boolean).map((line) => line.split('\t')))
+const publishRecovery = () => {
+  const snapshot = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : {}
+  const current = windowIds()
+  const windows = Object.fromEntries(Object.entries(snapshot.windows || {}).flatMap(([target, oldId]) => current[target] ? [[oldId, current[target]]] : []))
+  const currentPanes = Object.fromEntries(panes().map((p) => [p.target, p.pane]))
+  const paneMap = Object.fromEntries(Object.entries(snapshot.panes || {}).flatMap(([target, oldId]) => currentPanes[target] ? [[oldId, currentPanes[target]]] : []))
+  // Organisation remains in ~/.AA/workspace.db. Only transport the tmux identity map.
+  run(['set-option', '-g', '@aa-recovery-map', JSON.stringify({ from: snapshot.serverPid, to: Number(run(['display-message', '-p', '#{pid}'])), windows, panes: paneMap })])
+  run(['set-option', '-g', '@aa-recovery-state', 'complete'])
+}
 const panes = () => run(['list-panes', '-a', '-F', '#{pane_id}\t#{session_name}:#{window_index}.#{pane_index}\t#{pane_current_path}\t#{pane_current_command}\t#{pane_pid}\t#{@ai-session-id}\t#{@ai-session-tool}\t#{@ai-session-file}'])
   .split('\n').filter(Boolean).map((line) => {
     const [pane, target, cwd, command, pid, id, tool, sessionFile] = line.split('\t')
@@ -284,6 +297,49 @@ const descendants = (pid, rows) => {
   let size
   do { size = ids.size; for (const row of rows) if (ids.has(row.parent)) ids.add(row.pid) } while (ids.size !== size)
   return rows.filter((row) => ids.has(row.pid))
+}
+const processArgs = (pid, command) => {
+  try {
+    if (process.platform === 'linux') return fs.readFileSync(`/proc/${pid}/cmdline`, 'utf8').split('\0').filter(Boolean)
+    if (process.platform === 'darwin') return JSON.parse(execFileSync('python3', ['-c', `
+import ctypes,json,struct,sys
+lib=ctypes.CDLL(None,use_errno=True)
+mib=(ctypes.c_int*3)(1,49,int(sys.argv[1]))
+size=ctypes.c_size_t(1024*1024)
+buf=ctypes.create_string_buffer(size.value)
+if lib.sysctl(mib,3,buf,ctypes.byref(size),None,0): raise OSError(ctypes.get_errno())
+raw=buf.raw[:size.value]; argc=struct.unpack('i',raw[:4])[0]
+pos=raw.index(b'\\0',4)+1
+while raw[pos:pos+1]==b'\\0': pos+=1
+print(json.dumps([s.decode() for s in raw[pos:].split(b'\\0')[:argc]]))
+`, String(pid)], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 3000 }))
+  } catch {}
+  // ps cannot preserve argument boundaries; only single-token options are recovered here.
+  return command.split(/\s+/)
+}
+const launchOptions = (tool, argv) => {
+  // Replay runtime settings, never the original prompt, images, --last, or fork/worktree actions.
+  const bools = new Set(({
+    codex: '--dangerously-bypass-approvals-and-sandbox --dangerously-bypass-hook-trust --approve-for-me --full-auto --oss --search --no-alt-screen --no-daemon --strict-config',
+    claude: '--dangerously-skip-permissions --allow-dangerously-skip-permissions --bare --chrome --no-chrome --verbose --disable-slash-commands',
+    pi: '--no-extensions --no-skills --no-prompt-templates --no-themes'
+  }[tool] || '').split(' '))
+  const values = new Set(({
+    codex: '-m --model -p --profile -s --sandbox -a --ask-for-approval -c --config --enable --disable --local-provider --add-dir --remote --remote-auth-token-env',
+    claude: '--model --fallback-model --permission-mode --agent --effort --settings --setting-sources --mcp-config --plugin-dir --add-dir',
+    pi: '--model --provider --thinking --extension -e --skill --prompt-template --theme'
+  }[tool] || '').split(' '))
+  const out = []
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i], flag = arg.split('=')[0]
+    if (arg === '--') break
+    if (bools.has(arg)) out.push(arg)
+    else if (values.has(flag)) {
+      if (arg.includes('=')) out.push(arg)
+      else if (i + 1 < argv.length) out.push(arg, argv[++i])
+    }
+  }
+  return out
 }
 const identify = (pane, rows) => {
   const children = descendants(pane.pid, rows)
@@ -306,20 +362,20 @@ const identify = (pane, rows) => {
     }
   }
   if (!uuid.test(id || '')) { console.error(`AI recovery: cannot determine exact ${tool} session in ${pane.target}; not saved`); return null }
-  return { target: pane.target, cwd: pane.cwd, tool, id, sessionFile }
+  return { target: pane.target, cwd: pane.cwd, tool, id, sessionFile, args: launchOptions(tool, processArgs(ai.pid, ai.command)) }
 }
 const save = () => {
   const rows = processes()
   const entries = panes().map((pane) => identify(pane, rows)).filter(Boolean)
   fs.mkdirSync(dir, { recursive: true, mode: 0o700 })
   const temp = file + '.' + process.pid
-  fs.writeFileSync(temp, JSON.stringify({ version: 1, entries }, null, 2), { mode: 0o600 })
+  fs.writeFileSync(temp, JSON.stringify({ version: 2, entries, windows: windowIds(), panes: Object.fromEntries(panes().map((p) => [p.target, p.pane])), serverPid: Number(run(['display-message', '-p', '#{pid}'])) }, null, 2), { mode: 0o600 })
   fs.renameSync(temp, file)
 }
 const restore = () => {
   if (!fs.existsSync(file)) return
   const { version, entries } = JSON.parse(fs.readFileSync(file, 'utf8'))
-  if (version !== 1 || !Array.isArray(entries)) throw new Error('Invalid AI session snapshot')
+  if (![1, 2].includes(version) || !Array.isArray(entries)) throw new Error('Invalid AI session snapshot')
   const current = panes()
   const rows = processes()
   const active = new Set(current.map((pane) => identify(pane, rows)).filter(Boolean).map((x) => x.tool + ':' + x.id))
@@ -333,8 +389,9 @@ const restore = () => {
     if (!pane || !['sh', 'bash', 'zsh', 'fish', 'dash', 'ksh'].includes(pane.command) || descendants(pane.pid, rows).length !== 1) continue
     if (!fs.existsSync(cwd)) { console.error(`AI recovery: directory missing for ${target}: ${cwd}`); continue }
     try { execFileSync('/bin/sh', ['-c', 'command -v "$1"', 'sh', tool], { stdio: 'ignore' }) } catch { console.error(`AI recovery: ${tool} is not installed; skipped ${target}`); continue }
-    const args = tool === 'pi' ? ['pi', '--no-extensions', '--extension', path.join(dir, 'pi-session.ts'), '--session', sessionFile && fs.existsSync(sessionFile) ? sessionFile : id]
-      : tool === 'codex' ? ['codex', 'resume', id] : ['claude', '--resume', id]
+    const options = launchOptions(tool, Array.isArray(entry.args) ? entry.args.filter((s) => typeof s === 'string') : [])
+    const args = tool === 'pi' ? ['pi', ...options, '--session', sessionFile && fs.existsSync(sessionFile) ? sessionFile : id]
+      : tool === 'codex' ? ['codex', 'resume', ...options, id] : ['claude', ...options, '--resume', id]
     // Launch directly in the restored pane: avoids shell startup races and quoting differences.
     const command = args.map(quote).join(' ') + '; exec ' + quote(process.env.SHELL || '/bin/sh')
     run(['set-option', '-p', '-t', pane.pane, '@ai-session-id', id])
@@ -344,27 +401,107 @@ const restore = () => {
     active.add(key)
   }
 }
-try {
-  if (process.argv[2] === 'save') save()
-  else if (process.argv[2] === 'restore') restore()
-  else if (process.argv[2] === 'start-watch') {
-    const pid = Number(run(['show-option', '-gqv', '@ai-recovery-watcher-pid']))
-    let alive = false
-    if (pid) { try { process.kill(pid, 0); alive = true } catch {} }
-    if (!alive) {
-      const child = spawn(process.execPath, [__filename, 'watch', run(['display-message', '-p', '#{pid}'])], { detached: true, stdio: 'ignore' })
-      run(['set-option', '-g', '@ai-recovery-watcher-pid', String(child.pid)])
+// This lock lives outside tmux: killing the server must not kill recovery ownership.
+const watchLock = path.join(dir, 'watch.lock')
+const paused = path.join(dir, 'watch.paused')
+const ownerFile = path.join(watchLock, 'pid')
+const isWatcher = (pid) => {
+  if (!Number.isInteger(pid) || pid <= 1) return false
+  try {
+    const command = execFileSync('ps', ['-p', String(pid), '-o', 'command='], { encoding: 'utf8' })
+    return command.includes(__filename) && /(?:watch|start-watch)(?:\s|$)/.test(command)
+  } catch { return false }
+}
+const owner = () => { try { return Number(fs.readFileSync(ownerFile, 'utf8')) } catch { return 0 } }
+const stopWatch = () => {
+  fs.writeFileSync(paused, '')
+  const pids = [owner()]
+  // Upgrade the old server-bound watcher too, without killing an unrelated reused PID.
+  try { pids.push(Number(run(['show-option', '-gqv', '@ai-recovery-watcher-pid']))) } catch {}
+  for (const pid of new Set(pids)) if (isWatcher(pid)) process.kill(pid, 'SIGTERM')
+}
+const startWatch = () => {
+  fs.rmSync(paused, { force: true })
+  try { fs.mkdirSync(watchLock, { mode: 0o700 }) } catch (error) {
+    if (error.code !== 'EEXIST') throw error
+    if (isWatcher(owner())) return
+    // A concurrent starter may not have written its PID yet.
+    if (!owner() && Date.now() - fs.statSync(watchLock).mtimeMs < 30000) return
+    fs.rmSync(watchLock, { recursive: true, force: true })
+    fs.mkdirSync(watchLock, { mode: 0o700 })
+  }
+  fs.writeFileSync(ownerFile, String(process.pid))
+  try {
+    const legacyPid = Number(run(['show-option', '-gqv', '@ai-recovery-watcher-pid']))
+    if (isWatcher(legacyPid)) process.kill(legacyPid, 'SIGTERM')
+    const socket = run(['display-message', '-p', '#{socket_path}'])
+    const env = { ...process.env, AA_RECOVERY_SOCKET: socket, AA_RECOVERY_SERVER_PID: run(['display-message', '-p', '#{pid}']),
+      AA_RECOVERY_PENDING: run(['show-option', '-gqv', '@aa-recovery-state']) }
+    delete env.TMUX_PANE
+    // Resurrect's shell scripts also need the pinned socket after the server dies.
+    env.TMUX = `${socket},0,0`
+    const log = fs.openSync(path.join(dir, 'recovery.log'), 'a', 0o600)
+    try {
+      const child = spawn(process.execPath, [__filename, 'watch'], { env, detached: true, stdio: ['ignore', log, log] })
+      if (!child.pid) throw new Error('Could not spawn recovery watcher')
+      fs.writeFileSync(ownerFile, String(child.pid))
       child.unref()
+      run(['set-option', '-g', '@ai-recovery-watcher-pid', String(child.pid)])
+    } finally { fs.closeSync(log) }
+  } catch (error) {
+    if (owner() === process.pid) fs.rmSync(watchLock, { recursive: true, force: true })
+    throw error
+  }
+}
+const watch = () => {
+  let recovering = process.env.AA_RECOVERY_PENDING === 'restoring'
+  let generation = process.env.AA_RECOVERY_SERVER_PID
+  let lastSave = Date.now()
+  const script = (name) => execFileSync(path.join(dir, `tmux-resurrect/scripts/${name}.sh`), name === 'save' ? ['quiet'] : [],
+    { stdio: ['ignore', 'pipe', 'pipe'], timeout: 120000 })
+  const tick = () => {
+    if (fs.existsSync(paused)) return process.exit(0)
+    try {
+      let present = false
+      try { run(['has-session', '-t', '=AA']); present = true } catch {}
+      if (!present) {
+        recovering = true
+        run(['new-session', '-d', '-s', 'AA', ';', 'set-option', '-g', '@aa-recovery-state', 'restoring'])
+      }
+      const pid = run(['display-message', '-p', '#{pid}'])
+      if (generation !== pid) recovering = true
+      if (recovering) {
+        run(['set-option', '-g', '@aa-recovery-state', 'restoring'])
+        run(['source-file', path.join(dir, 'recovery.conf')])
+        script('restore')
+        restore()
+        publishRecovery()
+        generation = pid
+        recovering = false
+        lastSave = Date.now() // Give resumed tools time to boot before saving.
+        console.log(new Date().toISOString(), 'Restored AA layout and AI sessions')
+      } else if (Date.now() - lastSave >= 300000) {
+        script('save')
+        lastSave = Date.now()
+      }
+      run(['set-option', '-g', '@ai-recovery-watcher-pid', String(process.pid)])
+    } catch (error) {
+      // Keep the last good snapshot and retry; never save a partial restoration.
+      console.error(new Date().toISOString(), 'Recovery retry:', error.message)
     }
   }
-  else if (process.argv[2] === 'watch') {
-    setInterval(() => {
-      try {
-        if (run(['display-message', '-p', '#{pid}']) !== process.argv[3]) process.exit(0)
-        execFileSync(path.join(dir, 'tmux-resurrect/scripts/save.sh'), ['quiet'], { stdio: 'ignore', timeout: 120000 })
-      } catch { process.exit(0) }
-    }, 300000)
-  }
+  process.on('exit', () => {
+    if (owner() === process.pid) fs.rmSync(watchLock, { recursive: true, force: true })
+  })
+  process.on('SIGTERM', () => process.exit(0))
+  setInterval(tick, 5000)
+}
+try {
+  if (process.argv[2] === 'save') save()
+  else if (process.argv[2] === 'restore') { restore(); publishRecovery() }
+  else if (process.argv[2] === 'start-watch') startWatch()
+  else if (process.argv[2] === 'stop-watch') stopWatch()
+  else if (process.argv[2] === 'watch') watch()
   else if (process.argv[2] === 'record') {
     const data = JSON.parse(fs.readFileSync(0, 'utf8'))
     const id = data.session_id || data.sessionId
@@ -412,7 +549,7 @@ export default function (pi: any) {
 }
 PI_SESSION
   # Fresh Pi sessions record IDs too. Explicit --no-extensions users can pass --extension
-  # to this same helper; resumed sessions above do so without enabling unrelated loops.
+  # to this same helper; recovery preserves their original extension settings.
   mkdir -p "$HOME/.pi/agent/extensions"
   cat > "$HOME/.pi/agent/extensions/ai-anywhere-session.ts" <<'PI_LOADER'
 export { default } from '../../../.config/ai-anywhere/tmux/pi-session.ts'
@@ -423,18 +560,25 @@ PI_LOADER
   _restore_layout=0
   if ! tmux has-session -t AA 2>/dev/null; then
     # new-session keeps a fresh server alive; start-server alone exits without sessions.
-    tmux new-session -d -s AA || tmux has-session -t AA
+    tmux new-session -d -s AA \; set-option -g @aa-recovery-state restoring || tmux has-session -t AA
     _restore_layout=1
   fi
   tmux source-file "$_restore_dir/recovery.conf"
   # Suppress continuum's asynchronous startup restore; resurrect is run synchronously here.
+  _restore_failed=0
   if [ "$_restore_layout" -eq 1 ]; then
-    "$_restore_dir/tmux-resurrect/scripts/restore.sh" || warn "Could not restore tmux layout; saved files have been kept"
+    "$_restore_dir/tmux-resurrect/scripts/restore.sh" || _restore_failed=1
   fi
-  "$_restore_dir/ai-sessions.sh" start-watch || warn "Could not start periodic tmux snapshot saving"
-  "$_restore_dir/ai-sessions.sh" restore || warn "Some AI sessions could not be restored; saved files have been kept"
-  # Save immediately as well as on continuum's schedule (which needs an attached client).
-  "$_restore_dir/tmux-resurrect/scripts/save.sh" quiet || warn "Could not save tmux layout"
+  if [ "$_restore_failed" -eq 0 ]; then
+    "$_restore_dir/ai-sessions.sh" restore || _restore_failed=1
+  fi
+  if [ "$_restore_failed" -eq 0 ]; then
+    "$_restore_dir/tmux-resurrect/scripts/save.sh" quiet || warn "Could not save tmux layout"
+  else
+    tmux set-option -g @aa-recovery-state restoring
+    warn "Restore incomplete; saved files kept and watchdog will retry"
+  fi
+  "$_restore_dir/ai-sessions.sh" start-watch || warn "Could not start automatic tmux recovery"
   ok "tmux started; saved pi, Codex and Claude sessions restored where available"
 }
 
@@ -567,7 +711,7 @@ PKG='@ai-anywhere/cli'
 # The latest published version, updated on every release (scripts/publish-cli.sh in the core repo
 # enforces that this matches the package.json being published). Pinning makes the script
 # reproducible and lets a re-run skip npm entirely when nothing changed.
-CLI_VERSION='0.0.35'
+CLI_VERSION='0.0.36'
 PTY_PKG='@homebridge/node-pty-prebuilt-multiarch'
 CLI_BIN=''
 
