@@ -27,6 +27,36 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.36',
+    date: '2026-10-20',
+    changes: {
+      en: [
+        'Automatically restore sessions after tmux stops, preserving supported AI launch options, folders, tab groups and custom tab names',
+        'Show a global recovery notice reminding you to continue AI tasks and rerun shell scripts manually where needed',
+        'Keep grouped tabs together when their first tab closes',
+        'Switch between tasks and the five most recent tabs with desktop keyboard shortcuts',
+      ],
+      ja: [
+        'tmux 停止後にセッションを自動復元し、対応する AI 起動オプション、フォルダー、タブグループ、カスタムタブ名を保持します',
+        '復元後に全体通知を表示し、必要に応じて AI タスクの続行やシェルスクリプトの再実行が必要なことをお知らせします',
+        '最初のタブを閉じてもタブグループを維持します',
+        'デスクトップのキーボードショートカットでタスクや直近の5つのタブを切り替えられます',
+      ],
+      ko: [
+        'tmux가 종료되면 세션을 자동 복원하며 지원되는 AI 실행 옵션, 폴더, 탭 그룹 및 사용자 지정 탭 이름을 유지합니다',
+        '복원 후 전체 알림을 표시하여 필요에 따라 AI 작업을 계속하거나 셸 스크립트를 수동으로 다시 실행하도록 안내합니다',
+        '첫 번째 탭을 닫아도 탭 그룹을 유지합니다',
+        '데스크톱 키보드 단축키로 작업과 최근 탭 5개 사이를 전환할 수 있습니다',
+      ],
+      'zh-Hant': [
+        'tmux 中斷後自動恢復工作階段，保留支援的 AI 啟動選項、資料夾、tab 聚合與自訂分頁名稱',
+        '恢復後顯示全域通知，提醒按需手動繼續 AI 任務及重新執行 shell 腳本',
+        '關閉第一個分頁後，其餘分頁仍保留在原有群組中',
+        '使用桌面鍵盤快捷鍵切換任務及最近使用的五個分頁',
+      ],
+    },
+  },
+  {
     version: '0.0.35',
     date: '2026-10-17',
     changes: {
