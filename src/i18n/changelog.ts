@@ -27,6 +27,44 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.37',
+    date: '2026-10-28',
+    changes: {
+      en: [
+        'When desktop account authorization expires, open the sign-in page automatically and reconnect without restarting live terminal sessions',
+        'Keep remote SSH terminal mirrors responsive with more panes by sharing a single SSH channel when the remote supports Perl',
+        'Improve native macOS terminal rendering and stop idle desktop animations from redrawing continuously',
+        'Download desktop updates directly from the matching GitHub Release',
+        'Keep grouped tabs available when their original tmux window disappears',
+        'Use consistent Lucide icons across clients and add Norwegian Bokmål translations',
+      ],
+      ja: [
+        'デスクトップのアカウント認証が切れたときにログインページを自動で開き、実行中のターミナルセッションを再起動せずに再接続します',
+        'リモート側が Perl に対応している場合、1 つの SSH チャネルを共有して、ペインが多い環境でもリモート端末の応答性を保ちます',
+        'macOS のネイティブ端末描画を改善し、待機中のデスクトップアニメーションによる描画の繰り返しを抑えます',
+        'デスクトップの更新を対応する GitHub Release から直接ダウンロードできます',
+        '元の tmux ウィンドウが消えてもグループ化したタブを使い続けられます',
+        '各クライアントのアイコンを Lucide に統一し、ノルウェー語（ブークモール）の翻訳を追加しました',
+      ],
+      ko: [
+        '데스크톱 계정 인증이 만료되면 로그인 페이지를 자동으로 열고 실행 중인 터미널 세션을 재시작하지 않고 다시 연결합니다',
+        '원격 시스템에서 Perl을 지원하면 하나의 SSH 채널을 공유하여 창이 많아도 원격 터미널의 응답성을 유지합니다',
+        'macOS 기본 터미널 렌더링을 개선하고 대기 중인 데스크톱 애니메이션의 지속적인 다시 그리기를 줄였습니다',
+        '데스크톱 업데이트를 해당 GitHub Release에서 직접 다운로드할 수 있습니다',
+        '원래 tmux 창이 사라져도 그룹으로 묶인 탭을 계속 사용할 수 있습니다',
+        '클라이언트 전반에 Lucide 아이콘을 적용하고 노르웨이어 보크몰 번역을 추가했습니다',
+      ],
+      'zh-Hant': [
+        '桌面帳號授權過期時自動開啟登入頁面，無須重啟執行中的終端工作階段即可重新連線',
+        '遠端支援 Perl 時共用單一 SSH 通道，讓多個分頁的遠端終端仍保持順暢',
+        '改善 macOS 原生終端繪製，並避免待機中的桌面動畫持續重繪',
+        '從對應的 GitHub Release 直接下載桌面更新',
+        '原有 tmux 視窗消失後，群組中的其餘分頁仍可繼續使用',
+        '各客戶端統一使用 Lucide 圖示，並新增挪威書面語翻譯',
+      ],
+    },
+  },
+  {
     version: '0.0.36',
     date: '2026-10-20',
     changes: {
