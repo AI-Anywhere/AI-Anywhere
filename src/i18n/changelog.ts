@@ -28,7 +28,7 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 export const releases: Release[] = [
   {
     version: '0.0.37',
-    date: '2026-10-28',
+    date: '2026-10-30',
     changes: {
       en: [
         'When desktop account authorization expires, open the sign-in page automatically and reconnect without restarting live terminal sessions',
@@ -37,6 +37,9 @@ export const releases: Release[] = [
         'Download desktop updates directly from the matching GitHub Release',
         'Keep grouped tabs available when their original tmux window disappears',
         'Use consistent Lucide icons across clients and add Norwegian Bokmål translations',
+        'Copy from a remote terminal to the desktop clipboard, even over SSH',
+        'Reconnect to recent servers on mobile and open shared desktop tabs on your phone',
+        'Enable phone sharing from the desktop app and recover more reliably from a slow local bridge startup',
       ],
       ja: [
         'デスクトップのアカウント認証が切れたときにログインページを自動で開き、実行中のターミナルセッションを再起動せずに再接続します',
@@ -45,6 +48,9 @@ export const releases: Release[] = [
         'デスクトップの更新を対応する GitHub Release から直接ダウンロードできます',
         '元の tmux ウィンドウが消えてもグループ化したタブを使い続けられます',
         '各クライアントのアイコンを Lucide に統一し、ノルウェー語（ブークモール）の翻訳を追加しました',
+        'SSH 経由のリモート端末からもデスクトップのクリップボードにコピーできます',
+        'モバイルで最近接続したサーバーに再接続し、デスクトップで共有したタブをスマートフォンで開けます',
+        'デスクトップアプリからスマートフォンとの共有を有効にでき、ローカルブリッジの起動が遅い場合も復旧しやすくなりました',
       ],
       ko: [
         '데스크톱 계정 인증이 만료되면 로그인 페이지를 자동으로 열고 실행 중인 터미널 세션을 재시작하지 않고 다시 연결합니다',
@@ -53,6 +59,9 @@ export const releases: Release[] = [
         '데스크톱 업데이트를 해당 GitHub Release에서 직접 다운로드할 수 있습니다',
         '원래 tmux 창이 사라져도 그룹으로 묶인 탭을 계속 사용할 수 있습니다',
         '클라이언트 전반에 Lucide 아이콘을 적용하고 노르웨이어 보크몰 번역을 추가했습니다',
+        'SSH로 연결한 원격 터미널에서도 데스크톱 클립보드로 복사할 수 있습니다',
+        '모바일에서 최근 서버에 다시 연결하고 데스크톱에서 공유한 탭을 휴대폰으로 열 수 있습니다',
+        '데스크톱 앱에서 휴대폰 공유를 활성화하고 로컬 브리지 시작이 느린 경우에도 더 안정적으로 복구할 수 있습니다',
       ],
       'zh-Hant': [
         '桌面帳號授權過期時自動開啟登入頁面，無須重啟執行中的終端工作階段即可重新連線',
@@ -61,6 +70,9 @@ export const releases: Release[] = [
         '從對應的 GitHub Release 直接下載桌面更新',
         '原有 tmux 視窗消失後，群組中的其餘分頁仍可繼續使用',
         '各客戶端統一使用 Lucide 圖示，並新增挪威書面語翻譯',
+        '從 SSH 遠端終端複製內容到桌面剪貼簿',
+        '在手機重新連接最近使用的伺服器，並開啟桌面分享的分頁',
+        '直接在桌面 App 啟用手機分享，並改善本機橋接服務啟動較慢時的復原',
       ],
     },
   },
