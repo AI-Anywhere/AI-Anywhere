@@ -28,12 +28,28 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 export const releases: Release[] = [
   {
     version: '0.0.38',
-    date: '2026-11-04',
+    date: '2026-11-06',
     changes: {
-      en: ['Make typed text and existing terminal content easier to read in the desktop light theme, including after switching themes'],
-      ja: ['デスクトップのライトテーマで入力文字と既存のターミナル内容を読みやすくし、テーマ切り替え後も表示を更新します'],
-      ko: ['데스크톱 밝은 테마에서 입력한 글자와 기존 터미널 내용을 더 읽기 쉽게 표시하고 테마 전환 후에도 화면을 갱신합니다'],
-      'zh-Hant': ['改善桌面淺色主題中輸入文字與既有終端內容的可讀性，切換主題後也會更新畫面'],
+      en: [
+        'Make typed text and existing terminal content easier to read in the desktop light theme, including after switching themes',
+        'Make selected settings easier to distinguish in the desktop light theme',
+        'Show collapsed Web task-group counts beside the group name',
+      ],
+      ja: [
+        'デスクトップのライトテーマで入力文字と既存のターミナル内容を読みやすくし、テーマ切り替え後も表示を更新します',
+        'デスクトップのライトテーマで選択中の設定を見分けやすくしました',
+        'Web で折りたたんだタスクグループの件数をグループ名の横に表示します',
+      ],
+      ko: [
+        '데스크톱 밝은 테마에서 입력한 글자와 기존 터미널 내용을 더 읽기 쉽게 표시하고 테마 전환 후에도 화면을 갱신합니다',
+        '데스크톱 밝은 테마에서 선택한 설정을 더 쉽게 구분할 수 있습니다',
+        'Web에서 접힌 작업 그룹의 개수를 그룹 이름 옆에 표시합니다',
+      ],
+      'zh-Hant': [
+        '改善桌面淺色主題中輸入文字與既有終端內容的可讀性，切換主題後也會更新畫面',
+        '讓桌面淺色主題中已選取的設定更容易辨識',
+        '在 Web 收合的工作群組名稱旁顯示數量',
+      ],
     },
   },
   {
