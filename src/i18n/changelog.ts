@@ -27,6 +27,48 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.39',
+    date: '2026-11-12',
+    changes: {
+      en: [
+        'Switch Claude Code, Codex and pi between terminal and structured conversation views while keeping the same live session on desktop, Web and mobile',
+        'Follow live pi responses and tool activity on the active conversation branch',
+        'Read highlighted code, file diffs, expandable tool results and image previews in responsive conversation layouts',
+        'Keep drafts, attachments and queued messages when switching views, with CLI-specific slash commands and a pi model picker',
+        'Paste images and attach local files more reliably from the desktop composer',
+        'See unread task notifications around the macOS notch and jump directly to the relevant pane, with an option to disable the island',
+        'Open the correct shared pane on mobile, reconnect to recent servers and show connection times in your local time zone',
+      ],
+      ja: [
+        'デスクトップ、Web、モバイルで同じ実行中のセッションを保ちながら、Claude Code、Codex、pi をターミナルと構造化された会話表示の間で切り替えられます',
+        '選択中の会話ブランチで pi の応答とツールの動作をリアルタイムに確認できます',
+        '画面幅に合わせた会話表示で、構文強調付きコード、ファイル差分、展開できるツール結果、画像プレビューを確認できます',
+        '表示を切り替えても下書き、添付、送信待ちメッセージを保持し、CLI 別のスラッシュコマンドと pi のモデル選択に対応します',
+        'デスクトップの入力欄で画像の貼り付けとローカルファイルの添付をより安定して行えます',
+        'macOS のノッチ周辺に未読のタスク通知を表示し、対象のペインへ直接移動できます。設定で通知アイランドを無効にできます',
+        'モバイルで共有された正しいペインを開き、最近のサーバーに再接続し、接続時刻を現地のタイムゾーンで表示します',
+      ],
+      ko: [
+        '데스크톱, Web, 모바일에서 실행 중인 동일한 세션을 유지하면서 Claude Code, Codex, pi를 터미널과 구조화된 대화 화면 사이에서 전환할 수 있습니다',
+        '현재 대화 분기에서 pi의 응답과 도구 활동을 실시간으로 확인할 수 있습니다',
+        '화면 너비에 맞춘 대화 화면에서 구문 강조 코드, 파일 변경 사항, 펼칠 수 있는 도구 결과와 이미지 미리보기를 확인할 수 있습니다',
+        '화면을 전환해도 초안, 첨부 파일과 전송 대기 메시지를 유지하며 CLI별 슬래시 명령과 pi 모델 선택기를 제공합니다',
+        '데스크톱 입력창에서 이미지를 붙여 넣고 로컬 파일을 더 안정적으로 첨부할 수 있습니다',
+        'macOS 노치 주변에서 읽지 않은 작업 알림을 확인하고 해당 창으로 바로 이동할 수 있으며 설정에서 알림 아일랜드를 끌 수 있습니다',
+        '모바일에서 공유된 올바른 창을 열고 최근 서버에 다시 연결하며 연결 시각을 현지 시간대로 표시합니다',
+      ],
+      'zh-Hant': [
+        '在桌面、Web 與手機將 Claude Code、Codex、pi 切換為終端或結構化對話視圖，持續使用同一個執行中的會話',
+        '在目前對話分支即時查看 pi 回覆與工具活動',
+        '透過適應畫面寬度的對話版面，閱讀語法高亮程式碼、檔案差異、可展開的工具結果與圖片預覽',
+        '切換視圖時保留草稿、附件與待傳送訊息，提供各 CLI 的斜線指令及 pi 模型選擇器',
+        '改善桌面輸入框貼上圖片與附加本機檔案的可靠性',
+        '在 macOS 瀏海周圍顯示未讀任務通知，點擊即可跳到對應 pane，並可在設定中停用通知島',
+        '在手機開啟正確的分享 pane、重新連接最近使用的伺服器，並以本機時區顯示連線時間',
+      ],
+    },
+  },
+  {
     version: '0.0.38',
     date: '2026-11-06',
     changes: {
