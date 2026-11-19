@@ -19,7 +19,7 @@ export default defineConfig({
   trailingSlash: 'never',
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'vi', 'nl', 'zh-Hans', 'zh-Hant', 'ja', 'ko'],
+    locales: ['en', 'vi', 'nl', 'zh-Hans', 'zh-Hant', 'ja', 'ko', 'pt', 'th'],
     routing: { prefixDefaultLocale: false, redirectToDefaultLocale: false },
   },
   integrations: [
@@ -30,7 +30,7 @@ export default defineConfig({
     sitemap({
       i18n: {
         defaultLocale: 'en',
-        locales: { en: 'en', vi: 'vi', nl: 'nl', 'zh-Hans': 'zh-Hans', 'zh-Hant': 'zh-Hant', ja: 'ja', ko: 'ko' },
+        locales: { en: 'en', vi: 'vi', nl: 'nl', 'zh-Hans': 'zh-Hans', 'zh-Hant': 'zh-Hant', ja: 'ja', ko: 'ko', pt: 'pt', th: 'th' },
       },
       // The .txt endpoints are for crawlers to fetch, not for search engines to list.
       // Dashboard and compatibility routes are per-user utilities rather than content. They carry

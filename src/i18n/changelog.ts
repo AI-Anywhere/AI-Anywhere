@@ -3,8 +3,7 @@ import type { Lang } from './index'
 /**
  * Release notes for @ai-anywhere/cli, newest first.
  *
- * English is the baseline; other languages translate per release. A missing translation falls
- * back to English rather than hiding the release — shipping the fact beats waiting for the prose.
+ * Each release has a nonempty list in every changelog language.
  * Lives in i18n because it is copy (and because the ASCII gate exempts only this directory).
  *
  * Data, not prose in a component, so adding a release touches exactly one file. Dates are the
@@ -16,13 +15,7 @@ export interface Release {
   /** ISO date (YYYY-MM-DD), the day the release tag was cut. */
   date: string
   /** One user-facing line per change; no trailing periods, matching the site's copy style. */
-  changes: { en: string[] } & Partial<Record<Lang, string[]>>
-}
-
-/** The list a given page renders, and whether it is a fallback (so the markup can say lang="en"). */
-export const changesFor = (release: Release, lang: Lang): { items: string[]; translated: boolean } => {
-  const items = release.changes[lang]
-  return items ? { items, translated: true } : { items: release.changes.en, translated: lang === 'en' }
+  changes: Record<Lang, [string, ...string[]]>
 }
 
 export const releases: Release[] = [
@@ -30,6 +23,41 @@ export const releases: Release[] = [
     version: '0.0.40',
     date: '2026-11-19',
     changes: {
+      th: [
+        'อ่านข้อความสถานะของ Codex ได้ชัดขึ้นในเทอร์มินัลธีมมืดบน macOS และเห็นตัวอักษรจีนในแบบอักษรเดิมเมื่อเปิดบานหน้าต่างอีกครั้ง',
+        'กด Command กับเครื่องหมายจุลภาคเพื่อเปิดหรือปิดการตั้งค่าเดสก์ท็อป และกด Command-F เพื่อค้นหา โดยยังใช้ Control-F ในโปรแกรมเทอร์มินัลได้',
+        'ดูหน้าต่างระยะไกลและชื่อบานหน้าต่างภาษาจีนผ่าน SSH เมื่อใช้ tmux 3.7c',
+        'เปิดใช้การกู้คืนบนโฮสต์ Linux ด้วย --tmux-host เพื่อกู้หน้าต่าง tmux และเซสชัน AI ที่บันทึกไว้หลังรีบูต แม้บริดจ์ที่อัปเดตแล้วหลายตัวจะเชื่อมต่อกลับมาพร้อมกัน',
+        'รับการแจ้งเตือนเมื่องานเสร็จได้ตรงจังหวะขึ้น และเห็นผู้ส่งข้อความในบทสนทนา Claude ได้ถูกต้องขึ้น',
+      ],
+      'zh-Hans': [
+        '在 macOS 深色终端里看清 Codex 的状态文字，重新打开窗格时中文字体保持一致',
+        '用 Command 加逗号打开或关闭桌面设置，按 Command-F 搜索，Control-F 可交给终端程序',
+        '通过 SSH 连接 tmux 3.7c 主机时可以看到远程窗口和中文窗格标题',
+        '使用 --tmux-host 启用 Linux 主机恢复，重启后即使多台已更新的桥接服务重新连接，也只会恢复一份已保存的 tmux 窗口和 AI 会话',
+        '改进任务完成通知的时机，以及 Claude 对话中的发言者标注',
+      ],
+      vi: [
+        'Đọc rõ trạng thái Codex trong giao diện terminal tối trên macOS và giữ nét chữ Trung nhất quán khi mở lại khung',
+        'Dùng Command và dấu phẩy để mở hoặc đóng cài đặt, dùng Command-F để tìm kiếm và giữ Control-F cho chương trình trong terminal',
+        'Xem cửa sổ từ xa và tiêu đề khung bằng tiếng Trung qua SSH với tmux 3.7c',
+        'Bật khôi phục trên máy Linux bằng --tmux-host để khôi phục cửa sổ tmux và phiên AI đã lưu sau khi khởi động lại, kể cả khi nhiều cầu nối đã cập nhật cùng kết nối lại',
+        'Nhận thông báo hoàn tất đúng lúc hơn và thấy đúng người gửi trong hội thoại Claude',
+      ],
+      nl: [
+        'Lees de Codex-status op donkere macOS-terminals en behoud dezelfde Chinese tekens bij het heropenen van panelen',
+        "Open of sluit de instellingen met Command-komma en zoek met Command-F, terwijl Control-F beschikbaar blijft voor terminalprogramma's",
+        'Bekijk externe vensters en Chinese paneeltitels via SSH met tmux 3.7c',
+        'Schakel herstel op de Linux-host in met --tmux-host om opgeslagen tmux-vensters en AI-sessies na een herstart eenmalig te herstellen, ook als meerdere bijgewerkte bridges opnieuw verbinden',
+        'Ontvang nauwkeurigere voltooiingsmeldingen en zie in Claude-gesprekken van wie een bericht afkomstig is',
+      ],
+      pt: [
+        'Leia o estado do Codex em terminais escuros no macOS e mantenha a aparência dos caracteres chineses ao reabrir os painéis',
+        'Abra ou feche os ajustes com Command e vírgula e pesquise com Command-F, mantendo Control-F disponível para os programas do terminal',
+        'Veja janelas remotas e títulos de painéis em chinês via SSH com tmux 3.7c',
+        'Ative a recuperação no host Linux com --tmux-host para restaurar uma só vez as janelas do tmux e as sessões de IA após reiniciar, mesmo com várias pontes atualizadas reconectando',
+        'Receba notificações de conclusão mais precisas e identifique corretamente o autor das mensagens nas conversas do Claude',
+      ],
       en: [
         'Read Codex status text on dark macOS terminals and see consistent Chinese glyphs when reopening panes',
         'Toggle desktop settings with Command-comma and use Command-F to search while keeping Control-F available to terminal programs',
@@ -64,6 +92,51 @@ export const releases: Release[] = [
     version: '0.0.39',
     date: '2026-11-12',
     changes: {
+      th: [
+        'สลับระหว่างเทอร์มินัลกับมุมมองบทสนทนาของ Claude Code, Codex และ pi บนเดสก์ท็อป เว็บ และมือถือ โดยใช้เซสชันเดิมต่อเนื่อง',
+        'ติดตามคำตอบและการใช้เครื่องมือของ pi ในแขนงบทสนทนาที่เปิดอยู่ได้แบบสด',
+        'อ่านโค้ดที่เน้นไวยากรณ์ ดูความแตกต่างระหว่างไฟล์ ขยายผลลัพธ์ของเครื่องมือ และดูตัวอย่างภาพในมุมมองที่ปรับตามขนาดหน้าจอ',
+        'เก็บฉบับร่าง ไฟล์แนบ และข้อความในคิวไว้เมื่อสลับมุมมอง พร้อมใช้คำสั่งที่ขึ้นต้นด้วย / ของแต่ละ CLI และเลือกโมเดลสำหรับ pi',
+        'วางรูปภาพและแนบไฟล์จากเครื่องในช่องเขียนข้อความบนเดสก์ท็อปได้เสถียรขึ้น',
+        'ดูการแจ้งเตือนงานที่ยังไม่ได้อ่านตรงรอยบากของหน้าจอ Mac แล้วกดไปยังบานหน้าต่างที่เกี่ยวข้องได้ทันที หรือปิดพื้นที่แจ้งเตือนนี้ในการตั้งค่า',
+        'เปิดบานหน้าต่างที่แชร์บนมือถือได้ถูกต้อง เชื่อมต่อเซิร์ฟเวอร์ที่เพิ่งใช้ซ้ำ และดูเวลาเชื่อมต่อตามเขตเวลาของคุณ',
+      ],
+      'zh-Hans': [
+        '在桌面、Web 和手机上切换 Claude Code、Codex 和 pi 的终端视图与结构化对话视图，保持同一个运行中的会话',
+        '在当前对话分支中实时查看 pi 的回复和工具活动',
+        '在适应屏幕大小的对话布局中阅读高亮代码、文件差异、可展开的工具结果和图片预览',
+        '切换视图时保留草稿、附件和排队消息，并可使用各 CLI 的斜杠命令和 pi 模型选择器',
+        '从桌面输入框粘贴图片和附加本地文件更加可靠',
+        '在 macOS 刘海附近查看未读任务通知并直接跳转到对应窗格，也可在设置中关闭通知岛',
+        '在手机上打开正确的共享窗格、重新连接最近使用的服务器，并按本地时区显示连接时间',
+      ],
+      vi: [
+        'Chuyển giữa terminal và chế độ hội thoại có cấu trúc cho Claude Code, Codex và pi trên desktop, Web và điện thoại mà vẫn giữ phiên đang chạy',
+        'Theo dõi phản hồi và hoạt động công cụ của pi theo thời gian thực trên nhánh hội thoại hiện tại',
+        'Xem mã có tô màu cú pháp, thay đổi trong tệp, kết quả công cụ có thể mở rộng và ảnh xem trước trong bố cục thích ứng',
+        'Giữ bản nháp, tệp đính kèm và tin nhắn đang chờ khi đổi chế độ xem, với lệnh gạch chéo riêng cho từng CLI và bộ chọn mô hình cho pi',
+        'Dán ảnh và đính kèm tệp cục bộ từ ô soạn thảo trên desktop ổn định hơn',
+        'Xem thông báo tác vụ chưa đọc cạnh phần khuyết màn hình macOS và chuyển thẳng đến khung liên quan, hoặc tắt vùng thông báo trong cài đặt',
+        'Mở đúng khung được chia sẻ trên điện thoại, kết nối lại máy chủ gần đây và xem giờ kết nối theo múi giờ địa phương',
+      ],
+      nl: [
+        'Wissel op desktop, web en mobiel tussen de terminal en een gestructureerd gesprek voor Claude Code, Codex en pi, met behoud van de lopende sessie',
+        'Volg live antwoorden en gereedschapsacties van pi in de actieve gesprekstak',
+        'Bekijk code met syntaxiskleuren, bestandsverschillen, uitklapbare gereedschapsresultaten en afbeeldingsvoorbeelden in een meeschalende gespreksweergave',
+        "Behoud concepten, bijlagen en berichten in de wachtrij bij het wisselen van weergave, met slashcommando's per CLI en een modelkiezer voor pi",
+        'Plak afbeeldingen en voeg lokale bestanden betrouwbaarder toe in het invoerveld op de desktop',
+        'Bekijk ongelezen taakmeldingen rond de schermuitsparing op macOS en spring naar het bijbehorende paneel, of schakel dit meldingsgebied uit',
+        'Open op mobiel het juiste gedeelde paneel, verbind opnieuw met recente servers en bekijk verbindingstijden in je eigen tijdzone',
+      ],
+      pt: [
+        'Alterne entre o terminal e a conversa estruturada do Claude Code, Codex e pi no desktop, na Web e no celular mantendo a mesma sessão ativa',
+        'Acompanhe em tempo real as respostas e o uso de ferramentas do pi no ramo ativo da conversa',
+        'Veja código com realce de sintaxe, diferenças entre arquivos, resultados de ferramentas expansíveis e prévias de imagens em layouts adaptáveis',
+        'Mantenha rascunhos, anexos e mensagens na fila ao mudar de visualização, com comandos de barra por CLI e seletor de modelo para o pi',
+        'Cole imagens e anexe arquivos locais com mais confiabilidade no campo de mensagem do desktop',
+        'Veja notificações de tarefas não lidas junto ao recorte da tela no macOS e vá direto ao painel correspondente, ou desative a ilha de notificações',
+        'Abra o painel compartilhado correto no celular, reconecte-se a servidores recentes e veja os horários de conexão no seu fuso local',
+      ],
       en: [
         'Switch Claude Code, Codex and pi between terminal and structured conversation views while keeping the same live session on desktop, Web and mobile',
         'Follow live pi responses and tool activity on the active conversation branch',
@@ -106,6 +179,31 @@ export const releases: Release[] = [
     version: '0.0.38',
     date: '2026-11-06',
     changes: {
+      th: [
+        'อ่านข้อความที่พิมพ์และเนื้อหาเดิมของเทอร์มินัลในธีมสว่างบนเดสก์ท็อปได้ชัดขึ้น รวมถึงหลังสลับธีม',
+        'เห็นตัวเลือกที่เลือกไว้ในการตั้งค่าธีมสว่างบนเดสก์ท็อปได้ชัดขึ้น',
+        'ดูจำนวนงานข้างชื่อกลุ่มได้เมื่อยุบกลุ่มงานบนเว็บ',
+      ],
+      'zh-Hans': [
+        '改善桌面浅色主题中输入文字和已有终端内容的可读性，切换主题后也能看清',
+        '在桌面浅色主题中更容易辨认已选中的设置',
+        '在 Web 侧边栏折叠任务组时，数量显示在组名旁边',
+      ],
+      vi: [
+        'Đọc rõ hơn văn bản đang nhập và nội dung terminal có sẵn trong giao diện sáng trên desktop, kể cả sau khi đổi giao diện',
+        'Dễ nhận ra tùy chọn đang được chọn trong giao diện sáng trên desktop',
+        'Xem số tác vụ cạnh tên nhóm trên Web khi thu gọn nhóm',
+      ],
+      nl: [
+        'Lees ingevoerde tekst en bestaande terminalinhoud beter in het lichte desktopthema, ook na het wisselen van thema',
+        'Herken geselecteerde instellingen beter in het lichte desktopthema',
+        'Zie het aantal taken bij de groepsnaam van ingeklapte taakgroepen op het web',
+      ],
+      pt: [
+        'Leia com mais facilidade o texto digitado e o conteúdo existente no terminal no tema claro do desktop, inclusive após trocar de tema',
+        'Identifique melhor as opções selecionadas nos ajustes do tema claro do desktop',
+        'Veja a contagem ao lado do nome dos grupos de tarefas recolhidos na Web',
+      ],
       en: [
         'Make typed text and existing terminal content easier to read in the desktop light theme, including after switching themes',
         'Make selected settings easier to distinguish in the desktop light theme',
@@ -132,6 +230,61 @@ export const releases: Release[] = [
     version: '0.0.37',
     date: '2026-10-30',
     changes: {
+      th: [
+        'เมื่อสิทธิ์บัญชีเดสก์ท็อปหมดอายุ แอปจะเปิดหน้าเข้าสู่ระบบให้ และกลับมาเชื่อมต่อโดยใช้เซสชันเทอร์มินัลที่ยังทำงานอยู่',
+        'บานหน้าต่างเทอร์มินัลระยะไกลหลายบานตอบสนองได้เร็วขึ้นโดยใช้ช่อง SSH ร่วมกันเมื่อโฮสต์ปลายทางรองรับ Perl',
+        'ปรับปรุงการแสดงผลเทอร์มินัลบน macOS และลดการวาดภาพเคลื่อนไหวซ้ำเมื่อหน้าจอเดสก์ท็อปอยู่นิ่ง',
+        'ดาวน์โหลดอัปเดตเดสก์ท็อปจาก GitHub Release ของรุ่นนั้นได้โดยตรง',
+        'เข้าถึงแท็บในกลุ่มได้ต่อแม้หน้าต่าง tmux เดิมจะหายไป',
+        'ใช้ไอคอน Lucide ชุดเดียวกันในทุกไคลเอนต์ และเพิ่มคำแปลภาษานอร์เวย์แบบบุ๊กมอล',
+        'คัดลอกจากเทอร์มินัลระยะไกลไปยังคลิปบอร์ดบนเดสก์ท็อปได้แม้เชื่อมต่อผ่าน SSH',
+        'เชื่อมต่อเซิร์ฟเวอร์ที่เพิ่งใช้ซ้ำบนมือถือ และเปิดแท็บเดสก์ท็อปที่แชร์ไว้บนโทรศัพท์',
+        'เปิดการแชร์กับโทรศัพท์จากแอปเดสก์ท็อป และกลับมาเชื่อมต่อได้เสถียรขึ้นเมื่อบริดจ์บนเครื่องเริ่มทำงานช้า',
+      ],
+      'zh-Hans': [
+        '桌面账号授权过期时自动打开登录页，重新连接时保留正在运行的终端会话',
+        '远程主机支持 Perl 时，多窗格共用一个 SSH 通道，保持终端镜像响应流畅',
+        '改善 macOS 原生终端渲染，并减少桌面动画在空闲时的重复绘制',
+        '直接从对应的 GitHub Release 下载桌面更新',
+        '原来的 tmux 窗口消失后，仍可访问组内标签页',
+        '各客户端统一使用 Lucide 图标，并新增书面挪威语翻译',
+        '通过 SSH 也能将远程终端内容复制到桌面剪贴板',
+        '在手机上重新连接最近使用的服务器，并打开共享的桌面标签页',
+        '从桌面应用启用手机共享，本地桥接服务启动较慢时也能可靠恢复连接',
+      ],
+      vi: [
+        'Khi quyền truy cập tài khoản trên desktop hết hạn, tự mở trang đăng nhập và kết nối lại mà vẫn giữ các phiên terminal đang chạy',
+        'Khi máy từ xa hỗ trợ Perl, nhiều khung terminal dùng chung một kênh SSH để duy trì tốc độ phản hồi',
+        'Cải thiện hiển thị terminal gốc trên macOS và ngừng vẽ lại liên tục các hoạt ảnh khi desktop không hoạt động',
+        'Tải bản cập nhật desktop trực tiếp từ bản phát hành GitHub tương ứng',
+        'Giữ các thẻ đã nhóm khi cửa sổ tmux ban đầu biến mất',
+        'Thống nhất biểu tượng Lucide trên các ứng dụng và bổ sung bản dịch tiếng Na Uy Bokmål',
+        'Sao chép từ terminal từ xa vào bộ nhớ tạm trên desktop, kể cả qua SSH',
+        'Kết nối lại máy chủ gần đây và mở thẻ desktop được chia sẻ trên điện thoại',
+        'Bật chia sẻ với điện thoại từ ứng dụng desktop và kết nối lại ổn định hơn khi cầu nối cục bộ khởi động chậm',
+      ],
+      nl: [
+        'Open bij verlopen desktopautorisatie automatisch de aanmeldpagina en verbind opnieuw met behoud van lopende terminalsessies',
+        'Laat meer externe terminalpanelen vlot reageren door één SSH-kanaal te delen als de externe machine Perl ondersteunt',
+        'Verbeterde weergave van de native macOS-terminal en minder onnodig tekenwerk voor inactieve desktopanimaties',
+        'Download desktopupdates rechtstreeks uit de bijbehorende GitHub-release',
+        'Behoud gegroepeerde tabbladen wanneer hun oorspronkelijke tmux-venster verdwijnt',
+        'Consistente Lucide-pictogrammen op alle clients en vertalingen in Noors Bokmål',
+        'Kopieer vanuit een externe terminal naar het klembord van de desktop, ook via SSH',
+        'Verbind op mobiel opnieuw met recente servers en open gedeelde desktoptabbladen op je telefoon',
+        'Schakel telefoondeling in vanuit de desktopapp en herstel de verbinding betrouwbaarder als de lokale bridge langzaam opstart',
+      ],
+      pt: [
+        'Quando a autorização da conta expira no desktop, a página de login abre automaticamente e a conexão é retomada mantendo as sessões de terminal',
+        'Mantenha vários painéis remotos responsivos usando um único canal SSH quando o host remoto oferece Perl',
+        'Renderização aprimorada no terminal nativo do macOS e menos redesenhos de animações ociosas no desktop',
+        'Baixe atualizações do desktop diretamente da versão correspondente no GitHub',
+        'Mantenha as abas agrupadas disponíveis quando a janela original do tmux desaparecer',
+        'Ícones Lucide consistentes nos clientes e novas traduções para norueguês Bokmål',
+        'Copie do terminal remoto para a área de transferência do desktop, inclusive por SSH',
+        'Reconecte-se a servidores recentes no celular e abra abas compartilhadas do desktop',
+        'Ative o compartilhamento com o celular pelo aplicativo desktop e recupere a conexão com mais confiabilidade quando a ponte local demorar a iniciar',
+      ],
       en: [
         'When desktop account authorization expires, open the sign-in page automatically and reconnect without restarting live terminal sessions',
         'Keep remote SSH terminal mirrors responsive with more panes by sharing a single SSH channel when the remote supports Perl',
@@ -182,6 +335,36 @@ export const releases: Release[] = [
     version: '0.0.36',
     date: '2026-10-20',
     changes: {
+      th: [
+        'กู้คืนเซสชันอัตโนมัติหลัง tmux หยุดทำงาน พร้อมตัวเลือกเริ่ม AI ที่รองรับ โฟลเดอร์ กลุ่มแท็บ และชื่อแท็บที่ตั้งเอง',
+        'หลังการกู้คืน แอปจะแจ้งเตือนให้ทำงาน AI ต่อและเรียกใช้สคริปต์เชลล์อีกครั้งด้วยตนเองเมื่อจำเป็น',
+        'แท็บที่เหลือยังอยู่ในกลุ่มเดิมเมื่อปิดแท็บแรก',
+        'ใช้แป้นพิมพ์ลัดบนเดสก์ท็อปเพื่อสลับระหว่างงานและแท็บห้าแท็บที่ใช้ล่าสุด',
+      ],
+      'zh-Hans': [
+        'tmux 停止后自动恢复会话，保留受支持的 AI 启动选项、文件夹、标签组和自定义标签名称',
+        '通过全局恢复通知提醒你继续 AI 任务，并在需要时手动重新运行 shell 脚本',
+        '关闭组内第一个标签页时，其余标签仍保留在同一组',
+        '在桌面上通过快捷键切换任务和最近使用的五个标签页',
+      ],
+      vi: [
+        'Tự khôi phục phiên sau khi tmux dừng, giữ các tùy chọn khởi chạy AI được hỗ trợ, thư mục, nhóm thẻ và tên thẻ tùy chỉnh',
+        'Thông báo khôi phục toàn cục nhắc bạn tiếp tục tác vụ AI và chạy lại tập lệnh shell thủ công khi cần',
+        'Giữ các thẻ trong cùng nhóm khi đóng thẻ đầu tiên',
+        'Dùng phím tắt desktop để chuyển giữa các tác vụ và năm thẻ gần nhất',
+      ],
+      nl: [
+        'Herstel sessies automatisch nadat tmux stopt, met behoud van ondersteunde AI-startopties, mappen, tabgroepen en aangepaste tabnamen',
+        'Een herstelmelding herinnert je eraan AI-taken te hervatten en waar nodig shellscripts handmatig opnieuw uit te voeren',
+        'Houd tabbladen gegroepeerd als het eerste tabblad sluit',
+        'Wissel met sneltoetsen op de desktop tussen taken en de vijf meest recente tabbladen',
+      ],
+      pt: [
+        'Restaure as sessões automaticamente quando o tmux parar, preservando as opções de inicialização de IA compatíveis, pastas, grupos de abas e nomes personalizados',
+        'Um aviso global de recuperação lembra de continuar as tarefas de IA e executar novamente os scripts de shell quando necessário',
+        'Mantenha as abas agrupadas ao fechar a primeira aba do grupo',
+        'Use atalhos no desktop para alternar entre tarefas e as cinco abas mais recentes',
+      ],
       en: [
         'Automatically restore sessions after tmux stops, preserving supported AI launch options, folders, tab groups and custom tab names',
         'Show a global recovery notice reminding you to continue AI tasks and rerun shell scripts manually where needed',
@@ -212,6 +395,42 @@ export const releases: Release[] = [
     version: '0.0.35',
     date: '2026-10-17',
     changes: {
+      th: [
+        'ลากโฟลเดอร์ในแถบด้านข้างเพื่อจัดลำดับหรือรวมกัน และย้ายงานทีละงานได้แม้งานอื่นจะใช้ไดเรกทอรีเดียวกัน',
+        'ลากแท็บข้ามพื้นที่ทำงานเพื่อเรียง รวม หรือแยกแท็บ โดยเลื่อนได้ที่ขอบหน้าจอ เห็นตำแหน่งวางชัดเจน และกด Escape เพื่อยกเลิก',
+        'เซสชันและมุมมองเทอร์มินัลคงอยู่เมื่อย้ายหรือรวมแท็บ รวมถึงการเปลี่ยนแปลงที่ซิงก์มาจากอุปกรณ์อื่น',
+        'การแจ้งเตือนบนเดสก์ท็อปแสดงเป็นการ์ดเล็กใต้แถวแท็บ มีปุ่มปิดด้านใน และหายไปหลังสี่วินาที เว้นแต่วางตัวชี้ค้างไว้',
+        'แอป macOS ใช้บัฟเฟอร์กราฟิกเล็กลงเพื่อลดการใช้หน่วยความจำ โดยยังแสดงผลเทอร์มินัลด้วย Metal',
+        'ตัวติดตั้งใช้ Node.js รุ่นที่เข้ากันได้ซึ่งมีอยู่แล้ว รวมถึงรุ่นที่ nvm จัดการแต่แอปยังหาไม่พบ',
+        'เมื่อเปิดแอปเดสก์ท็อปอีกครั้ง แอปจะใช้ตัวติดตั้งรุ่นที่ตรงกันจากแคช',
+      ],
+      vi: [
+        'Kéo thư mục trong thanh bên để sắp xếp hoặc gộp chúng, và di chuyển riêng từng tác vụ dù chúng dùng chung thư mục làm việc',
+        'Kéo thẻ giữa các không gian làm việc để sắp xếp, gộp hoặc tách, với cuộn ở cạnh, vùng thả rõ ràng và phím Escape để hủy',
+        'Giữ nguyên phiên và chế độ xem terminal khi di chuyển hoặc gộp, kể cả với thay đổi đồng bộ từ thiết bị khác',
+        'Thông báo desktop nằm dưới hàng thẻ, có dạng thẻ nhỏ với nút đóng bên trong và tự ẩn sau bốn giây trừ khi con trỏ đang ở trên thẻ',
+        'Ứng dụng macOS dùng bộ đệm đồ họa nhỏ hơn để giảm bộ nhớ trong khi vẫn dùng Metal cho terminal gốc',
+        'Trình cài đặt dùng lại Node.js tương thích, kể cả bản do nvm quản lý mà môi trường ứng dụng chưa tìm thấy',
+        'Các lần mở desktop tiếp theo dùng lại trình cài đặt phù hợp trong bộ nhớ đệm',
+      ],
+      nl: [
+        'Sleep mappen in de zijbalk om ze te ordenen of samen te voegen en verplaats één taak zonder andere taken uit dezelfde werkmap mee te nemen',
+        'Sleep tabbladen tussen werkruimten om ze te ordenen, samen te voegen of te splitsen, met scrollen bij de rand, duidelijke neerzetzones en Escape om te annuleren',
+        'Terminalsessies en weergaven blijven behouden bij verplaatsen en samenvoegen, ook bij wijzigingen vanaf een andere client',
+        'Compacte desktopmeldingen onder de tabbladen hebben een eigen sluitknop en verdwijnen na vier seconden, tenzij de aanwijzer erboven staat',
+        'De macOS-app gebruikt kleinere grafische buffers om geheugen te besparen en behoudt de native Metal-renderer voor de terminal',
+        'De installatie hergebruikt een compatibele Node.js-versie, ook als een via nvm beheerde installatie buiten het zoekpad van de app staat',
+        'Bij opnieuw starten gebruikt de desktopapp het bijbehorende installatieprogramma uit de cache',
+      ],
+      pt: [
+        'Arraste pastas na barra lateral para reordená-las ou mesclá-las e mova tarefas individuais sem afetar outras que usam o mesmo diretório',
+        'Arraste abas entre espaços de trabalho para reordenar, mesclar ou dividir, com rolagem nas bordas, destinos de soltura visíveis e Escape para cancelar',
+        'As sessões e visualizações do terminal são preservadas ao mover ou mesclar, inclusive em mudanças sincronizadas de outro cliente',
+        'As notificações do desktop aparecem sob as abas em cartões compactos com botão de fechar e somem após quatro segundos, exceto se o ponteiro estiver sobre elas',
+        'O aplicativo macOS usa buffers gráficos menores para reduzir o uso de memória e mantém a renderização nativa do terminal com Metal',
+        'O instalador reutiliza uma versão compatível do Node.js, inclusive instalações do nvm ausentes no ambiente do aplicativo',
+        'Ao reabrir o aplicativo desktop, o instalador correspondente é reutilizado do cache',
+      ],
       en: [
         'Drag sidebar folders to reorder or merge them, and move individual tasks without moving others that share the same working directory',
         'Drag tabs between workspaces to reorder, merge or split them, with edge scrolling, clear drop targets and Escape to cancel',
@@ -263,6 +482,13 @@ export const releases: Release[] = [
     version: '0.0.34',
     date: '2026-10-15',
     changes: {
+      th: [
+        'เลื่อนหน้าจอในแอปเทอร์มินัลอย่าง pi ได้อีกครั้งเมื่อเปิดแอป macOS จาก Finder หรือ Dock โดยล้อเมาส์จะส่งคำสั่งไปยังแอปที่กำลังทำงาน',
+        'ลากไฟล์จาก Finder ลงในบานเทอร์มินัลบน macOS ได้โดยตรง บานบนเครื่องนี้จะได้รับพาธ ส่วนบานบนเครื่องอื่นจะได้รับไฟล์หลังอัปโหลด',
+        'เมื่อข้อความจากช่องเขียนข้อความไปถึงบานเทอร์มินัลบนเครื่อง แอปจะยืนยันและล้างข้อความออกจากช่องเขียน',
+        'ช่องเขียนข้อความที่อยู่ใต้เทอร์มินัลแสดงภาพพื้นหลังผ่านเอฟเฟกต์กระจกฝ้าได้อีกครั้ง',
+        'แสดงสถานะกำลังทำงานขณะที่ pi รุ่นใหม่กำลังประมวลผล',
+      ],
       en: [
         'The macOS desktop app opened from Finder or the Dock scrolls TUIs such as pi again: the wheel reaches the application instead of moving a stale copy of the screen',
         'Drop files from Finder straight onto a macOS terminal pane: a pane on this machine gets their paths, one on another machine gets them uploaded first',
@@ -325,6 +551,15 @@ export const releases: Release[] = [
     version: '0.0.33',
     date: '2026-10-14',
     changes: {
+      th: [
+        'ดาวน์โหลดแอปเดสก์ท็อปสำหรับ macOS จาก tmux.online ได้ในรูปแบบ DMG ที่ใช้ได้ทั้ง Apple silicon และ Intel และมีเลขรุ่นตรงกับ CLI',
+        'แถบเลื่อนเทอร์มินัลบน macOS จะแสดงเมื่อวางตัวชี้หรือเลื่อนหน้าจอ โดยไม่กินพื้นที่ตารางอักขระ',
+        'พื้นลายจุดรอบเทอร์มินัลวาดด้วย GPU และใช้สีพื้นกับความโปร่งใสเดียวกับเทอร์มินัล',
+        'ปล่อยเมาส์เหนือเทอร์มินัลหลังลากแถบด้านข้างแล้วการลากจะสิ้นสุดอย่างถูกต้อง',
+        'เมื่อใช้ภาพพื้นหลัง ขอบแถบด้านข้าง รอยต่อแถวแท็บ และเส้นแบ่งบานหน้าต่างจะแสดงโดยไม่มีแสงสว่างลอดออกมา',
+        'การค้นหาบริดจ์บนเครื่อง Windows จัดการกรณีการเชื่อมต่อถูกปฏิเสธได้ดีขึ้น',
+        'ตัวติดตั้งจะแจ้งรุ่นใหม่หลังจากสร้างและเผยแพร่แพ็กเกจไคลเอนต์ครบแล้ว',
+      ],
       en: [
         'The macOS desktop app can be downloaded from tmux.online: a universal DMG for Apple silicon and Intel with the same version as the CLI',
         'The macOS terminal scrollbar appears on hover or scrolling without taking space from the terminal grid',
@@ -403,6 +638,14 @@ export const releases: Release[] = [
     version: '0.0.32',
     date: '2026-10-13',
     changes: {
+      th: [
+        'เทอร์มินัลเดสก์ท็อปบน macOS ใช้ตัวแสดงผล GPU ของ Ghostty ผ่าน Metal แยกการประมวลผลเอาต์พุตออกจากเธรดหน้าจอ ทำให้เลื่อนและปรับขนาดได้ลื่นขึ้น และล้างหน้าจอได้หมด',
+        'เมื่อเชื่อมต่อกับโปรแกรมอย่าง Codex แอปจะเก็บบรรทัดว่างจากภาพหน้าจอเดิมไว้ ทำให้บรรทัดด้านล่างแสดงครบและตรงตำแหน่ง',
+        'หน้าต่างใหม่แสดงเต็มบานตั้งแต่แรก และขนาดเทอร์มินัลปรับตามตัวชี้ขณะลากแถบด้านข้าง',
+        'บริเวณที่ตารางอักขระไม่เต็มบานแสดงลายจุดของ tmux รวมถึงเมื่อใช้ภาพพื้นหลัง โดยลายจุดอยู่เฉพาะนอกบริเวณข้อความ',
+        'ใช้ล้อเมาส์เลื่อนแอปเต็มจอที่ไม่ได้ติดตามเมาส์ได้ โดยเทอร์มินัลส่งปุ่มลูกศรให้แอป',
+        'ค่าเริ่มต้นจะคงขนาดบานหน้าต่างไว้เมื่อมีเทอร์มินัลเชื่อมต่อ',
+      ],
       en: [
         "The macOS desktop terminal now runs on Ghostty's GPU (Metal) renderer: output parses many times faster off the UI thread, scrolling and resizing stay smooth, and clearing the screen no longer leaves stale rows behind",
         'TUIs such as Codex no longer show shifted or missing lines at the bottom after attaching: blank rows of the captured screen are kept',
@@ -473,6 +716,16 @@ export const releases: Release[] = [
     version: '0.0.31',
     date: '2026-10-13',
     changes: {
+      th: [
+        'หลังรีบูต ระบบจะกู้แท็บที่บันทึกไว้ได้แม้มีคนสร้างเซสชัน AA ใน tmux ขึ้นใหม่ก่อนเซิร์ฟเวอร์เริ่มทำงาน จึงเก็บภาพสถานะเดิมไว้ได้',
+        'กล่องข้อมูลส่วนตัวแบบใหม่เก็บโทเคนและรหัสผ่านไว้ในไฟล์แยกของแต่ละแท็บบนเครื่องที่รันบานนั้น แล้วส่งพาธไฟล์ให้ AI แทนการใส่ค่าลงในบทสนทนา',
+        'คำสั่งทำงานต่อบนโทรศัพท์จะเปิดแท็บในแอป AI Anywhere บนมือถือ และ CLI รองรับ --no-qr เพื่อข้ามการแสดงคิวอาร์โค้ด',
+        'ตัวติดตั้งเริ่ม tmux อีกครั้งและกลับเข้าเซสชัน pi, Codex และ Claude ตามรหัสเซสชันเดิมหลังเครื่องหรือเซิร์ฟเวอร์ tmux หยุดทำงาน',
+        'แอปเดสก์ท็อปอ่านเอาต์พุตจากบานบนเครื่องผ่าน tmux โดยตรง ทำให้แสดงผลได้เร็วขึ้น',
+        'เมื่อเชื่อมต่อใหม่ ระบบเก็บเอาต์พุตชุดแรก รอให้หน้าจอหลังปรับขนาดวาดเสร็จ และคืนโหมดเมาส์กับแป้นกดเพื่อให้เลื่อนและใช้ปุ่มลูกศรต่อได้',
+        'เมื่อกลับเข้าเว็บ เบราว์เซอร์จะกู้ขนาดหน้าต่างทั้งหมดได้พร้อมกัน',
+        'เพิ่มอินเทอร์เฟซภาษาเวียดนามและภาษาดัตช์',
+      ],
       en: [
         'After a reboot the saved tabs come back even when the AA tmux session was recreated by hand before the server started; previously the snapshot was silently dropped and overwritten',
         "New private data dialog: tokens and passwords are saved to a per-tab file on the pane's machine, and the AI is given the path instead of the value in the conversation",
@@ -559,6 +812,7 @@ export const releases: Release[] = [
     version: '0.0.30',
     date: '2026-10-12',
     changes: {
+      th: ['ตัวติดตั้งใช้รีจิสทรี npm ทางการและดึงข้อมูลแพ็กเกจล่าสุดทางออนไลน์เสมอ จึงมองเห็นรุ่นใหม่แม้แคชเก่าจะยังอยู่'],
       en: [
         'The installer always uses the official npm registry and refreshes package metadata online, preventing stale caches from hiding new releases',
       ],
@@ -583,6 +837,10 @@ export const releases: Release[] = [
     version: '0.0.29',
     date: '2026-10-12',
     changes: {
+      th: [
+        'ตัวติดตั้งทางการรองรับการเปิดแอปเดสก์ท็อป โดยใช้บริดจ์ที่ทำงานได้อยู่แล้วหรือเปิดบริดจ์ใหม่ในเบื้องหลัง',
+        'เลขรุ่นของแพ็กเกจเดสก์ท็อปตรงกับรุ่นของ CLI',
+      ],
       en: [
         'The official installer now supports desktop startup, reusing a healthy bridge or starting it in the background',
         'Desktop bundle versions now stay in sync with CLI releases',
@@ -615,6 +873,10 @@ export const releases: Release[] = [
     version: '0.0.28',
     date: '2026-10-12',
     changes: {
+      th: [
+        'ตัวติดตั้งตั้งค่าให้บันทึกเซสชัน tmux ทุกห้านาที และกู้คืนเมื่อเริ่ม tmux รวมทั้งเนื้อหาในบานหน้าต่าง',
+        'เมื่อติดตั้งซ้ำ ระบบจะใช้ปลั๊กอินกู้คืนที่มีอยู่และรักษาการตั้งค่า tmux ของคุณไว้',
+      ],
       en: [
         'The installer now configures automatic tmux session saving every 5 minutes and restoration on tmux startup, including pane contents',
         'Repeated installs reuse existing recovery plugins and preserve your tmux configuration',
@@ -650,6 +912,13 @@ export const releases: Release[] = [
     version: '0.0.27',
     date: '2026-10-08',
     changes: {
+      th: [
+        'เพิ่มตัวติดตั้งแอปเดสก์ท็อปสำหรับ macOS และ Windows',
+        'เทอร์มินัลที่ใช้ตัวแสดงผลของ macOS เลื่อนหน้าจอและเลือกข้อความได้ดีขึ้น',
+        'กด Cmd+R, Ctrl+R หรือ F5 เพื่อโหลดหน้าจอเดสก์ท็อปและเชื่อมต่อใหม่ โดยยังเก็บเซสชัน tmux ที่กำลังทำงานและข้อความร่างไว้',
+        'การตั้งค่าเดสก์ท็อปและความโปร่งใสของภาพพื้นหลังใกล้เคียงกับเวอร์ชันเว็บมากขึ้น',
+        'ปรับปรุงปุ่มควบคุมหน้าต่าง โหมดเต็มหน้าจอ การเปิดปิดแถบด้านข้าง และตัวบอกสถานะงานบน Dock ของ macOS',
+      ],
       en: [
         'Desktop installers are now available for macOS and Windows',
         'On macOS, native terminal rendering improves scrolling and text selection',
@@ -712,6 +981,10 @@ export const releases: Release[] = [
     version: '0.0.26',
     date: '2026-10-01',
     changes: {
+      th: [
+        'แดชบอร์ดบนเว็บรองรับภาษาเวียดนามและภาษาดัตช์ โดยใช้ภาษาของเบราว์เซอร์อัตโนมัติหรือเลือกเองได้ในการตั้งค่า',
+        'tmux.online เพิ่มหน้าภาษาจีนตัวย่อ ภาษาเวียดนาม และภาษาดัตช์ที่ /zh-Hans, /vi และ /nl',
+      ],
       en: [
         'The web dashboard now supports Vietnamese and Dutch, with automatic browser language detection or manual selection in Settings',
         'tmux.online adds Simplified Chinese, Vietnamese and Dutch at /zh-Hans, /vi and /nl',
@@ -750,6 +1023,13 @@ export const releases: Release[] = [
     version: '0.0.25',
     date: '2026-10-01',
     changes: {
+      th: [
+        'เลือก IP ภายในเครื่องหรือบนเครือข่ายเมื่อเริ่ม CLI แล้วเปิดลิงก์ที่แสดงได้ทันที รวมถึงใช้ URL สาธารณะที่ส่งต่อมายังบริดจ์ได้',
+        'ยังเข้าใช้ผ่าน 127.0.0.1 บนเครื่องได้เมื่อ CLI เปิดรับการเชื่อมต่อบนอินเทอร์เฟซเครือข่ายที่เลือก',
+        'บริดจ์หลายตัวแสดงบาน tmux เดียวกันได้พร้อมกันโดยไม่รบกวนกัน',
+        'การลากแท็บที่อยู่ติดกันและการเรียงงานที่ใช้ไดเรกทอรีเดียวกันจะรักษาลำดับที่คุณเลือก',
+        'ยุบส่วนของแต่ละโฮสต์ได้ และสถานะจะซิงก์ระหว่างไคลเอนต์บนเว็บ',
+      ],
       vi: [
         'Khi khởi động CLI, chọn IP cục bộ hoặc mạng rồi mở liên kết kết nối được hiển thị; cũng hỗ trợ URL công khai đã cấu hình chuyển tiếp',
         'Vẫn truy cập được qua 127.0.0.1 khi CLI lắng nghe trên giao diện mạng đã chọn',
@@ -812,6 +1092,11 @@ export const releases: Release[] = [
     version: '0.0.22',
     date: '2026-09-05',
     changes: {
+      th: [
+        'แดชบอร์ดบนเว็บรองรับภาษาโปรตุเกส โดยเลือกตามภาษาเบราว์เซอร์อัตโนมัติหรือเปลี่ยนในการตั้งค่าได้',
+        'อ่านเว็บไซต์ tmux.online เป็นภาษาโปรตุเกสได้ที่ tmux.online/pt',
+        'ลบเซสชันจากประวัติหลายรายการต่อกันได้โดยไม่ต้องโหลดหน้าใหม่',
+      ],
       vi: [
         'Bảng điều khiển web hỗ trợ tiếng Bồ Đào Nha, tự nhận ngôn ngữ trình duyệt hoặc chọn trong Cài đặt',
         'Website tmux.online cũng hỗ trợ tiếng Bồ Đào Nha tại tmux.online/pt',
@@ -858,6 +1143,12 @@ export const releases: Release[] = [
     version: '0.0.21',
     date: '2026-09-04',
     changes: {
+      th: [
+        'แดชบอร์ดแสดงประวัติเซสชันจาก CLI หกตัว ได้แก่ claude, codex, pi, opencode, cursor และ copilot รวมถึงเซสชันที่มีอยู่ก่อนเริ่มใช้แอปนี้',
+        'ดูประวัติแบบรายการรวมหรือจัดกลุ่มตาม CLI หรือโฟลเดอร์ ดูจำนวนโทเคนของแต่ละเซสชัน และเรียงตามเวลาหรือจำนวนโทเคนได้',
+        'คลิกรายการในประวัติเพื่อดูรายละเอียด คัดลอกคำสั่งกลับเข้าเซสชัน หรือลบเซสชันออกจากที่จัดเก็บของ CLI',
+        'บนหน้าจอกว้าง แดชบอร์ดแสดงงานที่กำลังทำทางซ้ายและประวัติทางขวา',
+      ],
       vi: [
         'Bảng điều khiển hiển thị lịch sử phiên tác tử từ sáu CLI: claude, codex, pi, opencode, cursor và copilot, kể cả phiên trước khi ứng dụng này được cài',
         'Lịch sử có thể không phân nhóm, nhóm theo CLI hoặc thư mục; mỗi phiên hiển thị lượng token và có thể sắp xếp theo thời gian hoặc token',
@@ -912,6 +1203,9 @@ export const releases: Release[] = [
     version: '0.0.20',
     date: '2026-09-01',
     changes: {
+      th: [
+        'เลื่อนในบาน Claude Code ได้ลื่นอีกครั้ง หลังจาก Claude Code 2.1 เปิดติดตามเมาส์ เทอร์มินัลจะจัดการเมาส์ในเครื่องและรวมเหตุการณ์ล้อเมาส์ก่อนส่งเหมือนที่ทำกับ OpenCode จึงลดการส่งกลับไปมาหรือวาดหน้าจอใหม่ทุกครั้ง และลากเลือกข้อความได้อีกครั้ง',
+      ],
       vi: [
         'Cuộn trong Claude Code mượt trở lại: Claude Code 2.1 bật theo dõi chuột khiến mỗi lần cuộn hay di chuyển chuột phải trao đổi với máy chủ và vẽ lại toàn màn hình. Terminal giờ xử lý chuột cục bộ và gộp sự kiện cuộn như với OpenCode; kéo để chọn văn bản cũng hoạt động trở lại',
       ],
@@ -942,6 +1236,11 @@ export const releases: Release[] = [
     version: '0.0.19',
     date: '2026-09-01',
     changes: {
+      th: [
+        'รองรับ Cursor Agent และใช้ฮุกติดตามว่า CLI กำลังทำงานหรือรอคำตอบ',
+        'เมนูแท็บยังแสดงตัวเลือกแชร์เมื่อเซิร์ฟเวอร์ปิดการแชร์อยู่ พร้อมบอกคำสั่งสำหรับเปิดใช้งาน',
+        'เมื่อขยายโฟลเดอร์หรือเครื่อง แอปจะซ่อนยอดรวมและแสดงรายการภายใน',
+      ],
       vi: [
         'Bổ sung hỗ trợ Cursor Agent, với hook vòng đời báo trạng thái đang chạy và đang chờ',
         'Tùy chọn chia sẻ trong menu tab vẫn hiển thị khi máy chủ tắt chia sẻ, kèm lệnh để bật thay vì biến mất',
@@ -988,6 +1287,10 @@ export const releases: Release[] = [
     version: '0.0.18',
     date: '2026-08-21',
     changes: {
+      th: [
+        'โฟลเดอร์งานแสดงลำดับชั้นชัดขึ้นด้วยไอคอนโฟลเดอร์และเครื่อง การเยื้องรายการย่อย และส่วนแยกสำหรับงานที่ยังไม่ได้จัดกลุ่ม',
+        'ยอดรวมของโฟลเดอร์และเครื่องนับจากจำนวนแท็บ รวมถึงแท็บที่รวมกลุ่มและยังทำงานอยู่',
+      ],
       vi: [
         'Thư mục tác vụ có phân cấp rõ hơn với biểu tượng thư mục và máy, các mục con thụt vào và khu vực chưa phân nhóm riêng',
         'Tổng số trong thư mục và máy giờ đếm tab, gồm cả tab được gộp đang chạy, thay vì chỉ đếm dòng tác vụ',
@@ -1026,6 +1329,7 @@ export const releases: Release[] = [
     version: '0.0.17',
     date: '2026-08-20',
     changes: {
+      th: ['เมื่อเชื่อมต่อโฮสต์ไม่ได้ หน้าจอจะแสดงว่ากำลังลองใหม่และมีปุ่มให้ลองทันทีโดยไม่ต้องรอรอบตรวจถัดไป'],
       vi: ['Máy chủ không truy cập được giờ hiển thị trạng thái đang thử lại và có nút thử ngay, không cần chờ lần kiểm tra tiếp theo'],
       nl: ['Een onbereikbare host toont nu dat opnieuw verbinden wordt geprobeerd, met een knop om direct opnieuw te proberen'],
       en: [
@@ -1044,6 +1348,12 @@ export const releases: Release[] = [
     version: '0.0.16',
     date: '2026-08-20',
     changes: {
+      th: [
+        'เมื่อ CLI แจ้งว่ารอบงานล้มเหลวและลองซ้ำเองจนครบแล้ว เซิร์ฟเวอร์จะส่งคำสั่งลองใหม่ลงในบาน พร้อมแสดงสถานะและเว้นช่วงนานขึ้นในแต่ละครั้ง คุณกำหนดข้อความ จำนวนครั้ง และเปิดปิดได้ในการตั้งค่า แม้ปิดทุกเบราว์เซอร์ระบบก็ยังทำงาน',
+        'เซสชัน pi รายงานรอบงานที่ล้มเหลวแล้ว จึงใช้การลองใหม่อัตโนมัติได้เช่นกัน',
+        'โทรศัพท์ที่ได้รับอนุมัติเข้าถึงหน้าต่างและความสามารถทั้งหมดได้เหมือนเดสก์ท็อป ส่วนการอนุมัติอุปกรณ์ใหม่ทำจากเดสก์ท็อป',
+        'หน้าตั้งค่าบนเว็บซ่อนส่วนพาธสำหรับไฟล์ที่ลากมาวางในเบราว์เซอร์ที่ให้สิทธิ์เข้าถึงโฟลเดอร์ไม่ได้',
+      ],
       vi: [
         'Tự động thử lại: khi CLI kết thúc do lỗi và đã hết lượt tự thử, máy chủ nhập lệnh thử lại vào ô terminal, có giới hạn số lần, thời gian chờ tăng dần và thông báo. Hoạt động ngay cả khi đóng mọi trình duyệt; bật tắt, nội dung và giới hạn nằm trong Cài đặt',
         'Phiên Pi báo các lượt chạy thất bại nên cũng được tự động thử lại',
@@ -1098,6 +1408,10 @@ export const releases: Release[] = [
     version: '0.0.15',
     date: '2026-08-19',
     changes: {
+      th: [
+        'เมื่อเชื่อมต่อกับ AI CLI ระบบจะคืนโหมดวางข้อความแบบ bracketed paste เพื่อให้ข้อความหลายบรรทัดถูกส่งเป็นข้อความเดียว',
+        'CLI เสนอให้ติดตั้งรุ่นใหม่ได้ทันที และถามอย่างมากวันละครั้ง',
+      ],
       vi: [
         'Khôi phục bracketed paste khi kết nối với mọi AI CLI, để văn bản nhiều dòng được gửi thành một tin nhắn thay vì gửi từng dòng',
         'CLI đề nghị cài bản nâng cấp thay vì chỉ mô tả, tối đa một lần mỗi ngày',
@@ -1136,6 +1450,13 @@ export const releases: Release[] = [
     version: '0.0.14',
     date: '2026-08-19',
     changes: {
+      th: [
+        'มือถือมีหน้าเข้าใช้งานเฉพาะ เมนูงานแบบลิ้นชัก วางภาพหน้าจอลงในช่องข้อความได้ และอ่านบานเทอร์มินัลเป็นข้อความที่เหมาะกับหน้าจอเล็กได้',
+        'อุปกรณ์ที่จับคู่แล้วเปิดหน้าต่างเพิ่มได้ และเดสก์ท็อปแสดงโทรศัพท์ที่เชื่อมต่ออยู่ให้ตัดการเชื่อมต่อเป็นรายเครื่องได้',
+        'เลือกที่อยู่ปลายทางสำหรับคิวอาร์โค้ดได้',
+        'งานที่ล้มเหลวจะอยู่ในรายการงานที่ต้องการให้คุณดูบนแดชบอร์ด และออกจากสถานะล้มเหลวได้เมื่อจัดการแล้ว',
+        'เลื่อนด้วยนิ้วได้ลื่นขึ้น แตะปุ่มควบคุมได้ง่ายขึ้น และการใช้งานบนโทรศัพท์คงขนาดตารางของหน้าต่างเดสก์ท็อปไว้',
+      ],
       vi: [
         'Giao diện điện thoại có trang vào riêng, ngăn tác vụ, dán ảnh chụp màn hình vào hộp tin nhắn và chế độ văn bản dễ đọc cho mọi ô terminal',
         'Thiết bị đã ghép nối có thể thêm nhiều cửa sổ; máy tính hiển thị điện thoại đang kết nối và cho phép ngắt từng thiết bị',
@@ -1198,6 +1519,7 @@ export const releases: Release[] = [
     version: '0.0.13',
     date: '2026-08-18',
     changes: {
+      th: ['ป้ายงานบนแดชบอร์ดเรียงตามกลุ่ม และหัวข้อแจ้งเตือนแสดงสัญลักษณ์ของ CLI'],
       vi: ['Các thẻ tác vụ trên bảng điều khiển được gom theo nhóm, tiêu đề thông báo kèm biểu tượng CLI'],
       nl: ['Taakchips op het dashboard worden per groep gebundeld en meldingen tonen het CLI-pictogram in de titel'],
       en: ['Dashboard task chips cluster by group, and toasts carry the CLI mark on the title'],
@@ -1212,6 +1534,7 @@ export const releases: Release[] = [
     version: '0.0.12',
     date: '2026-08-18',
     changes: {
+      th: ['CLI จะแจ้งให้อัปเดตเมื่อเลขรุ่นที่เผยแพร่ต่างจากรุ่นที่ติดตั้งบนเครื่อง ไม่ว่าจะต่างกันในทิศทางใด'],
       vi: ['Hiển thị lời nhắc nâng cấp khi phiên bản đã phát hành khác phiên bản đang dùng, không chỉ khi mới hơn'],
       nl: ['De updatemelding verschijnt zodra de gepubliceerde versie verschilt, niet alleen wanneer die nieuwer is'],
       en: ['The upgrade prompt fires whenever the published version differs, not only when it is newer'],
@@ -1226,6 +1549,12 @@ export const releases: Release[] = [
     version: '0.0.11',
     date: '2026-08-18',
     changes: {
+      th: [
+        'รุ่นแรกที่เผยแพร่ของบริดจ์ AI Anywhere ให้คุณคุยกับ AI CLI บนเครื่อง เช่น Claude, Codex และ Gemini ผ่านแถบด้านข้างของเบราว์เซอร์หรือแดชบอร์ดบนเว็บ',
+        'ใช้ --share เพื่อส่งหน้าต่าง tmux หนึ่งบานไปยังโทรศัพท์ผ่านคิวอาร์โค้ด',
+        'เชื่อมต่อโฮสต์ระยะไกลผ่าน SSH ใช้ไดเรกทอรีชั่วคราวแยกตามบัญชี และดูเครื่องหมายถูกสีเขียวที่โฮสต์ซึ่งเชื่อมต่อแล้ว',
+        'เผยแพร่ลง npm ผ่าน Trusted Publishing ด้วย OIDC โดยใช้ข้อมูลยืนยันตัวตนระยะสั้น',
+      ],
       vi: [
         'Bản phát hành đầu tiên của cầu nối AI Anywhere: tương tác với AI CLI trên máy (claude, codex, gemini, ...) từ thanh bên trình duyệt hoặc bảng điều khiển web',
         'Chia sẻ một cửa sổ tmux với điện thoại bằng mã QR khi bật --share',

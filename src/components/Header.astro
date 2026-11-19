@@ -1,7 +1,7 @@
 ---
 import Logo from './Logo.astro'
 import Icon from './Icon.astro'
-import { useCopy, localizePath, shippedLangs, languageMenu, type Lang } from '../i18n'
+import { useCopy, localizePath, langsForPath, languageMenu, type Lang } from '../i18n'
 import { GUIDE_PATHS, useGuides } from '../i18n/guides'
 import { API_URL, GITHUB_STARS_FALLBACK, REPO_SLUG, REPO_URL } from '../config'
 import { INVITE_CODE_PATTERN_SOURCE } from '../lib/referral'
@@ -14,6 +14,7 @@ interface Props {
 const { lang, path = '/' } = Astro.props
 const c = useCopy(lang)
 const guides = useGuides(lang)
+const availableLangs = langsForPath(path)
 const home = localizePath('/', lang)
 const dashboard = localizePath('/dashboard/devices', lang)
 const membership = localizePath('/dashboard/membership', lang)
@@ -49,7 +50,7 @@ const links = [
       </a>
 
       {
-        shippedLangs.length > 1 && (
+        availableLangs.length > 1 && (
           // <details> rather than a JS-built menu: it opens, closes and takes keyboard
           // focus on its own, so the script below only has to add the two behaviours the
           // element does not provide — closing on outside click and on Escape.
@@ -60,7 +61,7 @@ const links = [
             </summary>
             <ul>
               {languageMenu
-                .filter((item) => shippedLangs.includes(item.lang))
+                .filter((item) => availableLangs.includes(item.lang))
                 .map((item) => (
                   <li>
                     <a

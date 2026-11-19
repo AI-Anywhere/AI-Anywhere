@@ -33,6 +33,7 @@ const DATE_LOCALES: Record<Lang, string> = {
   ja: 'ja-JP',
   ko: 'ko-KR',
   pt: 'pt-BR',
+  th: 'th-TH',
   'zh-Hans': 'zh-CN',
   'zh-Hant': 'zh-TW',
 }

@@ -9,7 +9,7 @@ import ReferralErrorBanner from '../components/ReferralErrorBanner.astro'
 import AnalyticsHead from '../components/AnalyticsHead.astro'
 import AnalyticsConsent from '../components/AnalyticsConsent.astro'
 import LinkPrefetch from '../components/LinkPrefetch.astro'
-import { localizePath, shippedLangs, defaultLang, ogLocales, useCopy, type Lang } from '../i18n'
+import { localizePath, langsForPath, defaultLang, ogLocales, useCopy, type Lang } from '../i18n'
 
 interface Props {
   lang: Lang
@@ -32,6 +32,7 @@ interface Props {
 
 const { lang, path = '/', title, description, showFooter = true, noindex = false, schema = path === '/' ? 'home' : 'page' } = Astro.props
 const c = useCopy(lang)
+const availableLangs = langsForPath(path)
 const site = Astro.site ?? new URL('https://tmux.online')
 const canonical = new URL(localizePath(path, lang), site)
 const pageTitle = title ?? c.meta.title
@@ -72,7 +73,7 @@ const ogImage = new URL('/og.png', site)
     }
     <meta name="author" content="AI Anywhere" />
 
-    {!noindex && shippedLangs.map((l) => <link rel="alternate" hreflang={l} href={new URL(localizePath(path, l), site).href} />)}
+    {!noindex && availableLangs.map((l) => <link rel="alternate" hreflang={l} href={new URL(localizePath(path, l), site).href} />)}
     {!noindex && <link rel="alternate" hreflang="x-default" href={new URL(localizePath(path, defaultLang), site).href} />}
 
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -94,7 +95,7 @@ const ogImage = new URL('/og.png', site)
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={c.meta.ogAlt} />
     <meta property="og:locale" content={ogLocales[lang]} />
-    {shippedLangs.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={ogLocales[l]} />)}
+    {availableLangs.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={ogLocales[l]} />)}
     <meta property="og:image:type" content="image/png" />
     <meta name="twitter:card" content="summary_large_image" />
 

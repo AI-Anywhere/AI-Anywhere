@@ -1150,7 +1150,20 @@ const pt: GuideCollection = {
   },
 }
 
-const collections: Record<Lang, GuideCollection> = { en, vi, nl, ja, ko, pt, 'zh-Hans': zhHans, 'zh-Hant': zhHant }
+// Guide links from the Thai changelog lead to the English guides.
+const th: GuideCollection = {
+  ...en,
+  navTitle: 'คู่มือ',
+  pages: {
+    ...en.pages,
+    tmuxWebUi: { ...en.pages.tmuxWebUi, eyebrow: 'ใช้งาน tmux ผ่านเว็บ' },
+    security: { ...en.pages.security, eyebrow: 'ความปลอดภัย' },
+    remoteHosts: { ...en.pages.remoteHosts, eyebrow: 'โฮสต์ระยะไกล' },
+    install: { ...en.pages.install, eyebrow: 'การติดตั้ง' },
+  },
+}
+
+const collections: Record<Lang, GuideCollection> = { en, vi, nl, ja, ko, pt, th, 'zh-Hans': zhHans, 'zh-Hant': zhHant }
 
 export function useGuides(lang: Lang): GuideCollection {
   return collections[lang] ?? en

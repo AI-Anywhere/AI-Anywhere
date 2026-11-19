@@ -4,6 +4,7 @@ import { nl } from './nl'
 import { ja } from './ja'
 import { ko } from './ko'
 import { pt } from './pt'
+import { th } from './th'
 import { zhHans } from './zh-Hans'
 import { zhHant } from './zh-Hant'
 
@@ -13,9 +14,9 @@ import { zhHant } from './zh-Hant'
  *
  * Adding a locale is three steps:
  *   1. write `src/i18n/<lang>.ts` exporting an object of type `Copy`
- *   2. add it to `copy` below
+ *   2. register it in the full-site or page-specific locale tables below
  *   3. create `src/pages/<lang>/index.astro` rendering `<Home lang="<lang>" />`
- * The language switcher, `<link rel="alternate">` tags and sitemap pick it up from `copy`.
+ * The language switcher and alternate links use the locales available for each path.
  */
 export const languages = {
   en: 'English',
@@ -24,6 +25,7 @@ export const languages = {
   ja: '日本語',
   ko: '한국어',
   pt: 'Português',
+  th: 'ไทย',
   'zh-Hans': '简体中文',
   'zh-Hant': '繁體中文',
 } as const
@@ -39,6 +41,7 @@ export const languageMenu: ReadonlyArray<{ lang: Lang; label: string }> = [
   { lang: 'ja', label: languages.ja },
   { lang: 'ko', label: languages.ko },
   { lang: 'pt', label: languages.pt },
+  { lang: 'th', label: languages.th },
   { lang: 'zh-Hans', label: languages['zh-Hans'] },
   { lang: 'zh-Hant', label: languages['zh-Hant'] },
 ]
@@ -55,12 +58,17 @@ export const ogLocales: Record<Lang, string> = {
   ja: 'ja_JP',
   ko: 'ko_KR',
   pt: 'pt_BR',
+  th: 'th_TH',
 }
 
-// Only locales present here are actually shipped; the rest are declared intent.
-export const copy: Partial<Record<Lang, Copy>> = { en, vi, nl, ja, ko, pt, 'zh-Hans': zhHans, 'zh-Hant': zhHant }
+const siteCopy = { en, vi, nl, ja, ko, pt, 'zh-Hans': zhHans, 'zh-Hant': zhHant }
+export const copy: Record<Lang, Copy> = { ...siteCopy, th }
 
-export const shippedLangs = Object.keys(copy) as Lang[]
+export const shippedLangs = Object.keys(siteCopy) as Lang[]
+const changelogLangs: Lang[] = [...shippedLangs, 'th']
+
+/** Thai is available on the changelog. Other destinations use a site-wide locale. */
+export const langsForPath = (path: string): Lang[] => (path.split(/[?#]/, 1)[0] === '/changelog' ? changelogLangs : shippedLangs)
 
 export const useCopy = (lang: Lang): Copy => copy[lang] ?? en
 
@@ -78,6 +86,6 @@ export const getLangFromUrl = (url: URL): Lang => {
  */
 export const localizePath = (path: string, lang: Lang): string => {
   const clean = path.startsWith('/') ? path : `/${path}`
-  if (lang === defaultLang) return clean
+  if (lang === defaultLang || !langsForPath(clean).includes(lang)) return clean
   return `/${lang}${clean === '/' ? '' : clean}`
 }
