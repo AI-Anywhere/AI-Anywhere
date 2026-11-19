@@ -27,6 +27,40 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.40',
+    date: '2026-11-19',
+    changes: {
+      en: [
+        'Read Codex status text on dark macOS terminals and see consistent Chinese glyphs when reopening panes',
+        'Toggle desktop settings with Command-comma and use Command-F to search while keeping Control-F available to terminal programs',
+        'See remote windows and Chinese pane titles over SSH with tmux 3.7c',
+        'Enable Linux host recovery with --tmux-host to restore saved tmux windows and AI sessions after reboot, even when several updated bridges reconnect',
+        'See more accurate completion notifications and Claude conversation attribution',
+      ],
+      ja: [
+        'macOS の暗いターミナルで Codex の状態表示が読みやすくなり、ペインを開き直しても中国語の字体が揃います',
+        'Command とコンマで設定を開閉し、Command-F で検索できます。Control-F はターミナル内のプログラムに届きます',
+        'tmux 3.7c を使う SSH ホストのウィンドウと中国語のペインタイトルを表示できます',
+        '--tmux-host で Linux 側の復元を有効にすると、再起動後に複数の更新済みブリッジが再接続しても、保存されたウィンドウと AI セッションを一度だけ復元します',
+        '完了通知のタイミングと Claude の会話での発言者表示がより正確になりました',
+      ],
+      ko: [
+        'macOS의 어두운 터미널에서 Codex 상태 문구를 읽기 쉬워졌으며 창을 다시 열어도 중국어 글꼴이 일관되게 표시됩니다',
+        'Command와 쉼표로 설정을 열고 닫고 Command-F로 검색할 수 있으며 Control-F는 터미널 프로그램에 전달됩니다',
+        'tmux 3.7c를 사용하는 SSH 호스트의 창과 중국어 창 제목을 표시합니다',
+        '--tmux-host로 Linux 호스트 복구를 켜면 재부팅 후 업데이트된 브리지 여러 대가 다시 연결해도 저장한 창과 AI 세션을 한 번만 복원합니다',
+        '작업 완료 알림 시점과 Claude 대화의 발화자 표시가 더 정확해졌습니다',
+      ],
+      'zh-Hant': [
+        '在 macOS 深色終端看清 Codex 狀態文字，重新開啟窗格時也能保持中文字形一致',
+        '以 Command 加逗號開關桌面設定，使用 Command-F 搜尋，Control-F 可交給終端內的程式',
+        '透過 SSH 連到 tmux 3.7c 主機時可看到遠端視窗與中文窗格標題',
+        '以 --tmux-host 啟用 Linux 主機恢復，重啟後即使多個已更新的橋接服務重新連線，也只會恢復一份已儲存的 tmux 視窗與 AI 對話',
+        '改善工作完成通知的時機，以及 Claude 對話中的發言者標示',
+      ],
+    },
+  },
+  {
     version: '0.0.39',
     date: '2026-11-12',
     changes: {
